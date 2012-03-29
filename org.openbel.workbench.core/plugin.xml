@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.7"?>
+<plugin>
+
+    <extension
+        id="nature"
+        name="%extension.name"
+        point="org.eclipse.core.resources.natures">
+        <runtime>
+            <run class="org.openbel.workbench.core.Nature"/>
+        </runtime>
+    </extension>
+
+    <extension point="org.eclipse.core.contenttype.contentTypes">
+        <!-- see BELLanguageToolkit -->
+        <content-type
+            id="org.openbel.workbench.bel-content-type"
+            name="BEL Script document"
+            base-type="org.eclipse.core.runtime.text"
+            describer="org.openbel.workbench.core.BELContentDescriber"
+            file-extensions="bel"
+            priority="high">
+            <property name="charset" default="UTF-8"/>
+        </content-type>
+        <!-- see BELLanguageToolkit -->
+        <content-type
+            id="org.openbel.workbench.xbel-content-type"
+            name="XBEL document"
+            base-type="org.eclipse.core.runtime.xml"
+            describer="org.eclipse.core.runtime.content.XMLContentDescriber"
+            file-extensions="xbel"
+            priority="high">
+            <property name="charset" default="UTF-8"/>
+        </content-type>
+        <!-- see BELLanguageToolkit -->
+        <content-type
+            id="org.openbel.workbench.syscfg-content-type"
+            name="BEL system configuration"
+            base-type="org.eclipse.core.runtime.text"
+            describer="org.openbel.workbench.core.SYSCFGContentDescriber"
+            file-extensions="cfg"
+            priority="high">
+            <property name="charset" default="UTF-8"/>
+        </content-type>
+        <!-- see BELLanguageToolkit, CoreConstants -->
+        <content-type
+            id="org.openbel.workbench.builder-content-type"
+            name="KAM builder"
+            base-type="org.eclipse.ant.core.antBuildFile"
+            describer="org.openbel.workbench.core.BuilderContentDescriber"
+            file-names="kam_builder.xml"
+            file-extensions="xml"
+            priority="high">
+            <property name="charset" default="UTF-8"/>
+        </content-type>
+    </extension>
+
+    <extension point="org.eclipse.dltk.core.language">
+        <language
+            class="org.openbel.workbench.core.BELLanguageToolkit"
+            nature="org.openbel.workbench.core.nature"
+            priority="0"/>
+    </extension>
+
+    <extension
+        point="org.eclipse.dltk.core.sourceParsers">
+        <parserContribution
+            natureId="org.openbel.workbench.core.nature">
+            <parser
+                class="org.openbel.workbench.core.parser.BELScriptSourceParserFactory"
+                description="BEL Script source parser"
+                id="org.openbel.workbench.core.sourceParser"
+                name="sourceParser.name"
+                priority="0"/>
+        </parserContribution>
+    </extension>
+
+    <extension
+        point="org.eclipse.dltk.core.sourceElementParsers">
+        <parser
+            class="org.openbel.workbench.core.parser.BELScriptElementParser"
+            nature="org.openbel.workbench.core.nature"
+            priority="1">
+        </parser>
+    </extension>
+
+    <extension
+        point="org.eclipse.dltk.core.completionEngine">
+        <completionEngine
+            class="org.openbel.workbench.core.completion.BELCompletionEngine"
+            nature="org.openbel.workbench.core.nature"
+            priority="0"/>
+    </extension>
+
+    <extension
+        id="belCompileBuilder"
+        name="BEL Compile Builder"
+        point="org.eclipse.core.resources.builders">
+        <builder
+            hasNature="true">
+            <run class="org.openbel.workbench.core.builder.BELCompileBuilder"/>
+        </builder>
+    </extension>
+
+</plugin>
+

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<component id="org.openbel.workbench.ui" version="2">
+    <resource path="src/org/openbel/workbench/ui/editor/BELOutlinePage.java" type="org.openbel.workbench.ui.editor.BELOutlinePage">
+        <filter id="574660632">
+            <message_arguments>
+                <message_argument value="IContentOutlinePage"/>
+                <message_argument value="IPage"/>
+                <message_argument value="BELOutlinePage"/>
+            </message_arguments>
+        </filter>
+    </resource>
+</component>

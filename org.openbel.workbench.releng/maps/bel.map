@@ -1,0 +1,4 @@
+!*** changelog
+plugin@org.openbel.workbench.core=SVN,trunk,https://subversion.assembla.com/svn/selventa_bel,,org.openbel.workbench.core
+plugin@org.openbel.workbench.ui=SVN,trunk,https://subversion.assembla.com/svn/selventa_bel,,org.openbel.workbench.ui
+plugin@org.openbel.workbench.doc=SVN,trunk,https://subversion.assembla.com/svn/selventa_bel,,org.openbel.workbench.doc

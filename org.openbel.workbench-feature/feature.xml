@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+    id="org.openbel.workbench"
+    label="OpenBEL Workbench"
+    version="1.0.0.qualifier">
+
+    <description url="https://trac.assembla.com/selventa_bel">
+        OpenBEL Workbench
+    </description>
+
+    <license url="http://www.eclipse.org/legal/epl-v10.html">
+        Eclipse Public License
+    </license>
+  
+    <url>
+        <discovery
+            label="Linux Tools"
+            url="http://download.eclipse.org/technology/linuxtools/update"/>
+    </url>
+
+    <plugin
+        id="org.openbel.workbench.core"
+        download-size="0"
+        install-size="0"
+        version="0.0.0"
+        unpack="false"/>
+
+    <plugin
+        id="org.openbel.workbench.ui"
+        download-size="0"
+        install-size="0"
+        version="0.0.0"
+        unpack="false"/>
+
+    <plugin
+        id="org.openbel.workbench.doc"
+        download-size="0"
+        install-size="0"
+        version="0.0.0"
+        unpack="false"/>
+
+</feature>
+

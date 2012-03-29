@@ -1,0 +1,62 @@
+##################################################################################
+# Document Properties Section
+
+SET DOCUMENT Name = "Document name"
+SET DOCUMENT Description = "Document description"
+SET DOCUMENT Version = "1.0"
+SET DOCUMENT Copyright = "Copyright (c) 2012, YOUR NAME. All Rights Reserved."
+SET DOCUMENT Authors = "YOUR NAME"
+SET DOCUMENT Licenses = "Document license"
+SET DOCUMENT ContactInfo = "your@email.com"
+
+##################################################################################
+# Definitions Section
+
+DEFINE NAMESPACE PFR AS URL "http://resource.belframework.org/belframework/1.0/namespace/selventa-named-rat-protein-families.belns"
+DEFINE NAMESPACE MGI AS URL "http://resource.belframework.org/belframework/1.0/namespace/mgi-approved-symbols.belns"
+DEFINE NAMESPACE PFM AS URL "http://resource.belframework.org/belframework/1.0/namespace/selventa-named-mouse-protein-families.belns"
+DEFINE NAMESPACE MESHPP AS URL "http://resource.belframework.org/belframework/1.0/namespace/mesh-biological-processes.belns"
+DEFINE NAMESPACE MESHCL AS URL "http://resource.belframework.org/belframework/1.0/namespace/mesh-cellular-locations.belns"
+DEFINE NAMESPACE NCH AS URL "http://resource.belframework.org/belframework/1.0/namespace/selventa-named-human-complexes.belns"
+DEFINE NAMESPACE CHEBI AS URL "http://resource.belframework.org/belframework/1.0/namespace/chebi-names.belns"
+DEFINE NAMESPACE NCR AS URL "http://resource.belframework.org/belframework/1.0/namespace/selventa-named-rat-complexes.belns"
+DEFINE NAMESPACE HGNC AS URL "http://resource.belframework.org/belframework/1.0/namespace/hgnc-approved-symbols.belns"
+DEFINE NAMESPACE SPAC AS URL "http://resource.belframework.org/belframework/1.0/namespace/swissprot-accession-numbers.belns"
+DEFINE NAMESPACE PFH AS URL "http://resource.belframework.org/belframework/1.0/namespace/selventa-named-human-protein-families.belns"
+DEFINE NAMESPACE NCM AS URL "http://resource.belframework.org/belframework/1.0/namespace/selventa-named-mouse-complexes.belns"
+DEFINE NAMESPACE CHEBIID AS URL "http://resource.belframework.org/belframework/1.0/namespace/chebi-ids.belns"
+DEFINE NAMESPACE RGD AS URL "http://resource.belframework.org/belframework/1.0/namespace/rgd-approved-symbols.belns"
+DEFINE NAMESPACE MESHD AS URL "http://resource.belframework.org/belframework/1.0/namespace/mesh-diseases.belns"
+DEFINE NAMESPACE GO AS URL "http://resource.belframework.org/belframework/1.0/namespace/go-biological-processes-names.belns"
+DEFINE NAMESPACE SCHEM AS URL "http://resource.belframework.org/belframework/1.0/namespace/selventa-legacy-chemical-names.belns"
+DEFINE NAMESPACE EGID AS URL "http://resource.belframework.org/belframework/1.0/namespace/entrez-gene-ids-hmr.belns"
+
+DEFINE ANNOTATION HemicAndImmuneSystem AS  URL "http://resource.belframework.org/belframework/1.0/annotation/mesh-hemic-and-immune-system.belanno"
+DEFINE ANNOTATION UrogenitalSystem AS  URL "http://resource.belframework.org/belframework/1.0/annotation/mesh-urogenital-system.belanno"
+DEFINE ANNOTATION FluidAndSecretion AS  URL "http://resource.belframework.org/belframework/1.0/annotation/mesh-fluid-and-secretion.belanno"
+DEFINE ANNOTATION CellStructure AS  URL "http://resource.belframework.org/belframework/1.0/annotation/mesh-cell-structure.belanno"
+DEFINE ANNOTATION CellLine AS  URL "http://resource.belframework.org/belframework/1.0/annotation/atcc-cell-line.belanno"
+DEFINE ANNOTATION TextLocation AS  LIST {"Abstract","Results","Legend","Review"}
+DEFINE ANNOTATION IntegumentarySystem AS  URL "http://resource.belframework.org/belframework/1.0/annotation/mesh-integumentary-system.belanno"
+DEFINE ANNOTATION DigestiveSystem AS  URL "http://resource.belframework.org/belframework/1.0/annotation/mesh-digestive-system.belanno"
+DEFINE ANNOTATION MuskuloskeletalSystem AS  URL "http://resource.belframework.org/belframework/1.0/annotation/mesh-musculoskeletal-system.belanno"
+DEFINE ANNOTATION Tissue AS  URL "http://resource.belframework.org/belframework/1.0/annotation/mesh-tissue.belanno"
+DEFINE ANNOTATION BodyRegion AS  URL "http://resource.belframework.org/belframework/1.0/annotation/mesh-body-region.belanno"
+DEFINE ANNOTATION Cell AS  URL "http://resource.belframework.org/belframework/1.0/annotation/mesh-cell.belanno"
+DEFINE ANNOTATION NervousSystem AS  URL "http://resource.belframework.org/belframework/1.0/annotation/mesh-nervous-system.belanno"
+DEFINE ANNOTATION SenseOrgan AS  URL "http://resource.belframework.org/belframework/1.0/annotation/mesh-sense-organ.belanno"
+DEFINE ANNOTATION Disease AS  URL "http://resource.belframework.org/belframework/1.0/annotation/mesh-disease.belanno"
+DEFINE ANNOTATION RespiratorySystem AS  URL "http://resource.belframework.org/belframework/1.0/annotation/mesh-respiratory-system.belanno"
+DEFINE ANNOTATION Species AS  URL "http://resource.belframework.org/belframework/1.0/annotation/species-taxonomy-id.belanno"
+DEFINE ANNOTATION CardiovascularSystem AS  URL "http://resource.belframework.org/belframework/1.0/annotation/mesh-cardiovascular-system.belanno"
+DEFINE ANNOTATION EndocrineSystem AS  URL "http://resource.belframework.org/belframework/1.0/annotation/mesh-endocrine-system.belanno"
+
+##################################################################################
+# Statements Section
+
+SET STATEMENT_GROUP = "Group 1"
+
+# Add statements below this comment
+
+UNSET STATEMENT_GROUP
+

@@ -1,0 +1,24 @@
+SET DOCUMENT Name = "Example BELScript BEL document."
+SET DOCUMENT Description = "Here is a description."
+SET DOCUMENT Version = "1.0"
+
+DEFINE NAMESPACE HGNC AS URL "http://openbel.org/1.0/namespace/hgnc.belns"
+DEFINE NAMESPACE CHEBI AS URL "http://openbel.org/1.0/namespace/chebi.belns"
+DEFINE NAMESPACE MESH AS URL "http://openbel.org/1.0/namespace/mesh.belns"
+
+DEFINE ANNOTATION location AS LIST {"GO:nucleus"}
+
+SET Citation = { "PubMed", "J Biol Chem 2004 Apr 2 279(14) 13659-67", "279(14)", "2002-01-01" }
+SET Evidence = "Werner's syndrome (WS) is an inherited disease\
+ characterized by genomic instability and premature aging."
+path(MESH:"Werner Syndrome") positiveCorrelation path(MESH:"Genomic Instability")
+path(MESH:"Werner Syndrome") positiveCorrelation path(MESH:"Aging, Premature")
+SET Evidence = "The WS gene encodes a protein (WRN) with\
+ helicase and exonuclease activities."
+# No statements modeled from this line. 
+SET Evidence = "We have previously reported that WRN interacts\
+ with Ku70/80 and this interaction strongly stimulates WRN\
+ exonuclease activity."
+# disambiguation Ku70 = HGNC XRCC6 and Ku80 = HGNC XRCC5
+# Note that we cannot distinguish the two molecular activities of WRN
+complex(p(HGNC:XRCC5), p(HGNC:XRCC6), p(HGNC:WRN)) => cat(p(HGNC:WRN))

@@ -1,0 +1,121 @@
+<?xml version='1.0'?>
+
+<project default='compile' basedir='.'>
+    <property environment='env'/>
+    <property name='file.buildprops' value='build.properties'/>
+    <property file='${file.buildprops}'/>
+    <property name='BELFRAMEWORK_HOME' value='${env.BELFRAMEWORK_HOME}'/>
+    <!-- The path containing the documents to be compiled. -->
+    <property name='dir.documents' location='documents'/>
+    <!-- The system configuration file. -->
+    <property name='file.syscfg' location='belframework.cfg'/>
+    
+    <!--
+    This Ant buildfile will be used in exported OpenBEL Workbench projects.
+    -->
+
+    <target name='check' description='checks requirements have been met'>
+        <echo message='Checking requirements... '/>
+
+        <!-- Example of checking for environment variables. -->
+        <!-- <fail unless='env.JAVA_HOME' message='JAVA_HOME is not set.' /> -->
+
+        <!-- Fail if the framework home is not set. -->
+        <fail
+            unless='env.BELFRAMEWORK_HOME'
+            message='BELFRAMEWORK_HOME not set
+            ${line.separator}
+            ${line.separator}BELFRAMEWORK_HOME must be set in your environment.
+            ${line.separator}Set it to your BEL Framework installation path.
+            ${line.separator}(the path containing the BEL compiler/assembler "belc")'/>
+
+        <!-- Fail if the syscfg is not present. -->
+        <condition property='have.syscfg'>
+            <available file='${file.syscfg}'/>
+        </condition>
+        <fail
+            unless='have.syscfg'
+            message='missing system configuration
+            ${line.separator}
+            ${line.separator}System configuration is missing (${file.syscfg}).'/>
+
+        <!-- Fail if no KAM name was provided. -->
+        <fail
+            unless='KAM_NAME'
+            message='missing KAM_NAME
+            ${line.separator}
+            ${line.separator}The KAM_NAME property has not been set.
+            ${line.separator}Set it in ${file.buildprops} or by using "-DKAM_NAME=...".'/>
+            
+        <!-- Fail if no KAM description was provided. -->
+        <fail
+            unless='KAM_DESCRIPTION'
+            message='missing KAM_DESCRIPTION
+            ${line.separator}
+            ${line.separator}The KAM_DESCRIPTION property has not been set.
+            ${line.separator}Set it in ${file.buildprops} or by using "-DKAM_DESCRIPTION=...".'/>
+    	
+    	<!-- Fail if no documents directory is available. -->
+        <condition property='docsdir.exists'>
+            <available file='${dir.documents}' type='dir'/>
+        </condition>
+    	<fail
+    	    unless='docsdir.exists'
+            message='missing documents directory
+            ${line.separator}The documents path does not exist.
+    	    ${line.separator}(${dir.documents})'/>
+
+        <condition property='unix'>
+            <os family='unix'/>
+        </condition>
+
+        <condition property='windows'>
+            <os family='windows'/>
+        </condition>
+
+        <condition
+            property='belc'
+            value='${BELFRAMEWORK_HOME}${file.separator}belc.sh'>
+            <isset property='unix'/>
+        </condition>
+
+        <condition
+            property='belc'
+            value='${BELFRAMEWORK_HOME}${file.separator}belc.cmd'>
+            <isset property='windows'/>
+        </condition>
+
+        <condition property='have.belc'>
+            <available file='${belc}'/>
+        </condition>
+
+        <!-- Fail if belc could not be found. -->
+        <fail
+            unless='have.belc'
+            message='missing ${belc}
+            ${line.separator}
+            ${line.separator}Could not locate the BEL compiler/assembler.
+            ${line.separator}BELFRAMEWORK_HOME is currently set to: ${BELFRAMEWORK_HOME}'/>
+
+        <echo message='... all requirements have been met.'/>
+    </target>
+
+    <target name='compile' depends='check'>
+        <exec
+            executable='${belc}'
+            failonerror='true'
+            dir='${basedir}'>
+            <arg value='-s'/>
+            <arg value='"${file.syscfg}"'/>
+            <arg value='-k'/>
+            <arg value='"${KAM_NAME}"'/>
+            <arg value='-d'/>
+            <arg value='"${KAM_DESCRIPTION}"'/>
+            <arg value='-p'/>
+            <arg value='"${dir.documents}"'/>
+            <arg line='"${EXTRA_COMPILER_ARGS}"'/>
+            <env key='BELFRAMEWORK_HOME' value='${BELFRAMEWORK_HOME}'/>
+        </exec>
+    </target>
+
+</project>
