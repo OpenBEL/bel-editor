@@ -34,6 +34,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.openbel.workbench.core.FileFilters.LaunchFilter;
@@ -57,25 +58,50 @@ public class UIFunctions {
             throw new RuntimeException("unknown OS: " + osname);
     }
 
-    /**
-     * Returns the absolute path of an {@link IResource}.
-     * 
-     * @param f {@link IResource}; may not be null
-     * @return {@link String}
-     */
-    public static String getAbsolutePath(IResource r) {
-        return r.getLocation().toFile().getAbsolutePath();
+    private UIFunctions() {
     }
 
     /**
-     * Returns {@code true} if the provided string denotes an Eclipse project
+     * Pops up an OK dialog with a title, message, and type. The type is any of
+     * {@link MessageDialog#INFORMATION}, {@link MessageDialog#WARNING}, or
+     * {@link MessageDialog#ERROR}.
+     * 
+     * @param title Title of the dialog
+     * @param msg Message shown to the user
+     * @param type Message dialog type
+     * @see MessageDialog#ERROR ERROR type
+     * @see MessageDialog#INFORMATION INFORMATION type
+     * @see MessageDialog#WARNING WARNING type
+     */
+    public static void okDialog(String title, String msg, int type) {
+        MessageDialog d = new MessageDialog(
+                shell(), title, null, msg, type, new String[] { "&OK" }, 0);
+        d.open();
+    }
+
+    /**
+     * Create a temporary directory.
+     * 
+     * @return {@link File}
+     * @throws IOException Thrown if the temporary directory could not be
+     *             created
+     */
+    public static File createTempDirectory() throws IOException {
+        File temp = createTempFile("tmp", valueOf(nanoTime()));
+        if (!temp.delete()) throw new IOException();
+        if (!temp.mkdir()) throw new IOException("can't create temp path");
+        return temp;
+    }
+
+    /**
+     * Returns {@code true} if the provided string denotes an Eclipse file
      * resource, {@code false} otherwise.
      * 
      * @param s Non-null {@link String}
      * @return boolean
      */
-    public static boolean denotesProject(final String s) {
-        if (s.startsWith("P/") && (s.length() > 2)) return true;
+    public static boolean denotesFile(final String s) {
+        if (s.startsWith("L/") && (s.length() > 2)) return true;
         return false;
     }
 
@@ -92,25 +118,25 @@ public class UIFunctions {
     }
 
     /**
-     * Returns {@code true} if the provided string denotes an Eclipse file
+     * Returns {@code true} if the provided string denotes an Eclipse project
      * resource, {@code false} otherwise.
      * 
      * @param s Non-null {@link String}
      * @return boolean
      */
-    public static boolean denotesFile(final String s) {
-        if (s.startsWith("L/") && (s.length() > 2)) return true;
+    public static boolean denotesProject(final String s) {
+        if (s.startsWith("P/") && (s.length() > 2)) return true;
         return false;
     }
 
     /**
-     * Defers to {@link Display#getDefault() the default display} to execute the
-     * runnable.
+     * Returns the absolute path of an {@link IResource}.
      * 
-     * @param runnable {@link Runnable}
+     * @param f {@link IResource}; may not be null
+     * @return {@link String}
      */
-    public static void runAsync(final Runnable runnable) {
-        Display.getDefault().asyncExec(runnable);
+    public static String getAbsolutePath(IResource r) {
+        return r.getLocation().toFile().getAbsolutePath();
     }
 
     /**
@@ -157,16 +183,6 @@ public class UIFunctions {
             ret.add(folder);
         }
         return ret.toArray(new IFolder[ret.size()]);
-    }
-
-    /**
-     * Returns the {@code .metadata/.plugins/[plugin-id]} path, defers to
-     * {@link Activator#getStateLocation()}.
-     * 
-     * @return {@link IPath}
-     */
-    public static IPath getPluginLocation() {
-        return getDefault().getStateLocation();
     }
 
     /**
@@ -231,6 +247,25 @@ public class UIFunctions {
     }
 
     /**
+     * Returns the platform.
+     * 
+     * @return {@link OS}
+     */
+    public static OS getPlatform() {
+        return platform;
+    }
+
+    /**
+     * Returns the {@code .metadata/.plugins/[plugin-id]} path, defers to
+     * {@link Activator#getStateLocation()}.
+     * 
+     * @return {@link IPath}
+     */
+    public static IPath getPluginLocation() {
+        return getDefault().getStateLocation();
+    }
+
+    /**
      * Returns {@code true} if the {@link IFile} is either a BEL Script document
      * or an XBEL document, {@code false} otherwise.
      * 
@@ -272,6 +307,15 @@ public class UIFunctions {
     }
 
     /**
+     * Returns {@code true} if running on Linux or Mac, {@code false} otherwise.
+     * 
+     * @return boolean
+     */
+    public static boolean isNix() {
+        return (platform == OS.Linux) || (platform == OS.Mac);
+    }
+
+    /**
      * Returns {@code true} if the {@link IFile} is a system configuration,
      * {@code false} otherwise.
      * 
@@ -287,6 +331,15 @@ public class UIFunctions {
     }
 
     /**
+     * Returns {@code true} if running on Windows, {@code false} otherwise.
+     * 
+     * @return boolean
+     */
+    public static boolean isWindows() {
+        return platform == OS.Windows;
+    }
+
+    /**
      * Returns {@code true} if the {@link IFile} is an XBEL document,
      * {@code false} otherwise.
      * 
@@ -299,33 +352,6 @@ public class UIFunctions {
         if (XBEL_EXTENSION.equals(ext)) return true;
         ext = ".".concat(ext);
         return (XBEL_EXTENSION.equals(ext));
-    }
-
-    /**
-     * Returns the platform.
-     * 
-     * @return {@link OS}
-     */
-    public static OS getPlatform() {
-        return platform;
-    }
-
-    /**
-     * Returns {@code true} if running on Linux or Mac, {@code false} otherwise.
-     * 
-     * @return boolean
-     */
-    public static boolean isNix() {
-        return (platform == OS.Linux) || (platform == OS.Mac);
-    }
-
-    /**
-     * Returns {@code true} if running on Windows, {@code false} otherwise.
-     * 
-     * @return boolean
-     */
-    public static boolean isWindows() {
-        return platform == OS.Windows;
     }
 
     /**
@@ -368,17 +394,13 @@ public class UIFunctions {
     }
 
     /**
-     * Create a temporary directory.
+     * Defers to {@link Display#getDefault() the default display} to execute the
+     * runnable.
      * 
-     * @return {@link File}
-     * @throws IOException Thrown if the temporary directory could not be
-     *             created
+     * @param runnable {@link Runnable}
      */
-    public static File createTempDirectory() throws IOException {
-        File temp = createTempFile("tmp", valueOf(nanoTime()));
-        if (!temp.delete()) throw new IOException();
-        if (!temp.mkdir()) throw new IOException("can't create temp path");
-        return temp;
+    public static void runAsync(final Runnable runnable) {
+        Display.getDefault().asyncExec(runnable);
     }
 
     /**
@@ -390,11 +412,8 @@ public class UIFunctions {
         return getDefault().getShell();
     }
 
-    private UIFunctions() {
-    }
-
     public static enum OS {
-        Linux, Windows, Mac
+        Linux, Mac, Windows
     };
 
 }
