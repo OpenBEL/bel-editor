@@ -3,8 +3,8 @@ package org.openbel.workbench.ui.util;
 import static org.openbel.workbench.core.common.BELUtilities.asPath;
 import static org.openbel.workbench.core.common.BELUtilities.readable;
 import static org.openbel.workbench.core.common.PathConstants.SYSCONFIG_FILENAME;
-import static org.openbel.workbench.ui.Activator.isNix;
-import static org.openbel.workbench.ui.Activator.isWindows;
+import static org.openbel.workbench.ui.UIFunctions.isNix;
+import static org.openbel.workbench.ui.UIFunctions.isWindows;
 
 import java.io.File;
 

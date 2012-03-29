@@ -13,9 +13,9 @@ import static org.eclipse.swt.layout.GridData.FILL_HORIZONTAL;
 import static org.openbel.workbench.core.common.BELUtilities.hasItems;
 import static org.openbel.workbench.core.common.BELUtilities.hasLength;
 import static org.openbel.workbench.core.common.BELUtilities.readable;
-import static org.openbel.workbench.ui.Activator.getAbsolutePath;
 import static org.openbel.workbench.ui.UIConstants.NO_KAM_BUILDERS;
 import static org.openbel.workbench.ui.UIConstants.SYSCFG_EXTENSION;
+import static org.openbel.workbench.ui.UIFunctions.getAbsolutePath;
 
 import java.io.File;
 

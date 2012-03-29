@@ -1,32 +1,21 @@
 package org.openbel.workbench.ui;
 
-import static java.io.File.createTempFile;
-import static java.lang.String.valueOf;
 import static java.lang.System.err;
-import static java.lang.System.getProperty;
 import static java.lang.System.getenv;
-import static java.lang.System.nanoTime;
 import static java.lang.Thread.yield;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
-import static org.eclipse.core.runtime.IStatus.ERROR;
-import static org.eclipse.core.runtime.IStatus.INFO;
-import static org.eclipse.core.runtime.IStatus.WARNING;
 import static org.openbel.workbench.core.common.BELUtilities.noItems;
 import static org.openbel.workbench.core.common.BELUtilities.noLength;
 import static org.openbel.workbench.core.common.BELUtilities.readable;
 import static org.openbel.workbench.core.common.BELUtilities.typedList;
-import static org.openbel.workbench.core.common.PathConstants.BEL_SCRIPT_EXTENSION;
 import static org.openbel.workbench.core.common.PathConstants.SYSCONFIG_FILENAME;
-import static org.openbel.workbench.core.common.PathConstants.XBEL_EXTENSION;
-import static org.openbel.workbench.ui.UIConstants.BUILDER_EXTENSION;
-import static org.openbel.workbench.ui.UIConstants.SYSCFG_EXTENSION;
+import static org.openbel.workbench.ui.UIFunctions.*;
 import static org.openbel.workbench.ui.util.StackUtilities.callerFrame;
 import static org.openbel.workbench.ui.util.ValidationUtilities.validateFramework;
 
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +28,6 @@ import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -48,9 +35,8 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.*;
-import org.openbel.workbench.core.FileFilters.LaunchFilter;
 import org.openbel.workbench.core.Nature;
 import org.openbel.workbench.core.index.Parser;
 import org.openbel.workbench.core.index.Resource;
@@ -72,19 +58,9 @@ public class Activator extends DLTKUIPlugin {
     /** {@value} */
     public static final String CY_PREF_KEY = "cytoscape_pref";
     private static IWorkbench workbench;
-    private static OS platform;
     static {
         String s = getenv("BELFRAMEWORK_HOME");
         ENV_BELFRAMEWORK_HOME = s == null ? "" : s;
-        String osname = getProperty("os.name").toLowerCase();
-        if (osname.contains("linux"))
-            platform = OS.Linux;
-        else if (osname.contains("win"))
-            platform = OS.Windows;
-        else if (osname.contains("mac"))
-            platform = OS.Mac;
-        else
-            throw new RuntimeException("unknown OS: " + osname);
     }
     private BELTextTools fBELTextTools;
     private Listener listener;
@@ -109,6 +85,19 @@ public class Activator extends DLTKUIPlugin {
      */
     public String getCytoscapeHome() {
         return getPreferenceStore().getString(CY_PREF_KEY);
+    }
+
+    /**
+     * Returns the {@link Shell shell} associated with the workbench's active
+     * window.
+     * 
+     * @return {@link Shell}; may be null
+     */
+    public Shell getShell() {
+        IWorkbench workbench = this.getWorkbench();
+        IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
+        if (window == null) return null;
+        return window.getShell();
     }
 
     /**
@@ -481,86 +470,6 @@ public class Activator extends DLTKUIPlugin {
     }
 
     /**
-     * Returns the absolute path of an {@link IResource}.
-     * 
-     * @param f {@link IResource}; may not be null
-     * @return {@link String}
-     */
-    public static String getAbsolutePath(IResource r) {
-        return r.getLocation().toFile().getAbsolutePath();
-    }
-
-    /**
-     * Returns {@code true} if the provided string denotes an Eclipse project
-     * resource, {@code false} otherwise.
-     * 
-     * @param s Non-null {@link String}
-     * @return boolean
-     */
-    public static boolean denotesProject(final String s) {
-        if (s.startsWith("P/") && (s.length() > 2)) return true;
-        return false;
-    }
-
-    /**
-     * Returns {@code true} if the provided string denotes an Eclipse folder
-     * resource, {@code false} otherwise.
-     * 
-     * @param s Non-null {@link String}
-     * @return boolean
-     */
-    public static boolean denotesFolder(final String s) {
-        if (s.startsWith("F/") && (s.length() > 2)) return true;
-        return false;
-    }
-
-    /**
-     * Returns {@code true} if the provided string denotes an Eclipse file
-     * resource, {@code false} otherwise.
-     * 
-     * @param s Non-null {@link String}
-     * @return boolean
-     */
-    public static boolean denotesFile(final String s) {
-        if (s.startsWith("L/") && (s.length() > 2)) return true;
-        return false;
-    }
-
-    /**
-     * Defers to {@link Display#getDefault() the default display} to execute the
-     * runnable.
-     * 
-     * @param runnable {@link Runnable}
-     */
-    public static void runAsync(final Runnable runnable) {
-        Display.getDefault().asyncExec(runnable);
-    }
-
-    /**
-     * Returns all {@link IFile} BEL documents underneath the provided folder.
-     * 
-     * @return {@code IFile[]}; may be zero-length
-     */
-    public static IFile[] getBELDocuments(IFolder f) {
-        List<IFile> ret = new ArrayList<IFile>();
-
-        IResource[] members;
-        try {
-            members = f.members();
-        } catch (CoreException e) {
-            logError(e);
-            return new IFile[0];
-        }
-        List<IFile> files = typedList(asList(members), IFile.class);
-        for (IFile file : files) {
-            if (isBELDocument(file)) {
-                ret.add(file);
-            }
-        }
-        return ret.toArray(new IFile[ret.size()]);
-    }
-
-    /**
      * Returns the BEL logo.
      * 
      * @return {@link Image}
@@ -624,28 +533,6 @@ public class Activator extends DLTKUIPlugin {
     }
 
     /**
-     * Returns all {@link IFolder} document groups underneath the provided
-     * project.
-     * 
-     * @return {@code IFolder[]}; may be zero-length
-     */
-    public static IFolder[] getDocumentGroups(IProject p) {
-        List<IFolder> ret = new ArrayList<IFolder>();
-        IResource[] members;
-        try {
-            members = p.members();
-        } catch (CoreException e) {
-            logError(e);
-            return new IFolder[0];
-        }
-        List<IFolder> folders = typedList(asList(members), IFolder.class);
-        for (IFolder folder : folders) {
-            ret.add(folder);
-        }
-        return ret.toArray(new IFolder[ret.size()]);
-    }
-
-    /**
      * Get an image given a path relative to this plugin.
      * 
      * @param path the image {@link String path}
@@ -700,67 +587,6 @@ public class Activator extends DLTKUIPlugin {
     }
 
     /**
-     * Returns the {@link #getLaunchFiles() launch file} ending with
-     * {@code fname}.launch.
-     * 
-     * @param fname {@link String}
-     * @return {@link File}; may be null
-     */
-    public static File getLaunchFile(String fname) {
-        if (noLength(fname)) return null;
-        fname = fname.concat(".launch");
-        File[] files = getLaunchFiles();
-        if (noItems(files)) {
-            return null;
-        }
-        for (final File f : files) {
-            if (f.getName().endsWith(fname)) {
-                return f;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Returns the launch files available in the current workspace.
-     * 
-     * @return {@code File[]}; may be empty
-     */
-    public static File[] getLaunchFiles() {
-        IPath stateLocation = DebugPlugin.getDefault().getStateLocation();
-        File file = stateLocation.toFile();
-        if (!file.isDirectory()) {
-            return emptyList().toArray(new File[0]);
-        }
-        file = new File(file, ".launches");
-        if (!file.isDirectory()) {
-            return emptyList().toArray(new File[0]);
-        }
-        File[] files = file.listFiles(new LaunchFilter());
-        if (noItems(files)) {
-            return emptyList().toArray(new File[0]);
-        }
-        List<File> ret = new ArrayList<File>();
-        for (final File f : files) {
-            Properties p = new Properties();
-            try {
-                p.load(new FileReader(f));
-            } catch (IOException e) {
-                continue;
-            }
-            Object obj = p.get("<launchConfiguration");
-            if ((obj == null) || !(obj instanceof String)) {
-                continue;
-            }
-            String s = (String) obj;
-            if (s.contains("openbel.workbench")) {
-                ret.add(f);
-            }
-        }
-        return ret.toArray(new File[0]);
-    }
-
-    /**
      * Returns the project icon.
      * 
      * @return {@link Image}
@@ -785,157 +611,6 @@ public class Activator extends DLTKUIPlugin {
      */
     public static Image getXBELIcon() {
         return getImageDescriptor("icons/xbel.gif").createImage();
-    }
-
-    /**
-     * Returns {@code true} if the {@link IFile} is either a BEL Script document
-     * or an XBEL document, {@code false} otherwise.
-     * 
-     * @param f {@link IFile}
-     * @return boolean
-     */
-    public static boolean isBELDocument(IFile f) {
-        return isBELScriptDocument(f) || isXBELDocument(f);
-    }
-
-    /**
-     * Returns {@code true} if the {@link IFile} is a BEL Script document,
-     * {@code false} otherwise.
-     * 
-     * @param f {@link IFile}
-     * @return boolean
-     */
-    public static boolean isBELScriptDocument(IFile f) {
-        String ext = f.getFileExtension();
-        if (ext == null) return false;
-        if (BEL_SCRIPT_EXTENSION.equals(ext)) return true;
-        ext = ".".concat(ext);
-        return (BEL_SCRIPT_EXTENSION.equals(ext));
-    }
-
-    /**
-     * Returns {@code true} if the {@link IFile} is a builder, {@code false}
-     * otherwise.
-     * 
-     * @param f {@link IFile}
-     * @return boolean
-     */
-    public static boolean isBuilder(IFile f) {
-        String ext = f.getFileExtension();
-        if (ext == null) return false;
-        if (BUILDER_EXTENSION.equals(ext)) return true;
-        ext = ".".concat(ext);
-        return (BUILDER_EXTENSION.equals(ext));
-    }
-
-    /**
-     * Returns {@code true} if the {@link IFile} is a system configuration,
-     * {@code false} otherwise.
-     * 
-     * @param f {@link IFile}
-     * @return boolean
-     */
-    public static boolean isSystemConfiguration(IFile f) {
-        String ext = f.getFileExtension();
-        if (ext == null) return false;
-        if (SYSCFG_EXTENSION.equals(ext)) return true;
-        ext = ".".concat(ext);
-        return (SYSCFG_EXTENSION.equals(ext));
-    }
-
-    /**
-     * Returns {@code true} if the {@link IFile} is an XBEL document,
-     * {@code false} otherwise.
-     * 
-     * @param f {@link IFile}
-     * @return boolean
-     */
-    public static boolean isXBELDocument(IFile f) {
-        String ext = f.getFileExtension();
-        if (ext == null) return false;
-        if (XBEL_EXTENSION.equals(ext)) return true;
-        ext = ".".concat(ext);
-        return (XBEL_EXTENSION.equals(ext));
-    }
-
-    /**
-     * Returns the platform.
-     * 
-     * @return {@link OS}
-     */
-    public static OS getPlatform() {
-        return platform;
-    }
-
-    /**
-     * Returns {@code true} if running on Linux or Mac, {@code false} otherwise.
-     * 
-     * @return boolean
-     */
-    public static boolean isNix() {
-        return (platform == OS.Linux) || (platform == OS.Mac);
-    }
-
-    /**
-     * Returns {@code true} if running on Windows, {@code false} otherwise.
-     * 
-     * @return boolean
-     */
-    public static boolean isWindows() {
-        return platform == OS.Windows;
-    }
-
-    /**
-     * Log the given error message to the Eclipse log.
-     */
-    public static void logError(String message) {
-        getDefault().getLog().log(new Status(ERROR, PLUGIN_ID, message));
-    }
-
-    /**
-     * Log the given exception to the Eclipse log.
-     * 
-     * @param t the exception to log
-     */
-    public static void logError(Throwable t) {
-        String msg = t.getMessage();
-        getDefault().getLog().log(new Status(ERROR, PLUGIN_ID, msg, t));
-    }
-
-    /**
-     * Log the given info message to the Eclipse log.
-     */
-    public static void logInfo(String message) {
-        getDefault().getLog().log(new Status(INFO, PLUGIN_ID, message));
-    }
-
-    /**
-     * Log the given info message to the Eclipse log.
-     */
-    public static void logInfo(Throwable t) {
-        String msg = t.getMessage();
-        getDefault().getLog().log(new Status(INFO, PLUGIN_ID, msg, t));
-    }
-
-    /**
-     * Log the given warning message to the Eclipse log.
-     */
-    public static void logWarning(String message) {
-        getDefault().getLog().log(new Status(WARNING, PLUGIN_ID, message));
-    }
-
-    /**
-     * Create a temporary directory.
-     * 
-     * @return {@link File}
-     * @throws IOException Thrown if the temporary directory could not be
-     *             created
-     */
-    public static File createTempDirectory() throws IOException {
-        File temp = createTempFile("tmp", valueOf(nanoTime()));
-        if (!temp.delete()) throw new IOException();
-        if (!temp.mkdir()) throw new IOException("can't create temp path");
-        return temp;
     }
 
     private class Listener implements ISelectionListener,

@@ -2,7 +2,7 @@ package org.openbel.workbench.ui.wizards;
 
 import static java.lang.System.getProperty;
 import static org.openbel.workbench.core.Nature.BEL_NATURE;
-import static org.openbel.workbench.ui.Activator.logError;
+import static org.openbel.workbench.ui.UIFunctions.logError;
 
 import java.io.BufferedReader;
 import java.io.IOException;

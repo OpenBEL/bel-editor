@@ -2,15 +2,16 @@ package org.openbel.workbench.ui.actions;
 
 import static java.lang.String.valueOf;
 import static java.lang.System.currentTimeMillis;
+import static org.openbel.workbench.core.CoreFunctions.compilerException;
 import static org.openbel.workbench.core.common.BELUtilities.asPath;
 import static org.openbel.workbench.core.common.BELUtilities.closeSilently;
 import static org.openbel.workbench.core.common.BELUtilities.deleteDirectory;
 import static org.openbel.workbench.core.common.BELUtilities.noLength;
-import static org.openbel.workbench.ui.Activator.createTempDirectory;
-import static org.openbel.workbench.ui.Activator.getAbsolutePath;
 import static org.openbel.workbench.ui.Activator.getDefault;
-import static org.openbel.workbench.ui.Activator.logError;
 import static org.openbel.workbench.ui.UIConstants.BUILDER_PROCESS_TYPE;
+import static org.openbel.workbench.ui.UIFunctions.createTempDirectory;
+import static org.openbel.workbench.ui.UIFunctions.getAbsolutePath;
+import static org.openbel.workbench.ui.UIFunctions.logError;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -249,7 +250,10 @@ public class Visualize extends ActionDelegate implements IObjectActionDelegate {
                 monitor.setTaskName("This task will finish once Cytoscape is closed.");
                 ar.run();
             } catch (CoreException e) {
-                e.printStackTrace();
+                CoreException e2 = compilerException(e);
+                if (e2 != e) {
+                    // Different exception - let's be more informative to the user
+                }
                 return Status.CANCEL_STATUS;
             }
 

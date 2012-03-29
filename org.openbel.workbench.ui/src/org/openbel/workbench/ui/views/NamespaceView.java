@@ -3,7 +3,7 @@ package org.openbel.workbench.ui.views;
 import static java.lang.String.format;
 import static org.openbel.workbench.core.common.BELUtilities.hasItems;
 import static org.openbel.workbench.ui.Activator.getDefault;
-import static org.openbel.workbench.ui.Activator.logError;
+import static org.openbel.workbench.ui.UIFunctions.logError;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;

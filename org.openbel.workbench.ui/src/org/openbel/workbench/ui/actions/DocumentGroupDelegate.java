@@ -4,7 +4,7 @@ import static org.eclipse.core.resources.ResourcesPlugin.getWorkspace;
 import static org.eclipse.swt.widgets.Display.getCurrent;
 import static org.openbel.workbench.core.common.BELUtilities.noLength;
 import static org.openbel.workbench.ui.Activator.getDefault;
-import static org.openbel.workbench.ui.Activator.logError;
+import static org.openbel.workbench.ui.UIFunctions.logError;
 
 import java.util.List;
 

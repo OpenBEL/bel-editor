@@ -8,6 +8,7 @@ import static org.openbel.workbench.core.common.BELUtilities.closeSilently;
 import static org.openbel.workbench.core.common.BELUtilities.readable;
 import static org.openbel.workbench.core.common.PathConstants.SYSCONFIG_FILENAME;
 import static org.openbel.workbench.ui.Activator.BF_PREF_KEY;
+import static org.openbel.workbench.ui.UIFunctions.logError;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -161,7 +162,7 @@ public class NewProjectWizard extends Wizard implements INewWizard {
         try {
             getContainer().run(false, false, createOperation);
         } catch (InvocationTargetException e) {
-            Activator.logError(e);
+            logError(e);
             return false;
         } catch (InterruptedException e) {
             return false;

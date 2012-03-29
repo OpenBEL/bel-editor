@@ -71,7 +71,7 @@ public final class Records {
                 // read lines until data starts
                 do {
                     line = rdr.readLine();
-                } while (!line.startsWith("[Values]"));
+                } while (line != null && !line.startsWith("[Values]"));
 
                 b.setLength(0);
                 final String path = b
@@ -134,7 +134,7 @@ public final class Records {
                 // read lines until data starts
                 do {
                     line = rdr.readLine();
-                } while (!line.startsWith("[Values]"));
+                } while (line != null && !line.startsWith("[Values]"));
 
                 b.setLength(0);
                 final String path = b

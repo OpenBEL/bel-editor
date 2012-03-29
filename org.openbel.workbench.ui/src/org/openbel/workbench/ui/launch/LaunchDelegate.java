@@ -1,17 +1,16 @@
 package org.openbel.workbench.ui.launch;
 
-import static java.lang.Integer.parseInt;
 import static java.lang.String.format;
 import static java.lang.String.valueOf;
 import static java.lang.System.currentTimeMillis;
 import static java.lang.System.err;
 import static org.eclipse.core.externaltools.internal.IExternalToolConstants.ATTR_LAUNCH_IN_BACKGROUND;
 import static org.eclipse.debug.core.ILaunchManager.RUN_MODE;
-import static org.openbel.workbench.core.common.enums.ExitCode.getExitCode;
-import static org.openbel.workbench.ui.Activator.getAbsolutePath;
+import static org.openbel.workbench.core.CoreFunctions.compilerException;
 import static org.openbel.workbench.ui.Activator.getDefault;
 import static org.openbel.workbench.ui.UIConstants.BUILDER_PROCESS_TYPE;
 import static org.openbel.workbench.ui.UIConstants.FMT_LAUNCH_TASK_NAME;
+import static org.openbel.workbench.ui.UIFunctions.getAbsolutePath;
 
 import java.util.*;
 
@@ -21,14 +20,15 @@ import org.eclipse.core.externaltools.internal.launchConfigurations.ExternalTool
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.*;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
-import org.openbel.workbench.core.common.enums.ExitCode;
 import org.openbel.workbench.ui.Activator;
 
 /**
@@ -155,24 +155,7 @@ public class LaunchDelegate extends LaunchConfigurationDelegate {
         try {
             ar.run(monitor);
         } catch (CoreException e) {
-            String msg = e.getMessage();
-            if (!msg.contains("exec returned:")) {
-                throw e;
-            }
-            String[] split = msg.split(" ");
-            String strcode = split[split.length - 1];
-            ExitCode ec = getExitCode(parseInt(strcode));
-            if (ec == null) {
-                throw e;
-            }
-            String fmt = "BEL Compiler failure (%d): %s";
-            msg = format(fmt, ec.getValue(), ec.getErrorMessage());
-            IStatus oldStatus = e.getStatus();
-            IStatus newStatus = new Status(IStatus.ERROR,
-                    oldStatus.getPlugin(), msg);
-            CoreException ce = new CoreException(newStatus);
-            ce.initCause(e);
-            throw ce;
+            throw compilerException(e);
         } finally {
             process.terminated();
             monitor.done();

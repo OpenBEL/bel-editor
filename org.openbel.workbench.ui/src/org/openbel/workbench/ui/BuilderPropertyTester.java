@@ -1,6 +1,6 @@
 package org.openbel.workbench.ui;
 
-import static org.openbel.workbench.ui.Activator.isBuilder;
+import static org.openbel.workbench.ui.UIFunctions.isBuilder;
 
 import org.eclipse.core.expressions.PropertyTester;
 import org.eclipse.core.resources.IFile;
@@ -15,16 +15,12 @@ public class BuilderPropertyTester extends PropertyTester {
     /**
      * Executes the property test determined by the parameter property.
      * 
-     * @param receiver
-     *            The receiver of the property to test
-     * @param property
-     *            The property to test
-     * @param args
-     *            Additional arguments to evaluate the property. May have
+     * @param receiver The receiver of the property to test
+     * @param property The property to test
+     * @param args Additional arguments to evaluate the property. May have
      *            zero-length.
-     * @param expectedValue
-     *            Expected value of the property - either {@link String} or a
-     *            boxed primitive
+     * @param expectedValue Expected value of the property - either
+     *            {@link String} or a boxed primitive
      * @return {@code true} if the property is equal to the expected value,
      *         {@code false} otherwise
      */

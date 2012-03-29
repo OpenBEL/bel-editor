@@ -1,6 +1,6 @@
 package org.openbel.workbench.ui.editor;
 
-import static org.openbel.workbench.ui.Activator.logInfo;
+import static org.openbel.workbench.ui.UIFunctions.logInfo;
 
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextHover;

@@ -6,6 +6,8 @@ import org.eclipse.swt.graphics.RGB;
 
 /**
  * OpenBEL Workbench UI constants.
+ * 
+ * @see UIFunctions
  */
 public class UIConstants {
 

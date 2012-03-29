@@ -5,6 +5,7 @@ import static org.eclipse.jface.dialogs.MessageDialog.ERROR;
 import static org.eclipse.jface.dialogs.MessageDialog.INFORMATION;
 import static org.openbel.workbench.core.common.BELUtilities.*;
 import static org.openbel.workbench.ui.Activator.*;
+import static org.openbel.workbench.ui.UIFunctions.*;
 import static org.openbel.workbench.ui.launch.LaunchDelegate.ATTR_DOC;
 import static org.openbel.workbench.ui.launch.LaunchDelegate.KAM_DESC;
 import static org.openbel.workbench.ui.launch.LaunchDelegate.KAM_NAME;

@@ -1,6 +1,9 @@
 package org.openbel.workbench.ui;
 
 import static org.openbel.workbench.ui.Activator.*;
+import static org.openbel.workbench.ui.UIFunctions.isBELScriptDocument;
+import static org.openbel.workbench.ui.UIFunctions.isBuilder;
+import static org.openbel.workbench.ui.UIFunctions.isXBELDocument;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;

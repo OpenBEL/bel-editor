@@ -1,7 +1,7 @@
 package org.openbel.workbench.ui;
 
 import static org.openbel.workbench.ui.Activator.getBuilderLaunchIcon;
-import static org.openbel.workbench.ui.Activator.getLaunchFiles;
+import static org.openbel.workbench.ui.UIFunctions.getLaunchFiles;
 
 import java.io.File;
 

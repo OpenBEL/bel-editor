@@ -1,7 +1,9 @@
 package org.openbel.workbench.core;
 
 /**
- * BEL core constants.
+ * OpenBEL Workbench core constants.
+ * 
+ * @see CoreFunctions
  */
 public class CoreConstants {
 

@@ -1,8 +1,7 @@
 package org.openbel.workbench.ui;
 
-import static org.openbel.workbench.ui.Activator.getBELDocuments;
+import static org.openbel.workbench.ui.UIFunctions.*;
 import static org.openbel.workbench.ui.Activator.getDefault;
-import static org.openbel.workbench.ui.Activator.getDocumentGroups;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
