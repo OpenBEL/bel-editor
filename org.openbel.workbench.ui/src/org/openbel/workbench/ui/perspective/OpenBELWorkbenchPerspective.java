@@ -48,16 +48,12 @@ public class OpenBELWorkbenchPerspective implements IPerspectiveFactory {
                 IPageLayout.BOTTOM, 0.5f,
                 "org.eclipse.ui.navigator.ProjectExplorer");
 
-        // XXX comment for more sane defaults
-        bottomLeft.addView(ResourceView.ID);
-        
         bottomLeft.addView(NamespaceView.ID);
         bottomLeft.addView(AnnotationView.ID);
 
-        // XXX uncomment for more sane defaults
-        // IFolderLayout topRight = factory.createFolder("topRight",
-        // IPageLayout.RIGHT, 0.80f, factory.getEditorArea());
-        // topRight.addView(ResourceView.ID);
+        IFolderLayout topRight = factory.createFolder("topRight",
+                IPageLayout.RIGHT, 0.80f, factory.getEditorArea());
+        topRight.addView(ResourceView.ID);
 
         IFolderLayout bottom = factory.createFolder("bottomRight", // NON-NLS-1
                 IPageLayout.BOTTOM, 0.75f, factory.getEditorArea());
