@@ -395,6 +395,5 @@ public class UIFunctions {
 
     public static enum OS {
         Linux, Windows, Mac
-    };
-
+    }
 }
