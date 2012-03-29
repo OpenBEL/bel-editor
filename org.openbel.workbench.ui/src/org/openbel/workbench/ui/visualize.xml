@@ -121,6 +121,7 @@
             <arg value='-f'/>
             <arg value='"${DOCUMENT}"'/>
             <arg line='--no-phaseIII'/>
+            <arg line='--no-semantic-check'/>
             <env key='BELFRAMEWORK_HOME' value='${BELFRAMEWORK_HOME}'/>
         </exec>
 
@@ -139,6 +140,17 @@
             <arg value='--no-preserve'/>
             <arg value='-t'/>
             <arg value='XGMML'/>
+            <env key='BELFRAMEWORK_HOME' value='${BELFRAMEWORK_HOME}'/>
+        </exec>
+
+        <exec
+            executable='${kammgr}'
+            failonerror='true'
+            dir='${basedir}'>
+            <arg value='-s'/>
+            <arg value='"${file.syscfg}"'/>
+            <arg value='--delete'/>
+            <arg value='${KAM}'/>
             <env key='BELFRAMEWORK_HOME' value='${BELFRAMEWORK_HOME}'/>
         </exec>
 
