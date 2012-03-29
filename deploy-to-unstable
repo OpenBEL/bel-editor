@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-mvn -q package || exit 1
-echo
-
-echo -en "Deploying to testbed... "
-scp -qr org.openbel.workbench-site/target/repository/* \
-        org.openbel.workbench-site/target/publisherRepository/* \
-        testbed:/opt/tomcat/webapps/eclipse/unstable || exit 1
-echo -en "done\n"
