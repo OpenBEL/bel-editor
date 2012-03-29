@@ -12,21 +12,21 @@ import static org.openbel.workbench.ui.UIConstants.BUILDER_PROCESS_TYPE;
 import static org.openbel.workbench.ui.UIConstants.FMT_LAUNCH_TASK_NAME;
 import static org.openbel.workbench.ui.UIFunctions.getAbsolutePath;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 import org.eclipse.ant.core.AntRunner;
 import org.eclipse.ant.internal.core.AbstractEclipseBuildLogger;
-import org.eclipse.core.externaltools.internal.launchConfigurations.ExternalToolsCoreUtil;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
 import org.openbel.workbench.ui.Activator;
@@ -105,9 +105,6 @@ public class LaunchDelegate extends LaunchConfigurationDelegate {
             return;
         }
 
-        DebugPlugin debugPlugin = DebugPlugin.getDefault();
-        ILaunchManager launchMgr = debugPlugin.getLaunchManager();
-
         if (monitor.isCanceled()) {
             return;
         }
@@ -116,12 +113,6 @@ public class LaunchDelegate extends LaunchConfigurationDelegate {
         //launch.addProcess()...
 
         monitor.subTask("Setting up build.");
-
-        IPath cwd = ExternalToolsCoreUtil.getWorkingDirectory(cfg);
-        String basedir = null;
-        if (cwd != null) {
-            basedir = cwd.toOSString();
-        }
 
         if (monitor.isCanceled()) {
             return;
