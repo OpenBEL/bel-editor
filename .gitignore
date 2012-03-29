@@ -1,2 +1,7 @@
 org.openbel.workbench.ui/classes
 org.openbel.workbench.core/classes
+org.openbel.workbench-feature/target/
+org.openbel.workbench-site/target/
+org.openbel.workbench.core/target/
+org.openbel.workbench.doc/target/
+org.openbel.workbench.ui/target
