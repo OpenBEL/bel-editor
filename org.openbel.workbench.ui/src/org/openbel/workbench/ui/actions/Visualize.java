@@ -2,6 +2,7 @@ package org.openbel.workbench.ui.actions;
 
 import static java.lang.String.valueOf;
 import static java.lang.System.currentTimeMillis;
+import static org.eclipse.jface.dialogs.MessageDialog.ERROR;
 import static org.openbel.workbench.core.CoreFunctions.compilerException;
 import static org.openbel.workbench.core.common.BELUtilities.asPath;
 import static org.openbel.workbench.core.common.BELUtilities.closeSilently;
@@ -9,9 +10,7 @@ import static org.openbel.workbench.core.common.BELUtilities.deleteDirectory;
 import static org.openbel.workbench.core.common.BELUtilities.noLength;
 import static org.openbel.workbench.ui.Activator.getDefault;
 import static org.openbel.workbench.ui.UIConstants.BUILDER_PROCESS_TYPE;
-import static org.openbel.workbench.ui.UIFunctions.createTempDirectory;
-import static org.openbel.workbench.ui.UIFunctions.getAbsolutePath;
-import static org.openbel.workbench.ui.UIFunctions.logError;
+import static org.openbel.workbench.ui.UIFunctions.*;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -29,12 +28,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.debug.core.DebugException;
-import org.eclipse.debug.core.ILaunch;
-import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IProcess;
-import org.eclipse.debug.core.model.ISourceLocator;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeSelection;
@@ -71,7 +65,6 @@ public class Visualize extends ActionDelegate implements IObjectActionDelegate {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     public void run(IAction action) {
         if (document == null) {
@@ -253,6 +246,14 @@ public class Visualize extends ActionDelegate implements IObjectActionDelegate {
                 CoreException e2 = compilerException(e);
                 if (e2 != e) {
                     // Different exception - let's be more informative to the user
+                    final String title = "Compiler error";
+                    final String msg = e2.getMessage();
+                    runAsync(new Runnable() {
+                        @Override
+                        public void run() {
+                            okDialog(title, msg, ERROR);
+                        }
+                    });
                 }
                 return Status.CANCEL_STATUS;
             }
@@ -261,102 +262,4 @@ public class Visualize extends ActionDelegate implements IObjectActionDelegate {
             return Status.OK_STATUS;
         }
     }
-
-    private static class VLaunch implements ILaunch {
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public Object getAdapter(Class adapter) {
-            return null;
-        }
-
-        @Override
-        public void terminate() throws DebugException {
-        }
-
-        @Override
-        public boolean isTerminated() {
-            return false;
-        }
-
-        @Override
-        public boolean canTerminate() {
-            return false;
-        }
-
-        @Override
-        public void setSourceLocator(ISourceLocator arg0) {
-        }
-
-        @Override
-        public void setAttribute(String arg0, String arg1) {
-        }
-
-        @Override
-        public void removeProcess(IProcess arg0) {
-        }
-
-        @Override
-        public void removeDebugTarget(IDebugTarget arg0) {
-        }
-
-        @Override
-        public boolean hasChildren() {
-            return false;
-        }
-
-        @Override
-        public ISourceLocator getSourceLocator() {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
-        public IProcess[] getProcesses() {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
-        public String getLaunchMode() {
-            return "run";
-        }
-
-        @Override
-        public ILaunchConfiguration getLaunchConfiguration() {
-            return null;
-        }
-
-        @Override
-        public IDebugTarget[] getDebugTargets() {
-            return null;
-        }
-
-        @Override
-        public IDebugTarget getDebugTarget() {
-            return null;
-        }
-
-        @Override
-        public Object[] getChildren() {
-            return null;
-        }
-
-        @Override
-        public String getAttribute(String arg0) {
-            return null;
-        }
-
-        @Override
-        public void addProcess(IProcess arg0) {
-
-        }
-
-        @Override
-        public void addDebugTarget(IDebugTarget arg0) {
-        }
-    };
-
 }
