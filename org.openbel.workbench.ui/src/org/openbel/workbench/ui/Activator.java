@@ -1,30 +1,35 @@
 package org.openbel.workbench.ui;
 
-import static java.lang.System.err;
 import static java.lang.System.getenv;
 import static java.lang.Thread.yield;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static org.openbel.workbench.core.common.BELUtilities.noItems;
 import static org.openbel.workbench.core.common.BELUtilities.noLength;
-import static org.openbel.workbench.core.common.BELUtilities.readable;
 import static org.openbel.workbench.core.common.BELUtilities.typedList;
-import static org.openbel.workbench.core.common.PathConstants.SYSCONFIG_FILENAME;
-import static org.openbel.workbench.ui.UIFunctions.*;
-import static org.openbel.workbench.ui.util.StackUtilities.callerFrame;
+import static org.openbel.workbench.ui.UIFunctions.denotesFile;
+import static org.openbel.workbench.ui.UIFunctions.denotesFolder;
+import static org.openbel.workbench.ui.UIFunctions.denotesProject;
+import static org.openbel.workbench.ui.UIFunctions.isBuilder;
+import static org.openbel.workbench.ui.UIFunctions.isSystemConfiguration;
+import static org.openbel.workbench.ui.UIFunctions.logError;
+import static org.openbel.workbench.ui.UIFunctions.runAsync;
 import static org.openbel.workbench.ui.util.ValidationUtilities.validateFramework;
 
-import java.io.File;
-import java.io.FileReader;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import org.eclipse.core.internal.resources.Project;
 import org.eclipse.core.internal.resources.Workspace;
-import org.eclipse.core.resources.*;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -36,9 +41,12 @@ import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.*;
+import org.eclipse.ui.ISelectionListener;
+import org.eclipse.ui.ISelectionService;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.openbel.workbench.core.Nature;
-import org.openbel.workbench.core.index.Parser;
 import org.openbel.workbench.core.index.Resource;
 import org.openbel.workbench.core.index.ResourceIndex;
 import org.openbel.workbench.ui.text.BELTextTools;
@@ -58,9 +66,12 @@ public class Activator extends DLTKUIPlugin {
     /** {@value} */
     public static final String CY_PREF_KEY = "cytoscape_pref";
     private static IWorkbench workbench;
+    /** Initialize a single {@link ResourceLoader} instance. */
+    private static final ResourceLoader resourceLoader;
     static {
         String s = getenv("BELFRAMEWORK_HOME");
         ENV_BELFRAMEWORK_HOME = s == null ? "" : s;
+        resourceLoader = new ResourceLoader();
     }
     private BELTextTools fBELTextTools;
     private Listener listener;
@@ -301,16 +312,12 @@ public class Activator extends DLTKUIPlugin {
     }
 
     /**
-     * Returns the resource index.
+     * Returns the loaded {@link ResourceIndex resource index}.
      * 
-     * @return {@link ResourceIndex}
+     * @return {@link ResourceIndex} the resource index or {@code null} if it is
+     *         not loaded
      */
     public ResourceIndex getResourceIndex() {
-        if (resourceIndex == null) {
-            err.println("resource index is null");
-            err.println("(be sure to tell " + callerFrame() + ")");
-            reloadResourceView();
-        }
         return resourceIndex;
     }
 
@@ -371,34 +378,8 @@ public class Activator extends DLTKUIPlugin {
      * 
      * @return boolean
      */
-    public synchronized boolean reloadResourceView() {
-        IPreferenceStore ps = getPreferenceStore();
-        final StringBuilder b = new StringBuilder(ps.getString(BF_PREF_KEY))
-                .append(File.separator).append("config")
-                .append(File.separator).append(SYSCONFIG_FILENAME);
-
-        final File configFile = new File(b.toString());
-        if (!readable(configFile)) {
-            err.println(configFile + " not readable");
-            return false;
-        }
-
-        try {
-            final Properties scprops = new Properties();
-            scprops.load(new FileReader(configFile));
-
-            final String rurl = scprops.getProperty("resource_index_url");
-            final URL url = new URL(rurl);
-
-            ResourceIndex resourceIndex = Parser.getInstance().parse(url);
-            setResourceIndex(resourceIndex);
-        } catch (Exception e) {
-            e.printStackTrace();
-            logError(e);
-            return false;
-        }
-
-        return true;
+    public void reloadResources() {
+        resourceLoader.loadResourceIndex();
     }
 
     /**
@@ -455,7 +436,7 @@ public class Activator extends DLTKUIPlugin {
             // TODO should generate workbench error here
         } else {
             ps.setValue(BF_PREF_KEY, bfhome);
-            reloadResourceView();
+            reloadResources();
         }
     }
 
@@ -652,5 +633,5 @@ public class Activator extends DLTKUIPlugin {
 
     public static enum OS {
         Linux, Windows, Mac
-    };
+    }
 }
