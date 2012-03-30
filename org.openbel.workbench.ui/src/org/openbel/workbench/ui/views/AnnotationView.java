@@ -2,6 +2,8 @@ package org.openbel.workbench.ui.views;
 
 import static org.openbel.workbench.core.common.BELUtilities.hasItems;
 import static org.openbel.workbench.ui.Activator.getDefault;
+import static org.openbel.workbench.ui.UIFunctions.logError;
+import static org.openbel.workbench.ui.util.StackUtilities.callerFrame;
 
 import java.util.List;
 import java.util.Map;
@@ -15,7 +17,12 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.part.ViewPart;
 import org.openbel.workbench.core.index.AnnotationInfo;
 import org.openbel.workbench.core.index.Resource;
@@ -64,6 +71,14 @@ public class AnnotationView extends ViewPart {
                     table.removeAll();
 
                     TableItem ti;
+                    final ResourceIndex resIndex = getDefault()
+                            .getResourceIndex();
+                    if (resIndex == null) {
+                        // nothing valid to select
+                        logError("resource index is null at " + callerFrame());
+                        return;
+                    }
+
                     AnnotationInfo an = getDefault().getResourceIndex()
                             .getAnnotations().get(selected);
                     final Map<Resource, List<String>> catalog = getDefault()
@@ -125,6 +140,11 @@ public class AnnotationView extends ViewPart {
 
     public void loadContent() {
         final ResourceIndex index = getDefault().getResourceIndex();
+        if (index == null) {
+            // view can load before resource index loads so provide empty
+            // content
+            return;
+        }
 
         final List<AnnotationInfo> anl = index.getAnnotations();
         combo.removeAll();

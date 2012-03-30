@@ -6,31 +6,16 @@ import static org.eclipse.swt.SWT.BORDER;
 import static org.eclipse.swt.SWT.SINGLE;
 import static org.eclipse.swt.layout.GridData.FILL_BOTH;
 import static org.eclipse.swt.layout.GridData.FILL_HORIZONTAL;
-import static org.openbel.workbench.core.common.BELUtilities.constrainedHashMap;
-import static org.openbel.workbench.core.common.BELUtilities.createDirectory;
 import static org.openbel.workbench.core.common.BELUtilities.hasLength;
-import static org.openbel.workbench.core.common.PathConstants.SYSCONFIG_FILENAME;
 import static org.openbel.workbench.ui.Activator.BF_PREF_KEY;
 import static org.openbel.workbench.ui.Activator.CY_PREF_KEY;
 import static org.openbel.workbench.ui.Activator.ENV_BELFRAMEWORK_HOME;
 import static org.openbel.workbench.ui.Activator.getDefault;
-import static org.openbel.workbench.ui.UIFunctions.getPluginLocation;
 import static org.openbel.workbench.ui.UIFunctions.logError;
 import static org.openbel.workbench.ui.util.StackUtilities.myFrame;
 import static org.openbel.workbench.ui.util.ValidationUtilities.validateCytoscape;
 import static org.openbel.workbench.ui.util.ValidationUtilities.validateFramework;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.ISchedulingRule;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.events.SelectionEvent;
@@ -38,18 +23,15 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.*;
-import org.eclipse.ui.*;
-import org.openbel.workbench.core.index.AnnotationInfo;
-import org.openbel.workbench.core.index.NamespaceInfo;
-import org.openbel.workbench.core.index.Resource;
-import org.openbel.workbench.core.index.ResourceIndex;
-import org.openbel.workbench.core.record.Records;
-import org.openbel.workbench.ui.Activator;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.DirectoryDialog;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.openbel.workbench.ui.util.ValidationUtilities.FileState;
-import org.openbel.workbench.ui.views.AnnotationView;
-import org.openbel.workbench.ui.views.NamespaceView;
-import org.openbel.workbench.ui.views.ResourceView;
 
 /**
  * {@link BELFrameworkPreferencePage} represents a workbench preference page
@@ -70,8 +52,6 @@ public class BELFrameworkPreferencePage extends PreferencePage implements
 
     private String bfPrefValue;
     private String cyPrefValue;
-    private final ISchedulingRule indexRule = new ResourceRule();
-    private final ISchedulingRule resourceRule = new ResourceRule();
     private Text txtBELFrameworkInstall;
     private Button btnBFBrowse;
     private Text txtCytoscapeInstall;
@@ -185,134 +165,30 @@ public class BELFrameworkPreferencePage extends PreferencePage implements
      */
     @Override
     public boolean performOk() {
-        doGetPreferenceStore().setValue(BF_PREF_KEY, bfPrefValue);
+        storeBELFramework();
         if (hasLength(cyPrefValue)) {
             doGetPreferenceStore().setValue(CY_PREF_KEY, cyPrefValue);
         }
 
-        // load resource view
-        final Job vj = new Job("Loading Resource Index") {
-
-            @Override
-            protected IStatus run(IProgressMonitor m) {
-                m.beginTask("Loading the resource index.", 100);
-                if (!getDefault().reloadResourceView()) {
-                    IPreferenceStore ps = Activator.getDefault()
-                            .getPreferenceStore();
-                    final StringBuilder b = new StringBuilder(
-                            ps.getString(BF_PREF_KEY))
-                            .append(File.separator).append("config")
-                            .append(File.separator)
-                            .append(SYSCONFIG_FILENAME);
-
-                    Display.getDefault().asyncExec(new Runnable() {
-                        @Override
-                        public void run() {
-                            setErrorMessage("Cannot process system configuration in '"
-                                    + b.toString() + "'.");
-                        }
-                    });
-                }
-                m.worked(50);
-
-                Display.getDefault().asyncExec(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            final IWorkbenchPage page = PlatformUI
-                                    .getWorkbench()
-                                    .getActiveWorkbenchWindow()
-                                    .getActivePage();
-                            final IViewPart rpart = page
-                                    .showView(ResourceView.ID);
-                            if ((rpart != null)
-                                    && (rpart instanceof ResourceView)) {
-                                final ResourceView rview = (ResourceView) rpart;
-                                rview.loadContent();
-                            }
-
-                            final IViewPart npart = page
-                                    .findView(NamespaceView.ID);
-                            if ((npart != null)
-                                    && (npart instanceof NamespaceView)) {
-                                final NamespaceView nview = (NamespaceView) npart;
-                                nview.loadContent();
-                            }
-
-                            final IViewPart apart = page
-                                    .findView(AnnotationView.ID);
-                            if ((apart != null)
-                                    && (apart instanceof AnnotationView)) {
-                                final AnnotationView aview = (AnnotationView) apart;
-                                aview.loadContent();
-                            }
-
-                        } catch (PartInitException e) {
-                            logError(e);
-                        }
-                    }
-                });
-                m.worked(50);
-
-                return Status.OK_STATUS;
-            }
-        };
-        vj.setRule(indexRule);
-        vj.schedule();
-
-        // load annotation/namespace resources in background job
-        final Job rj = new Job("Loading Resources") {
-
-            /**
-             * This job builds and loads all annotations/namespace resources.
-             * 
-             * {@inheritDoc}
-             */
-            @Override
-            protected IStatus run(IProgressMonitor m) {
-                m.beginTask("Loading all namespaces and resources.", 100);
-
-                final ResourceIndex index = getDefault().getResourceIndex();
-                final String rloc = getPluginLocation().append("resources")
-                        .makeAbsolute().toString();
-                createDirectory(rloc);
-                final File rlocFile = new File(rloc);
-
-                try {
-                    final Records records = new Records(rlocFile);
-                    records.build(index);
-
-                    final List<AnnotationInfo> anl = index.getAnnotations();
-                    final List<NamespaceInfo> nsl = index.getNamespaces();
-                    int c = anl.size() + nsl.size();
-                    final Map<Resource, List<String>> resourceCatalog = constrainedHashMap(c);
-
-                    final List<Resource> resources = new ArrayList<Resource>(
-                            c);
-                    resources.addAll(anl);
-                    resources.addAll(nsl);
-
-                    int workAmt = (int) (((float) 1 / resources.size()) * 100);
-                    for (final Resource r : resources) {
-                        m.subTask("Loading resource: " + r);
-                        resourceCatalog.put(r,
-                                records.retrieve(r.getResourceLocation()));
-                        m.worked(workAmt);
-                    }
-
-                    // set resources into activator
-                    getDefault().setResourceCatalog(resourceCatalog);
-                } catch (IOException e) {
-                    logError(e);
-                }
-
-                return Status.OK_STATUS;
-            }
-        };
-        rj.setRule(resourceRule);
-        rj.schedule();
-
         return true;
+    }
+
+    /**
+     * Stores the BEL Framework preference and reloads the configuration if
+     * necessary.
+     */
+    private void storeBELFramework() {
+        // get original preference
+        IPreferenceStore prefs = getDefault().getPreferenceStore();
+        String original = prefs.getString(BF_PREF_KEY);
+
+        // store new preference
+        doGetPreferenceStore().setValue(BF_PREF_KEY, bfPrefValue);
+
+        // reload resources iff the BEL Framework Home location changed.
+        if (!bfPrefValue.equals(original)) {
+            getDefault().reloadResources();
+        }
     }
 
     /**
@@ -355,19 +231,6 @@ public class BELFrameworkPreferencePage extends PreferencePage implements
             return;
         }
         setErrorMessage(null);
-    }
-
-    private class ResourceRule implements ISchedulingRule {
-
-        @Override
-        public boolean contains(ISchedulingRule rule) {
-            return rule == this;
-        }
-
-        @Override
-        public boolean isConflicting(ISchedulingRule rule) {
-            return rule == this;
-        }
     }
 
     private class Listener implements SelectionListener {
