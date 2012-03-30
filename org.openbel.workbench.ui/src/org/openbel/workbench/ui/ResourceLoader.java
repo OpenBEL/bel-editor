@@ -93,6 +93,9 @@ final class ResourceLoader {
                 return Status.CANCEL_STATUS;
             }
 
+            // advance progress bar to 50%
+            m.worked(50);
+
             // set resource index in UI plugin and update views with new
             // resources
             getDefault().setResourceIndex(resourceIndex);
@@ -133,6 +136,8 @@ final class ResourceLoader {
                     m.subTask("Loading resource: " + r);
                     resourceCatalog.put(r,
                             records.retrieve(r.getResourceLocation()));
+
+                    // increment work amount
                     m.worked(workAmt);
                 }
 
