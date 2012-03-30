@@ -11,13 +11,9 @@ import static org.openbel.workbench.core.common.BELUtilities.noLength;
 import static org.openbel.workbench.ui.Activator.getDefault;
 import static org.openbel.workbench.ui.UIConstants.BUILDER_PROCESS_TYPE;
 import static org.openbel.workbench.ui.UIFunctions.*;
+import static org.openbel.workbench.ui.util.ValidationUtilities.validateCytoscape;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,10 +33,12 @@ import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeSelection;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionDelegate;
 import org.openbel.workbench.ui.Activator;
+import org.openbel.workbench.ui.util.ValidationUtilities.FileState;
 
 /**
  * Handles visualization of BEL/XBEL documents using Cytoscape.
@@ -160,8 +158,17 @@ public class Visualize extends ActionDelegate implements IObjectActionDelegate {
                 monitor.setCanceled(true);
                 return Status.CANCEL_STATUS;
             }
-            if (noLength(getDefault().getCytoscapeHome())) {
-                // TODO error dialog
+
+            String cythome = getDefault().getCytoscapeHome();
+            if (validateCytoscape(cythome) != FileState.OK) {
+                final String title = "Cytoscape disabled";
+                final String msg = "Cytoscape support is disabled.";
+                Display.getDefault().syncExec(new Runnable() {
+                    @Override
+                    public void run() {
+                        okDialog(title, msg, ERROR);
+                    }
+                });
                 monitor.setCanceled(true);
                 return Status.CANCEL_STATUS;
             }
