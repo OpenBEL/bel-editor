@@ -165,14 +165,30 @@ public class BELFrameworkPreferencePage extends PreferencePage implements
      */
     @Override
     public boolean performOk() {
-        doGetPreferenceStore().setValue(BF_PREF_KEY, bfPrefValue);
+        storeBELFramework();
         if (hasLength(cyPrefValue)) {
             doGetPreferenceStore().setValue(CY_PREF_KEY, cyPrefValue);
         }
 
-        getDefault().reloadResources();
-
         return true;
+    }
+
+    /**
+     * Stores the BEL Framework preference and reloads the configuration if
+     * necessary.
+     */
+    private void storeBELFramework() {
+        // get original preference
+        IPreferenceStore prefs = getDefault().getPreferenceStore();
+        String original = prefs.getString(BF_PREF_KEY);
+
+        // store new preference
+        doGetPreferenceStore().setValue(BF_PREF_KEY, bfPrefValue);
+
+        // reload resources iff the BEL Framework Home location changed.
+        if (!bfPrefValue.equals(original)) {
+            getDefault().reloadResources();
+        }
     }
 
     /**
