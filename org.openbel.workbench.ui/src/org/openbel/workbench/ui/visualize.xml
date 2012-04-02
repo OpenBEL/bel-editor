@@ -1,165 +1,137 @@
 <?xml version='1.0'?>
 
-<project name='visualizer' default='visualize' basedir='.'>
+<project name='visualizer' basedir='.'>
 
     <!--
     This Ant buildfile is used to visualize BEL documents in Cytoscape.
     -->
 
     <!-- The system configuration file. -->
-    <property name='file.syscfg' location='visualize.cfg'/>
-    <property name='KAM' value='OpenBEL_Workbench_Visualizer'/>
+    <property name='file.syscfg' location='visualize.cfg' />
+    <property name='KAM' value='OpenBEL_Workbench_Visualizer' />
 
-    <target name='visualize'>
+    <target name='check'>
         <!-- Fail if a document is not present. -->
-        <fail
-            unless='DOCUMENT'
-            message='DOCUMENT is not set.'/>
+        <fail unless='DOCUMENT' message='DOCUMENT is not set.' />
 
         <!-- Fail if the framework home is not set. -->
-        <fail
-            unless='BELFRAMEWORK_HOME'
-            message='BELFRAMEWORK_HOME is not set.'/>
-        <property
-            name='fw.tools'
-            value='${BELFRAMEWORK_HOME}${file.separator}tools'/>
+        <fail unless='BELFRAMEWORK_HOME' message='BELFRAMEWORK_HOME is not set.' />
+        <property name='fw.tools' value='${BELFRAMEWORK_HOME}${file.separator}tools' />
 
         <!-- Fail if the Cytoscape home is not set. -->
-        <fail
-            unless='CYTOSCAPE_HOME'
-            message='CYTOSCAPE_HOME is not set.'/>
+        <fail unless='CYTOSCAPE_HOME' message='CYTOSCAPE_HOME is not set.' />
 
         <!-- Fail if the syscfg is not present. -->
         <condition property='have.syscfg'>
-            <available file='${file.syscfg}'/>
+            <available file='${file.syscfg}' />
         </condition>
-        <fail
-            unless='have.syscfg'
-            message='Missing system configuration (${file.syscfg}).'/>
+        <fail unless='have.syscfg' message='Missing system configuration (${file.syscfg}).' />
 
         <condition property='unix'>
-            <os family='unix'/>
+            <os family='unix' />
         </condition>
 
         <condition property='windows'>
-            <os family='windows'/>
+            <os family='windows' />
         </condition>
 
-        <condition
-            property='belc'
-            value='${BELFRAMEWORK_HOME}${file.separator}belc.sh'>
-            <isset property='unix'/>
+        <condition property='belc' value='${BELFRAMEWORK_HOME}${file.separator}belc.sh'>
+            <isset property='unix' />
         </condition>
 
-        <condition
-            property='belc'
-            value='${BELFRAMEWORK_HOME}${file.separator}belc.cmd'>
-            <isset property='windows'/>
+        <condition property='belc' value='${BELFRAMEWORK_HOME}${file.separator}belc.cmd'>
+            <isset property='windows' />
         </condition>
 
         <condition property='have.belc'>
-            <available file='${belc}'/>
+            <available file='${belc}' />
         </condition>
 
         <!-- Fail if belc could not be found. -->
-        <fail
-            unless='have.belc'
-            message='Could not locate the BEL compiler/assembler in: ${belc}.'/>
+        <fail unless='have.belc' message='Could not locate the BEL compiler/assembler in: ${belc}.' />
 
-        <condition
-            property='kammgr'
-            value='${fw.tools}${file.separator}KamManager.sh'>
-            <isset property='unix'/>
+        <condition property='kammgr' value='${fw.tools}${file.separator}KamManager.sh'>
+            <isset property='unix' />
         </condition>
 
-        <condition
-            property='kammgr'
-            value='${fw.tools}${file.separator}KamManager.cmd'>
-            <isset property='windows'/>
+        <condition property='kammgr' value='${fw.tools}${file.separator}KamManager.cmd'>
+            <isset property='windows' />
         </condition>
 
         <condition property='have.kammgr'>
-            <available file='${kammgr}'/>
+            <available file='${kammgr}' />
         </condition>
 
         <!-- Fail if kammgr could not be found. -->
-        <fail
-            unless='have.kammgr'
-            message='Could not locate the KAM manager in: ${fw.tools}.'/>
+        <fail unless='have.kammgr' message='Could not locate the KAM manager in: ${fw.tools}.' />
 
-        <condition
-            property='cytoscape'
-            value='${CYTOSCAPE_HOME}${file.separator}cytoscape.sh'>
-            <isset property='unix'/>
+        <condition property='cytoscape' value='${CYTOSCAPE_HOME}${file.separator}cytoscape.sh'>
+            <isset property='unix' />
         </condition>
 
-        <condition
-            property='cytoscape'
-            value='${CYTOSCAPE_HOME}${file.separator}Cytoscape.exe'>
-            <isset property='windows'/>
+        <condition property='cytoscape' value='${CYTOSCAPE_HOME}${file.separator}Cytoscape.exe'>
+            <isset property='windows' />
         </condition>
 
         <condition property='have.cytoscape'>
-            <available file='${cytoscape}'/>
+            <available file='${cytoscape}' />
         </condition>
 
         <!-- Fail if cytoscape could not be found. -->
-        <fail
-            unless='have.cytoscape'
-            message='Could not locate Cytoscape in: ${CYTOSCAPE_HOME}.'/>
+        <fail unless='have.cytoscape' message='Could not locate Cytoscape in: ${CYTOSCAPE_HOME}.' />
 
-        <exec
-            executable='${belc}'
-            failonerror='true'
-            dir='${basedir}'>
-            <arg value='-s'/>
-            <arg value='"${file.syscfg}"'/>
-            <arg value='-k'/>
-            <arg value='"${KAM}"'/>
-            <arg value='-d'/>
-            <arg value='"${KAM}"'/>
-            <arg value='-f'/>
-            <arg value='"${DOCUMENT}"'/>
-            <arg line='--no-phaseIII'/>
-            <arg line='--no-semantic-check'/>
-            <env key='BELFRAMEWORK_HOME' value='${BELFRAMEWORK_HOME}'/>
+    </target>
+
+    <target name='compile' depends='check'>
+    </target>
+
+    <target name='export' depends='check'>
+    </target>
+
+    <target name='delete' depends='check'>
+    </target>
+
+    <target name='visualize' depends='check'>
+    </target>
+
+        <exec executable='${belc}' failonerror='true' dir='${basedir}'>
+            <arg value='-s' />
+            <arg value='"${file.syscfg}"' />
+            <arg value='-k' />
+            <arg value='"${KAM}"' />
+            <arg value='-d' />
+            <arg value='"${KAM}"' />
+            <arg value='-f' />
+            <arg value='"${DOCUMENT}"' />
+            <arg line='--no-phaseIII' />
+            <arg line='--no-semantic-check' />
+            <env key='BELFRAMEWORK_HOME' value='${BELFRAMEWORK_HOME}' />
         </exec>
 
-        <property
-            name='file.xgmml'
-            location='${KAM}.xgmml'/>
+        <property name='file.xgmml' location='${KAM}.xgmml' />
 
-        <exec
-            executable='${kammgr}'
-            failonerror='true'
-            dir='${basedir}'>
-            <arg value='-s'/>
-            <arg value='"${file.syscfg}"'/>
-            <arg value='--export'/>
-            <arg value='${KAM}'/>
-            <arg value='--no-preserve'/>
-            <arg value='-t'/>
-            <arg value='XGMML'/>
-            <env key='BELFRAMEWORK_HOME' value='${BELFRAMEWORK_HOME}'/>
+        <exec executable='${kammgr}' failonerror='true' dir='${basedir}'>
+            <arg value='-s' />
+            <arg value='"${file.syscfg}"' />
+            <arg value='--exporta' />
+            <arg value='${KAM}' />
+            <arg value='--no-preserve' />
+            <arg value='-t' />
+            <arg value='XGMML' />
+            <env key='BELFRAMEWORK_HOME' value='${BELFRAMEWORK_HOME}' />
         </exec>
 
-        <exec
-            executable='${kammgr}'
-            failonerror='true'
-            dir='${basedir}'>
-            <arg value='-s'/>
-            <arg value='"${file.syscfg}"'/>
-            <arg value='--delete'/>
-            <arg value='${KAM}'/>
-            <env key='BELFRAMEWORK_HOME' value='${BELFRAMEWORK_HOME}'/>
+        <exec executable='${kammgr}' failonerror='true' dir='${basedir}'>
+            <arg value='-s' />
+            <arg value='"${file.syscfg}"' />
+            <arg value='--delete' />
+            <arg value='${KAM}' />
+            <env key='BELFRAMEWORK_HOME' value='${BELFRAMEWORK_HOME}' />
         </exec>
 
-        <exec
-            executable='${cytoscape}'
-            failonerror='true'
-            dir='${basedir}'>
-            <arg value='-N'/>
-            <arg value='"${file.xgmml}"'/>
+        <exec executable='${cytoscape}' failonerror='true' dir='${basedir}'>
+            <arg value='-N' />
+            <arg value='"${file.xgmml}"' />
         </exec>
     </target>
 
