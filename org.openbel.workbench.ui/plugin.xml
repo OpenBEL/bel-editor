@@ -143,6 +143,19 @@
             </action>
         </objectContribution>
 
+        <objectContribution
+            id="org.openbel.workbench.ui.visualize"
+            objectClass="org.eclipse.core.resources.IFile"
+            nameFilter="*.xbel">
+            <action
+                id="org.openbel.workbench.ui.actions.visualize"
+                label="Visualize in Cytoscape"
+                class="org.openbel.workbench.ui.actions.Visualize"
+                definitionId="org.openbel.workbench.ui.actions.visualize"
+                enablesFor="1">
+            </action>
+        </objectContribution>
+
     </extension> 
 
     <extension point="org.eclipse.ui.preferencePages">
