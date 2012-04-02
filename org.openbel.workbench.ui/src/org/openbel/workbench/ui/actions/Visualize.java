@@ -7,7 +7,6 @@ import static org.openbel.workbench.core.CoreFunctions.compilerException;
 import static org.openbel.workbench.core.common.BELUtilities.asPath;
 import static org.openbel.workbench.core.common.BELUtilities.closeSilently;
 import static org.openbel.workbench.core.common.BELUtilities.deleteDirectory;
-import static org.openbel.workbench.core.common.BELUtilities.noLength;
 import static org.openbel.workbench.ui.Activator.getDefault;
 import static org.openbel.workbench.ui.UIConstants.BUILDER_PROCESS_TYPE;
 import static org.openbel.workbench.ui.UIFunctions.*;
@@ -73,10 +72,13 @@ public class Visualize extends ActionDelegate implements IObjectActionDelegate {
         if (document == null) {
             return;
         }
-        if (noLength(getDefault().getCytoscapeHome())) {
-            // TODO error dialog
+
+        // validate cytoscape install, error dialog if invalid
+        boolean valid = checkCytoscapeHome();
+        if (!valid) {
             return;
         }
+
         Job job = new VJob();
         job.setPriority(Job.LONG);
         job.addJobChangeListener(new IJobChangeListener() {
@@ -145,6 +147,22 @@ public class Visualize extends ActionDelegate implements IObjectActionDelegate {
         return ret.toArray(new String[0]);
     }
 
+    private boolean checkCytoscapeHome() {
+        String cythome = getDefault().getCytoscapeHome();
+        if (validateCytoscape(cythome) != FileState.OK) {
+            final String title = "Cytoscape disabled";
+            final String msg = "Cytoscape support is disabled.";
+            Display.getDefault().syncExec(new Runnable() {
+                @Override
+                public void run() {
+                    okDialog(title, msg, ERROR);
+                }
+            });
+            return false;
+        }
+        return true;
+    }
+
     private class VJob extends Job {
 
         public VJob() {
@@ -159,21 +177,13 @@ public class Visualize extends ActionDelegate implements IObjectActionDelegate {
                 return Status.CANCEL_STATUS;
             }
 
-            String cythome = getDefault().getCytoscapeHome();
-            if (validateCytoscape(cythome) != FileState.OK) {
-                final String title = "Cytoscape disabled";
-                final String msg = "Cytoscape support is disabled.";
-                Display.getDefault().syncExec(new Runnable() {
-                    @Override
-                    public void run() {
-                        okDialog(title, msg, ERROR);
-                    }
-                });
+            // validate cytoscape install, error dialog if invalid
+            boolean valid = checkCytoscapeHome();
+            if (!valid) {
                 monitor.setCanceled(true);
                 return Status.CANCEL_STATUS;
             }
 
-            // TODO delete this!
             File tmpdir;
             try {
                 tmpdir = createTempDirectory();
