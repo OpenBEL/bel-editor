@@ -7,6 +7,7 @@ import static org.openbel.workbench.core.CoreFunctions.compilerException;
 import static org.openbel.workbench.core.common.BELUtilities.asPath;
 import static org.openbel.workbench.core.common.BELUtilities.closeSilently;
 import static org.openbel.workbench.core.common.BELUtilities.deleteDirectory;
+import static org.openbel.workbench.core.common.BELUtilities.hasLength;
 import static org.openbel.workbench.ui.Activator.getDefault;
 import static org.openbel.workbench.ui.UIConstants.BUILDER_PROCESS_TYPE;
 import static org.openbel.workbench.ui.UIFunctions.*;
@@ -259,6 +260,7 @@ public class Visualize extends ActionDelegate implements IObjectActionDelegate {
             String stamp = valueOf(currentTimeMillis());
             attrs.put(AbstractEclipseBuildLogger.ANT_PROCESS_ID, stamp);
             AntRunner ar = new AntRunner();
+            //ar.setExecutionTargets(new String[] { "", "" });
             ar.setBuildFileLocation(buildfile);
             ar.setArguments(buildArgs(document));
             try {
@@ -276,6 +278,16 @@ public class Visualize extends ActionDelegate implements IObjectActionDelegate {
                             okDialog(title, msg, ERROR);
                         }
                     });
+                } else if (hasLength(e.getMessage())) {
+                    final String title = "Error";
+                    final String msg = e.getMessage();
+                    runAsync(new Runnable() {
+                        @Override
+                        public void run() {
+                            okDialog(title, msg, ERROR);
+                        }
+                    });
+
                 }
                 return Status.CANCEL_STATUS;
             }
