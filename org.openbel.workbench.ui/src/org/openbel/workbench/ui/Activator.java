@@ -80,6 +80,8 @@ public class Activator extends DLTKUIPlugin {
     private Map<Resource, List<String>> resourceCatalog;
     private List<String> selectedProjects;
 
+    // Python saves.
+
     /**
      * Returns the configured BEL framework home.
      * 
