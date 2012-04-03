@@ -28,11 +28,7 @@ import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.openbel.workbench.core.index.AnnotationInfo;
-import org.openbel.workbench.core.index.NamespaceInfo;
-import org.openbel.workbench.core.index.Parser;
-import org.openbel.workbench.core.index.Resource;
-import org.openbel.workbench.core.index.ResourceIndex;
+import org.openbel.workbench.core.index.*;
 import org.openbel.workbench.core.record.RecordFile;
 import org.openbel.workbench.core.record.Records;
 import org.openbel.workbench.ui.views.AnnotationView;
@@ -83,7 +79,7 @@ final class ResourceLoader {
          */
         @Override
         protected IStatus run(IProgressMonitor m) {
-            m.beginTask("Loading Resources.", 100);
+            m.beginTask("Loading Resources", 100);
 
             // read resource index
             m.subTask("Loading resource index.");
