@@ -1,5 +1,6 @@
 package org.openbel.workbench.ui.actions;
 
+import static java.lang.String.format;
 import static java.lang.String.valueOf;
 import static java.lang.System.currentTimeMillis;
 import static org.eclipse.jface.dialogs.MessageDialog.ERROR;
@@ -7,7 +8,6 @@ import static org.openbel.workbench.core.CoreFunctions.compilerException;
 import static org.openbel.workbench.core.common.BELUtilities.asPath;
 import static org.openbel.workbench.core.common.BELUtilities.closeSilently;
 import static org.openbel.workbench.core.common.BELUtilities.deleteDirectory;
-import static org.openbel.workbench.core.common.BELUtilities.hasLength;
 import static org.openbel.workbench.ui.Activator.getDefault;
 import static org.openbel.workbench.ui.UIConstants.BUILDER_PROCESS_TYPE;
 import static org.openbel.workbench.ui.UIFunctions.*;
@@ -173,6 +173,8 @@ public class Visualize extends ActionDelegate implements IObjectActionDelegate {
         @SuppressWarnings({ "unchecked", "rawtypes" })
         @Override
         protected IStatus run(IProgressMonitor monitor) {
+            monitor.beginTask(super.getName(), 5);
+
             if (document == null) {
                 monitor.setCanceled(true);
                 return Status.CANCEL_STATUS;
@@ -255,40 +257,136 @@ public class Visualize extends ActionDelegate implements IObjectActionDelegate {
                 closeSilently(fos);
             }
 
+            monitor.worked(1);
+
             Map attrs = new HashMap(2);
             attrs.put(IProcess.ATTR_PROCESS_TYPE, BUILDER_PROCESS_TYPE);
             String stamp = valueOf(currentTimeMillis());
             attrs.put(AbstractEclipseBuildLogger.ANT_PROCESS_ID, stamp);
+
+            String taskname;
             AntRunner ar = new AntRunner();
-            //ar.setExecutionTargets(new String[] { "", "" });
+            ar.setExecutionTargets(new String[] { "compile" });
             ar.setBuildFileLocation(buildfile);
             ar.setArguments(buildArgs(document));
+            taskname = "Compiling the document using the BEL framework installation";
             try {
-                monitor.setTaskName("This task will finish once Cytoscape is closed.");
+                monitor.setTaskName(taskname);
                 ar.run();
+                monitor.worked(1);
             } catch (CoreException e) {
+                final String title = "Compilation Error";
+                String msg = e.getMessage();
                 CoreException e2 = compilerException(e);
                 if (e2 != e) {
-                    // Different exception - let's be more informative to the user
-                    final String title = "Compiler error";
-                    final String msg = e2.getMessage();
-                    runAsync(new Runnable() {
-                        @Override
-                        public void run() {
-                            okDialog(title, msg, ERROR);
-                        }
-                    });
-                } else if (hasLength(e.getMessage())) {
-                    final String title = "Error";
-                    final String msg = e.getMessage();
-                    runAsync(new Runnable() {
-                        @Override
-                        public void run() {
-                            okDialog(title, msg, ERROR);
-                        }
-                    });
-
+                    msg = e2.getMessage();
                 }
+                final String fmsg = msg;
+                runAsync(new Runnable() {
+                    @Override
+                    public void run() {
+                        okDialog(title, fmsg, ERROR);
+                    }
+                });
+                return Status.CANCEL_STATUS;
+            }
+
+            if (monitor.isCanceled()) {
+                deleteDirectory(tmpdir);
+                return Status.CANCEL_STATUS;
+            }
+
+            attrs = new HashMap(2);
+            attrs.put(IProcess.ATTR_PROCESS_TYPE, BUILDER_PROCESS_TYPE);
+            stamp = valueOf(currentTimeMillis());
+            attrs.put(AbstractEclipseBuildLogger.ANT_PROCESS_ID, stamp);
+
+            ar = new AntRunner();
+            ar.setExecutionTargets(new String[] { "export" });
+            ar.setBuildFileLocation(buildfile);
+            ar.setArguments(buildArgs(document));
+            taskname = "Exporting XGMML from the BEL framework";
+            try {
+                monitor.setTaskName(taskname);
+                ar.run();
+                monitor.worked(1);
+            } catch (CoreException e) {
+                final String title = "Export Error";
+                final String fmt = "Error exporting XGMML: %s";
+                final String msg = format(fmt, e.getMessage());
+                runAsync(new Runnable() {
+                    @Override
+                    public void run() {
+                        okDialog(title, msg, ERROR);
+                    }
+                });
+                return Status.CANCEL_STATUS;
+            }
+
+            if (monitor.isCanceled()) {
+                deleteDirectory(tmpdir);
+                return Status.CANCEL_STATUS;
+            }
+
+            attrs = new HashMap(2);
+            attrs.put(IProcess.ATTR_PROCESS_TYPE, BUILDER_PROCESS_TYPE);
+            stamp = valueOf(currentTimeMillis());
+            attrs.put(AbstractEclipseBuildLogger.ANT_PROCESS_ID, stamp);
+
+            ar = new AntRunner();
+            ar.setExecutionTargets(new String[] { "delete" });
+            ar.setBuildFileLocation(buildfile);
+            ar.setArguments(buildArgs(document));
+            taskname = "Deleting the KAM from the BEL framework";
+            try {
+                monitor.setTaskName(taskname);
+                ar.run();
+                monitor.worked(1);
+            } catch (CoreException e) {
+                final String title = "Deletion Error";
+                final String fmt = "Error deleting KAM: %s";
+                final String msg = format(fmt, e.getMessage());
+                runAsync(new Runnable() {
+                    @Override
+                    public void run() {
+                        okDialog(title, msg, ERROR);
+                    }
+                });
+                return Status.CANCEL_STATUS;
+            }
+
+            if (monitor.isCanceled()) {
+                deleteDirectory(tmpdir);
+                return Status.CANCEL_STATUS;
+            }
+
+            attrs = new HashMap(2);
+            attrs.put(IProcess.ATTR_PROCESS_TYPE, BUILDER_PROCESS_TYPE);
+            stamp = valueOf(currentTimeMillis());
+            attrs.put(AbstractEclipseBuildLogger.ANT_PROCESS_ID, stamp);
+
+            ar = new AntRunner();
+            ar.setExecutionTargets(new String[] { "visualize" });
+            ar.setBuildFileLocation(buildfile);
+            ar.setArguments(buildArgs(document));
+            StringBuilder bldr = new StringBuilder();
+            bldr.append("Launching Cytoscape.");
+            bldr.append(" This task will finish once Cytoscape closes.");
+            taskname = bldr.toString();
+            try {
+                monitor.setTaskName(taskname);
+                ar.run();
+                monitor.worked(1);
+            } catch (CoreException e) {
+                final String title = "Error Launching Cytoscape";
+                final String fmt = "Error launching cytoscape: %s";
+                final String msg = format(fmt, e.getMessage());
+                runAsync(new Runnable() {
+                    @Override
+                    public void run() {
+                        okDialog(title, msg, ERROR);
+                    }
+                });
                 return Status.CANCEL_STATUS;
             }
 

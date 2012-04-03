@@ -83,17 +83,6 @@
     </target>
 
     <target name='compile' depends='check'>
-    </target>
-
-    <target name='export' depends='check'>
-    </target>
-
-    <target name='delete' depends='check'>
-    </target>
-
-    <target name='visualize' depends='check'>
-    </target>
-
         <exec executable='${belc}' failonerror='true' dir='${basedir}'>
             <arg value='-s' />
             <arg value='"${file.syscfg}"' />
@@ -107,20 +96,22 @@
             <arg line='--no-semantic-check' />
             <env key='BELFRAMEWORK_HOME' value='${BELFRAMEWORK_HOME}' />
         </exec>
+    </target>
 
-        <property name='file.xgmml' location='${KAM}.xgmml' />
-
+    <target name='export' depends='check'>
         <exec executable='${kammgr}' failonerror='true' dir='${basedir}'>
             <arg value='-s' />
             <arg value='"${file.syscfg}"' />
-            <arg value='--exporta' />
+            <arg value='--export' />
             <arg value='${KAM}' />
             <arg value='--no-preserve' />
             <arg value='-t' />
             <arg value='XGMML' />
             <env key='BELFRAMEWORK_HOME' value='${BELFRAMEWORK_HOME}' />
         </exec>
+    </target>
 
+    <target name='delete' depends='check'>
         <exec executable='${kammgr}' failonerror='true' dir='${basedir}'>
             <arg value='-s' />
             <arg value='"${file.syscfg}"' />
@@ -128,7 +119,10 @@
             <arg value='${KAM}' />
             <env key='BELFRAMEWORK_HOME' value='${BELFRAMEWORK_HOME}' />
         </exec>
+    </target>
 
+    <target name='visualize' depends='check'>
+        <property name='file.xgmml' location='${KAM}.xgmml' />
         <exec executable='${cytoscape}' failonerror='true' dir='${basedir}'>
             <arg value='-N' />
             <arg value='"${file.xgmml}"' />
