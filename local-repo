@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+REQ_EXECS=( "mvn" "python3" "mktemp" )
+# Check for executables in PATH
+for REQ_EXEC in "${REQ_EXECS[@]}"; do
+    if [ -z "$(which ${REQ_EXEC} 2>/dev/null)" ]; then
+        echo "No ${REQ_EXEC} in PATH."
+        exit 1
+    fi
+done
+
+echo -en "Executing mvn -q package.\n"
+mvn -q package || exit 1
+
+LOCAL_REPO=$(mktemp -d) || exit 1
+cp -r org.openbel.workbench-site/target/repository/* \
+      org.openbel.workbench-site/target/publisherRepository/* \
+      "${LOCAL_REPO}" || exit 1
+cd "${LOCAL_REPO}"
+echo
+echo "Hosting Eclipse p2 repository from \"${LOCAL_REPO}\", CTRL-C to cancel."
+echo
+python3 -m http.server
+cd -
+echo -en "Removing \"${LOCAL_REPO}\"... "
+rm -fr "${LOCAL_REPO}"
+echo "okay"

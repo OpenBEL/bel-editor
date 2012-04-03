@@ -67,4 +67,6 @@ cd "${REPO}" || exit 1
 echo -en "Zipping... "
 zip -9 -q "${DEST_DIR}"/"${DEST_FILE_NAME}" -r *
 echo "done"
+
 echo "${DEST_DIR}/${DEST_FILE_NAME} is ready"
+
