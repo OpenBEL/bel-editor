@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
-# Check for any mvn in PATH
-if [ -z "$(which mvn 2>/dev/null)" ]; then
-    echo "No mvn in PATH."
-    exit 1
-fi
+REQ_EXECS=( "mvn" "zip" )
+# Check for executables in PATH
+for REQ_EXEC in "${REQ_EXECS[@]}"; do
+    if [ -z "$(which ${REQ_EXEC} 2>/dev/null)" ]; then
+        echo "No ${REQ_EXEC} in PATH."
+        exit 1
+    fi
+done
 
 if [ -z "${BRANCH}" ]; then
     # Is this a git repo?
@@ -16,9 +19,6 @@ fi
 
 DEST_FILE_NAME="${BRANCH}-repository"
 DEST_FILE_EXT=".zip"
-if [ ! -z "${REV}" ]; then
-    DEST_FILE_NAME="${DEST_FILE_NAME}-${REV}"
-fi
 if [ ! -z "${BUILD}" ]; then
     DEST_FILE_NAME="${DEST_FILE_NAME}-build${BUILD}"
 fi
