@@ -4,7 +4,6 @@ import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 import org.eclipse.ui.console.IConsoleConstants;
-import org.eclipse.ui.progress.IProgressConstants;
 import org.openbel.workbench.ui.views.AnnotationView;
 import org.openbel.workbench.ui.views.NamespaceView;
 import org.openbel.workbench.ui.views.ResourceView;
@@ -36,12 +35,11 @@ public class OpenBELWorkbenchPerspective implements IPerspectiveFactory {
     private void addPerspectiveShortcuts() {
         factory.addPerspectiveShortcut("org.eclipse.team.ui.TeamSynchronizingPerspective"); // NON-NLS-1
         factory.addPerspectiveShortcut("org.eclipse.ui.resourcePerspective"); // NON-NLS-1
-        // factory.addPerspectiveShortcut(IDebugUIConstants.ID_DEBUG_PERSPECTIVE);
     }
 
     public void addViews() {
         IFolderLayout topLeft = factory.createFolder("topLeft", // NON-NLS-1
-                IPageLayout.LEFT, 0.25f, factory.getEditorArea());
+                IPageLayout.LEFT, 0.15f, factory.getEditorArea());
 
         topLeft.addView("org.eclipse.ui.navigator.ProjectExplorer"); // NON-NLS-1
         IFolderLayout bottomLeft = factory.createFolder("bottomLeft",
@@ -58,17 +56,13 @@ public class OpenBELWorkbenchPerspective implements IPerspectiveFactory {
         IFolderLayout bottom = factory.createFolder("bottomRight", // NON-NLS-1
                 IPageLayout.BOTTOM, 0.75f, factory.getEditorArea());
 
+        bottom.addView(IPageLayout.ID_PROGRESS_VIEW);
         bottom.addView(IPageLayout.ID_PROBLEM_VIEW);
         bottom.addView("org.eclipse.team.ui.GenericHistoryView"); // NON-NLS-1
         bottom.addView(IConsoleConstants.ID_CONSOLE_VIEW);
         bottom.addPlaceholder("org.eclipse.search.ui.views.SearchView");
         bottom.addPlaceholder(IPageLayout.ID_BOOKMARKS);
         bottom.addPlaceholder(IPageLayout.ID_TASK_LIST);
-        bottom.addPlaceholder(IProgressConstants.PROGRESS_VIEW_ID);
-
-        //IFolderLayout outlineFolder = factory.createFolder("right", //$NON-NLS-1$
-        // IPageLayout.RIGHT, (float) 0.75, factory.getEditorArea());
-        // outlineFolder.addView(IPageLayout.ID_OUTLINE);
 
     }
 
