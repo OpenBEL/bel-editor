@@ -5,3 +5,4 @@ org.openbel.workbench-site/target/
 org.openbel.workbench.core/target/
 org.openbel.workbench.doc/target/
 org.openbel.workbench.ui/target
+*.zip
