@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+# Check for any mvn in PATH
+if [ -z "$(which mvn 2>/dev/null)" ]; then
+    echo "No mvn in PATH."
+    exit 1
+fi
+
+if [ -z "${BRANCH}" ]; then
+    # Is this a git repo?
+    if [ ! -f ".git/HEAD" ]; then
+        echo "No .git/HEAD - cannot identify branch"
+        exit 1
+    fi
+    BRANCH="$(awk -F/ '{ print $NF }' < .git/HEAD)"
+fi
+
+DEST_FILE_NAME="${BRANCH}-repository"
+DEST_FILE_EXT=".zip"
+if [ ! -z "${REV}" ]; then
+    DEST_FILE_NAME="${DEST_FILE_NAME}-${REV}"
+fi
+if [ ! -z "${BUILD}" ]; then
+    DEST_FILE_NAME="${DEST_FILE_NAME}-build${BUILD}"
+fi
+DEST_FILE_NAME="${DEST_FILE_NAME}${DEST_FILE_EXT}"
+DEST_DIR=$(pwd)
+# End result: ./unstable-repository-build1234.zip
+
+echo -en "Will create ${DEST_FILE_NAME} in ${DEST_DIR}.\n"
+echo -en "Executing mvn -q package.\n"
+mvn package || exit 1
+
+REPO="org.openbel.workbench-site/target/repository"
+PUBLISHER_REPO="org.openbel.workbench-site/target/publisherRepository"
+REQ_DIRS=( "${REPO}" \
+           "${PUBLISHER_REPO}" \
+           "${REPO}/features" \
+           "${REPO}/plugins" )
+
+REQ_FILES=( "${REPO}/artifacts.jar" \
+            "${REPO}/content.jar" \
+            "${PUBLISHER_REPO}/artifacts.xml" \
+            "${PUBLISHER_REPO}/content.xml" )
+
+# Sanity check we have what we need
+echo -en "Running some sanity checks... "
+for REQ_DIR in "${REQ_DIRS[@]}"; do
+    if [ ! -d "${REQ_DIR}" ]; then
+        echo "fail"
+        echo "No directory: ${REQ_DIR}"
+        echo "Do you need to 'mvn package'?"
+        exit 1
+    fi
+done
+for REQ_FILE in "${REQ_FILES[@]}"; do
+    if [ ! -f "${REQ_FILE}" ]; then
+        echo "fail"
+        echo "No file: ${REQ_FILE}"
+        exit 1
+    fi
+done
+echo "okay"
+
+# Zip up the repo for deployment
+cp "${REQ_FILES[2]}" "${REQ_FILES[3]}" "${REPO}" || exit 1
+cd "${REPO}" || exit 1
+echo -en "Zipping... "
+zip -9 -q "${DEST_DIR}"/"${DEST_FILE_NAME}" -r *
+echo "done"
+echo "${DEST_DIR}/${DEST_FILE_NAME} is ready"
