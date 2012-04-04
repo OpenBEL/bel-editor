@@ -1,12 +1,10 @@
 package org.openbel.workbench.ui.views;
 
-import static org.openbel.workbench.core.common.BELUtilities.hasItems;
 import static org.openbel.workbench.ui.Activator.getDefault;
 import static org.openbel.workbench.ui.UIFunctions.logError;
 import static org.openbel.workbench.ui.util.StackUtilities.callerFrame;
 
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
@@ -19,13 +17,12 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.part.ViewPart;
 import org.openbel.workbench.core.index.AnnotationInfo;
-import org.openbel.workbench.core.index.Resource;
 import org.openbel.workbench.core.index.ResourceIndex;
 
 /**
@@ -55,7 +52,7 @@ public class AnnotationView extends ViewPart {
      * it.
      */
     @Override
-    public void createPartControl(Composite parent) {
+    public void createPartControl(final Composite parent) {
         final Composite child = new Composite(parent, SWT.NONE);
         child.setLayout(new GridLayout(2, false));
 
@@ -66,35 +63,17 @@ public class AnnotationView extends ViewPart {
 
             @Override
             public void widgetSelected(SelectionEvent e) {
-                int selected = combo.getSelectionIndex();
-                if ((selected != -1) && (oldSelection != selected)) {
-                    table.removeAll();
+                final int selected = combo.getSelectionIndex();
 
-                    TableItem ti;
-                    final ResourceIndex resIndex = getDefault()
-                            .getResourceIndex();
-                    if (resIndex == null) {
-                        // nothing valid to select
-                        logError("resource index is null at " + callerFrame());
-                        return;
-                    }
+                // skip event if selection hasn't changed
+                if (selected == oldSelection) {
+                    return;
+                }
 
-                    AnnotationInfo an = getDefault().getResourceIndex()
-                            .getAnnotations().get(selected);
-                    final Map<Resource, List<String>> catalog = getDefault()
-                            .getResourceCatalog();
-                    if (catalog == null) {
-                        return;
-                    }
-                    List<String> values = catalog.get(an);
-                    if (hasItems(values)) {
-                        for (final String val : values) {
-                            ti = new TableItem(table, SWT.NONE);
-                            ti.setText(0, val);
-                        }
-                    }
-
-                    table.update();
+                final AnnotationInfo ai = getSelectedAnnotationInfo(selected);
+                if (ai != null) {
+                    final Display display = parent.getDisplay();
+                    display.asyncExec(new LoadData(ai, table));
                     oldSelection = selected;
                 }
             }
@@ -106,7 +85,7 @@ public class AnnotationView extends ViewPart {
         });
         new Label(child, SWT.NONE);
 
-        table = new Table(child, SWT.BORDER | SWT.FULL_SELECTION);
+        table = new Table(child, SWT.BORDER | SWT.FULL_SELECTION | SWT.VIRTUAL);
         table.setLinesVisible(true);
         table.setHeaderVisible(true);
         table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
@@ -151,6 +130,21 @@ public class AnnotationView extends ViewPart {
         for (final AnnotationInfo a : anl) {
             combo.add(a.getName());
         }
+    }
+
+    private AnnotationInfo getSelectedAnnotationInfo(final int index) {
+        if (index >= 0) {
+            final ResourceIndex resIndex = getDefault().getResourceIndex();
+            if (resIndex == null) {
+                logError("resource index is null at " + callerFrame());
+                return null;
+            }
+
+            final AnnotationInfo ns = resIndex.getAnnotations().get(index);
+            return ns;
+        }
+
+        return null;
     }
 
     /**

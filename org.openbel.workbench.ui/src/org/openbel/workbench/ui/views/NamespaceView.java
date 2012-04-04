@@ -1,7 +1,6 @@
 package org.openbel.workbench.ui.views;
 
 import static java.lang.String.format;
-import static org.openbel.workbench.core.common.BELUtilities.hasItems;
 import static org.openbel.workbench.ui.Activator.getDefault;
 import static org.openbel.workbench.ui.UIFunctions.logError;
 import static org.openbel.workbench.ui.util.StackUtilities.callerFrame;
@@ -11,7 +10,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
@@ -25,10 +23,10 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PartInitException;
@@ -37,7 +35,6 @@ import org.eclipse.ui.browser.IWebBrowser;
 import org.eclipse.ui.part.ViewPart;
 import org.openbel.workbench.core.common.Strings;
 import org.openbel.workbench.core.index.NamespaceInfo;
-import org.openbel.workbench.core.index.Resource;
 import org.openbel.workbench.core.index.ResourceIndex;
 
 /**
@@ -55,8 +52,8 @@ public class NamespaceView extends ViewPart {
     private static final String NS_NAME_FMT = "%s (%s)";
     private Combo combo;
     private int oldSelection = -1;
-    private Table table;
     private Action detailsAction;
+    private Table table;
 
     /**
      * The constructor.
@@ -69,12 +66,12 @@ public class NamespaceView extends ViewPart {
      * it.
      */
     @Override
-    public void createPartControl(Composite parent) {
+    public void createPartControl(final Composite parent) {
         final Composite child = new Composite(parent, SWT.NONE);
         child.setLayout(new GridLayout(2, false));
 
         combo = new Combo(child, SWT.NONE);
-        combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1,
+        combo.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1,
                 1));
         combo.addSelectionListener(new SelectionListener() {
 
@@ -89,23 +86,8 @@ public class NamespaceView extends ViewPart {
 
                 final NamespaceInfo ns = getSelectedNamespaceInfo(selected);
                 if (ns != null) {
-                    table.removeAll();
-
-                    TableItem ti;
-                    final Map<Resource, List<String>> catalog = getDefault()
-                            .getResourceCatalog();
-                    if (catalog == null) {
-                        return;
-                    }
-                    List<String> values = catalog.get(ns);
-                    if (hasItems(values)) {
-                        for (final String val : values) {
-                            ti = new TableItem(table, SWT.NONE);
-                            ti.setText(0, val);
-                        }
-                    }
-
-                    table.update();
+                    final Display display = parent.getDisplay();
+                    display.asyncExec(new LoadData(ns, table));
                     oldSelection = selected;
                 }
             }
@@ -117,14 +99,14 @@ public class NamespaceView extends ViewPart {
         });
         new Label(child, SWT.NONE);
 
-        table = new Table(child, SWT.BORDER | SWT.FULL_SELECTION);
+        table = new Table(child, SWT.BORDER | SWT.FULL_SELECTION | SWT.VIRTUAL);
         table.setLinesVisible(true);
         table.setHeaderVisible(true);
         table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
-        final TableColumn valueColumn = new TableColumn(table, SWT.NONE);
-        valueColumn.setWidth(212);
-        valueColumn.setText("Value");
+        final TableColumn fullColumn = new TableColumn(table, SWT.NONE);
+        fullColumn.setWidth(212);
+        fullColumn.setText("Value");
 
         new Label(child, SWT.NONE);
         new Label(child, SWT.NONE);
@@ -209,7 +191,7 @@ public class NamespaceView extends ViewPart {
         };
         detailsAction.setText("Show Details");
         detailsAction
-                .setToolTipText("Provide detailed information from web resource.");
+        .setToolTipText("Provide detailed information from web resource.");
         detailsAction.setImageDescriptor(PlatformUI.getWorkbench()
                 .getSharedImages()
                 .getImageDescriptor(ISharedImages.IMG_LCL_LINKTO_HELP));
