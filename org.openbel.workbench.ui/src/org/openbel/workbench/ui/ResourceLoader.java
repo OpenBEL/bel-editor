@@ -1,6 +1,5 @@
 package org.openbel.workbench.ui;
 
-import static org.openbel.workbench.core.common.BELUtilities.constrainedHashMap;
 import static org.openbel.workbench.core.common.BELUtilities.createDirectory;
 import static org.openbel.workbench.core.common.BELUtilities.readable;
 import static org.openbel.workbench.core.common.PathConstants.SYSCONFIG_FILENAME;
@@ -13,9 +12,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -28,7 +24,8 @@ import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.openbel.workbench.core.index.*;
+import org.openbel.workbench.core.index.Parser;
+import org.openbel.workbench.core.index.ResourceIndex;
 import org.openbel.workbench.core.record.RecordFile;
 import org.openbel.workbench.core.record.Records;
 import org.openbel.workbench.ui.views.AnnotationView;
@@ -114,31 +111,8 @@ final class ResourceLoader {
 
             try {
                 // build the record files into the 'resources/' directory
-                final Records records = new Records(rlocFile);
+                final Records records = new Records(rlocFile, resourceIndex);
                 records.build(index);
-
-                final List<AnnotationInfo> anl = index.getAnnotations();
-                final List<NamespaceInfo> nsl = index.getNamespaces();
-                int c = anl.size() + nsl.size();
-                final Map<Resource, List<String>> resourceCatalog = constrainedHashMap(c);
-
-                final List<Resource> resources = new ArrayList<Resource>(
-                        c);
-                resources.addAll(anl);
-                resources.addAll(nsl);
-
-                int workAmt = (int) (((float) 1 / resources.size()) * 100);
-                for (final Resource r : resources) {
-                    m.subTask("Loading resource: " + r);
-                    resourceCatalog.put(r,
-                            records.retrieve(r.getResourceLocation()));
-
-                    // increment work amount
-                    m.worked(workAmt);
-                }
-
-                // set resources into activator
-                getDefault().setResourceCatalog(resourceCatalog);
             } catch (IOException e) {
                 logError(e);
             }
@@ -149,15 +123,15 @@ final class ResourceLoader {
         /**
          * Reads the {@link ResourceIndex resource index} from the BEL Framework
          * Home configured in {@link Activator#getBELFrameworkHome()}.
-         * 
+         *
          * @return ResourceIndex the resource index or {@code null} if an error
          *         occurred.
          */
         private ResourceIndex readResourceIndex() {
             final String belFrameworkHome = getDefault().getBELFrameworkHome();
             final StringBuilder b = new StringBuilder(belFrameworkHome)
-                    .append(File.separator).append("config")
-                    .append(File.separator).append(SYSCONFIG_FILENAME);
+            .append(File.separator).append("config")
+            .append(File.separator).append(SYSCONFIG_FILENAME);
 
             final File configFile = new File(b.toString());
             if (!readable(configFile)) {
@@ -191,7 +165,7 @@ final class ResourceLoader {
         /**
          * Reloads the available resources in the Resources, Namespaces, and
          * Annotations view.
-         * 
+         *
          * {@inheritDoc}
          */
         @Override

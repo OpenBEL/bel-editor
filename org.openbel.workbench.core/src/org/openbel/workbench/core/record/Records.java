@@ -3,41 +3,75 @@ package org.openbel.workbench.core.record;
 import static org.openbel.workbench.core.common.BELUtilities.closeSilently;
 import static org.openbel.workbench.core.common.BELUtilities.computeHash64;
 import static org.openbel.workbench.core.common.BELUtilities.constrainedHashMap;
+import static org.openbel.workbench.core.common.BELUtilities.hasLength;
 import static org.openbel.workbench.core.common.BELUtilities.readable;
 import static org.openbel.workbench.core.common.PathConstants.RECORD_EXTENSION;
 import static org.openbel.workbench.core.record.RecordMode.READ_ONLY;
 import static org.openbel.workbench.core.record.RecordMode.READ_WRITE;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLStreamException;
-
 import org.openbel.workbench.core.common.InvalidArgument;
 import org.openbel.workbench.core.common.PathConstants;
-import org.openbel.workbench.core.index.*;
+import org.openbel.workbench.core.index.AnnotationInfo;
+import org.openbel.workbench.core.index.NamespaceInfo;
+import org.openbel.workbench.core.index.ResourceIndex;
 import org.openbel.workbench.core.record.AnnotationRecordFile.AnnotationEntry;
 import org.openbel.workbench.core.record.AnnotationRecordFile.AnnotationRecord;
 import org.openbel.workbench.core.record.NamespaceRecordFile.NamespaceEntry;
 import org.openbel.workbench.core.record.NamespaceRecordFile.NamespaceRecord;
 
+/**
+ * {@link Records} provides an interface to the {@link RecordFile record file}
+ * implementations for namespace and annotation data.  This server as the only
+ * API for {@link RecordFile record file} access.
+ */
 public final class Records {
     private final File recordsLocation;
     private final RecordFilter filter;
+    private final Map<String, RecordFile> recCache;
 
-    public Records(final File recordsLocation)
-            throws IOException {
+    /**
+     * Construct {@link Records} API.
+     *
+     * @param recordsLocation the {@link File records location} where every
+     * {@link RecordFile record files} can be found, which cannot be
+     * {@code null}
+     * @param index the {@link ResourceIndex resource index} holding what
+     * namespaces and annotations are available, which cannot be {@code null}
+     */
+    public Records(final File recordsLocation, final ResourceIndex index) {
         this.recordsLocation = recordsLocation;
         this.filter = new RecordFilter();
+
+        // create a constrained record cache
+        int total = index.getAnnotations().size()
+                + index.getNamespaces().size();
+        recCache = constrainedHashMap(total);
     }
 
-    public void build(final ResourceIndex index) throws IOException {
+    /**
+     * Builds the {@link RecordFile record files} for all namespaces and
+     * annotations in the {@link ResourceIndex resource index}.  The
+     * {@link RecordFile record files} will be saved to the file path pointed
+     * to by {@link Records#recordsLocation}.
+     *
+     * @param index the {@link ResourceIndex resource index} holding what
+     * namespaces and annotations are available, which cannot be {@code null}
+     * @throws IOException Thrown if an error IO occurred reading BEL resources
+     * or writing {@link RecordFile record files}.
+     */
+    public void build(final ResourceIndex index)
+            throws IOException {
         if (index == null) {
             return;
         }
@@ -99,15 +133,15 @@ public final class Records {
                             .hashCode(), val));
                 }
 
-                // read entries and stuff in record
+                // setup namespace record based on maxlength and then read
+                // entries and stuff in record
                 nsrec = new NamespaceRecordFile(new File(path),
                         READ_WRITE, new NamespaceRecord(new StringColumn(
                                 maxlength)));
                 for (final NamespaceEntry e : entries) {
-                    if (e.getValue() == null || e.getValue().length() == 0) {
-                        System.out.println("Invalid entry!");
+                    if (hasLength(e.getValue())) {
+                        nsrec.append(e);
                     }
-                    nsrec.append(e);
                 }
                 // close file resources
             } finally {
@@ -158,16 +192,18 @@ public final class Records {
                     entries.add(new AnnotationEntry(computeHash64(val), val));
                 }
 
-                // read entries and stuff in record
+                // setup annotation record file with max length then read
+                // entries and stuff in record
                 anrec = new AnnotationRecordFile(new File(path),
                         READ_WRITE, new AnnotationRecord(new StringColumn(
                                 maxlength)));
                 for (final AnnotationEntry e : entries) {
-                    if (e.getValue() == null || e.getValue().length() == 0) {
-                        System.out.println("Invalid entry!");
+                    if (hasLength(e.getValue())) {
+                        anrec.append(e);
                     }
-                    anrec.append(e);
                 }
+
+                entries.clear();
                 // close file resources
             } finally {
                 closeSilently(rdr);
@@ -178,8 +214,98 @@ public final class Records {
         }
     }
 
-    public List<String> retrieve(final String resource)
-            throws IOException {
+    /**
+     * Find the count of records in the {@link RecordFile record file} for
+     * the resource location.
+     *
+     * @param resource the {@link String resource location}
+     * @return {@code long} count of records
+     * @throws IOException Thrown is an IO error occurred reading the
+     * {@link RecordFile record file}.
+     */
+    public long count(final String resource) throws IOException {
+        final RecordFile rec = getRecordFile(resource);
+        return rec.recordCt;
+    }
+
+    /**
+     * Retrieves the value for a specific resource at the given record number.
+     *
+     * @param resource the {@link String resource location}
+     * @param record {@code int} record number
+     * @return the {@link String resource value}
+     * @throws IOException Thrown if an IO error occurred reading the
+     * {@link RecordFile record file}.
+     * @throws UnsupportedOperationException Thrown if the {@code resource} is
+     * not an annotation or namespace location.
+     */
+    public String retrieve(final String resource, final int record) throws IOException {
+        final RecordFile rec = getRecordFile(resource);
+        if (resource.endsWith(".belanno")) {
+            final AnnotationRecord ar = new AnnotationRecord(rec.recordSize,
+                    new StringColumn());
+            final AnnotationEntry entry = ar.readBuffer(rec.read(record));
+            return entry.value;
+        } else if (resource.endsWith(".belns")) {
+            final NamespaceRecord nr = new NamespaceRecord(rec.recordSize,
+                    new StringColumn());
+            final NamespaceEntry entry = nr.readBuffer(rec.read(record));
+            return entry.value;
+        } else {
+            throw new UnsupportedOperationException("Do not support resource '"
+                    + resource
+                    + "'.  Must be either an Annotation or a Namespace.");
+        }
+    }
+
+    /**
+     * Retrieves the {@link RecordFile record file} for the
+     * {@link String resource location}.  First check the
+     * {@link Records#recCache} to see if it is already loaded otherwise load
+     * the {@link RecordFile record file}.
+     *
+     * @param resource the {@link String resource location} that identifies the
+     * {@link RecordFile record file}
+     * @return the {@link RecordFile record file}
+     * @throws IOException Thrown if an IO error occurred creating the
+     * {@link RecordFile record file}
+     * @throws UnsupportedOperationException Thrown if the {@code resource} is
+     * not an annotation or namespace location.
+     */
+    private RecordFile getRecordFile(final String resource) throws IOException {
+        RecordFile rec = recCache.get(resource);
+        if (rec == null) {
+            final File recFile = findRecordFile(resource);
+
+            if (resource.endsWith(".belanno")) {
+                rec = new RecordFile(recFile, READ_ONLY, AnnotationRecord.hashCol, new StringColumn());
+            } else if (resource.endsWith(".belns")) {
+                rec = new RecordFile(recFile, READ_ONLY, NamespaceRecord.hashCol,
+                        NamespaceRecord.encCol,
+                        new StringColumn());
+            } else {
+                throw new UnsupportedOperationException("Do not support resource '"
+                        + resource
+                        + "'.  Must be either an Annotation or a Namespace.");
+            }
+
+            recCache.put(resource, rec);
+        }
+
+        return rec;
+    }
+
+    /**
+     * Finds the {@link File record file's file} for the resource location.
+     *
+     * @param resource the {@link String resource location}, which cannot be
+     * {@code null}
+     * @return the {@link File record file's file}
+     * @throws InvalidArgument Thrown if {@code resource} is null
+     * @throws IOException Thrown if an the {@link File records location} or
+     * the {@link RecordFile record file} could not be read.
+     */
+    private File findRecordFile(final String resource) throws IOException {
         if (resource == null) {
             throw new InvalidArgument("resource", resource);
         }
@@ -201,102 +327,19 @@ public final class Records {
             throw new IOException("Cannot read record: "
                     + recFile.getAbsolutePath());
         }
-
-        if (resource.endsWith(".belanno")) {
-            return retrieveAnnotation(recFile);
-        } else if (resource.endsWith(".belns")) {
-            return retrieveNamespace(recFile);
-        }
-
-        return null;
+        return recFile;
     }
 
-    private List<String> retrieveAnnotation(final File recFile) {
-        final RecordFile rec = new RecordFile(recFile, READ_ONLY,
-                AnnotationRecord.hashCol, new StringColumn());
-
-        final AnnotationRecord nsrecord = new AnnotationRecord(rec.recordSize,
-                new StringColumn());
-        Iterator<byte[]> recit = rec.iterator();
-        AnnotationEntry e = new AnnotationEntry();
-        final List<String> entries = new ArrayList<String>((int) rec.recordCt);
-        while (recit.hasNext()) {
-            byte[] next = recit.next();
-            nsrecord.readToEntry(next, e);
-            entries.add(e.value);
-        }
-
-        return entries;
-    }
-
-    private List<String> retrieveNamespace(final File recFile)
-            throws IOException {
-        final RecordFile rec = new RecordFile(recFile, READ_ONLY,
-                NamespaceRecord.hashCol, NamespaceRecord.encCol,
-                new StringColumn());
-
-        final NamespaceRecord nsrecord = new NamespaceRecord(rec.recordSize,
-                new StringColumn());
-        Iterator<byte[]> recit = rec.iterator();
-        NamespaceEntry e = new NamespaceEntry();
-        final List<String> entries = new ArrayList<String>();
-        while (recit.hasNext()) {
-            byte[] next = recit.next();
-            nsrecord.readToEntry(next, e);
-            entries.add(e.value);
-        }
-
-        return entries;
-    }
-
-    public static void main(final String[] args) throws IOException,
-            XMLStreamException, FactoryConfigurationError {
-        long start = System.currentTimeMillis();
-
-        Records recs = new Records(new File("/home/tony/tmp"));
-        ResourceIndex ri = Parser.getInstance().parse(
-                new URL("file:///home/tony/tmp/index.xml"));
-        recs.build(ri);
-
-        long write_end = System.currentTimeMillis();
-
-        final List<AnnotationInfo> anl = ri.getAnnotations();
-        final List<NamespaceInfo> nsl = ri.getNamespaces();
-        int c = anl.size() + nsl.size();
-        final Map<Resource, List<String>> catalog = constrainedHashMap(c);
-
-        final List<Resource> resources = new ArrayList<Resource>(c);
-        resources.addAll(anl);
-        resources.addAll(nsl);
-
-        for (final Resource r : resources) {
-            catalog.put(r, recs.retrieve(r.getResourceLocation()));
-        }
-
-        long read_end = System.currentTimeMillis();
-
-        for (final Resource r : catalog.keySet()) {
-            System.out.println("for resource: " + r);
-            List<String> values = catalog.get(r);
-            for (final String val : values) {
-                System.out.println(val);
-            }
-        }
-
-        System.out.println("Write in "
-                + ((write_end - start) / (float) 1000)
-                + " seconds.");
-        System.out.println("Read in "
-                + ((read_end - write_end) / (float) 1000)
-                + " seconds.");
-    }
-
+    /**
+     * {@link RecordFilter} restricts {@link File files} by
+     * {@link PathConstants#RECORD_EXTENSION}.
+     */
     private class RecordFilter implements FilenameFilter {
 
         /**
          * Filter to include files ending with the
          * {@link PathConstants#RECORD_EXTENSION}.
-         * 
+         *
          * {@inheritDoc}
          */
         @Override
