@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: OpenBEL Workbench UI plugin
 Bundle-SymbolicName: org.openbel.workbench.ui;singleton:=true
-Bundle-Version: 1.0.0.SNAPSHOT
+Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.openbel.workbench.ui.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
