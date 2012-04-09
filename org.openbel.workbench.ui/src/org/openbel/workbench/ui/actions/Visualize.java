@@ -70,6 +70,12 @@ public class Visualize extends ActionDelegate implements IObjectActionDelegate {
      */
     @Override
     public void run(IAction action) {
+        String actionText = action.getText();
+        boolean no_phase_III = false;
+        if (actionText.contains("no phase III")) {
+            no_phase_III = true;
+        }
+
         if (document == null) {
             return;
         }
@@ -80,7 +86,7 @@ public class Visualize extends ActionDelegate implements IObjectActionDelegate {
             return;
         }
 
-        Job job = new VJob();
+        Job job = new VJob(no_phase_III);
         job.setPriority(Job.LONG);
         job.addJobChangeListener(new IJobChangeListener() {
 
@@ -165,9 +171,11 @@ public class Visualize extends ActionDelegate implements IObjectActionDelegate {
     }
 
     private class VJob extends Job {
+        private final boolean noPIII;
 
-        public VJob() {
+        public VJob(boolean noPIII) {
             super("Visualizing ".concat(document));
+            this.noPIII = noPIII;
         }
 
         @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -266,7 +274,11 @@ public class Visualize extends ActionDelegate implements IObjectActionDelegate {
 
             String taskname;
             AntRunner ar = new AntRunner();
-            ar.setExecutionTargets(new String[] { "compile" });
+            if (noPIII) {
+                ar.setExecutionTargets(new String[] { "compile-without-phaseIII" });
+            } else {
+                ar.setExecutionTargets(new String[] { "compile-with-phaseIII" });
+            }
             ar.setBuildFileLocation(buildfile);
             ar.setArguments(buildArgs(document));
             taskname = "Compiling the document using the BEL framework installation";

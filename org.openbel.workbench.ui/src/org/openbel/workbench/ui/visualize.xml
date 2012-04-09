@@ -82,7 +82,7 @@
 
     </target>
 
-    <target name='compile' depends='check'>
+    <target name='compile-without-phaseIII' depends='check'>
         <exec executable='${belc}' failonerror='true' dir='${basedir}'>
             <arg value='-s' />
             <arg value='"${file.syscfg}"' />
@@ -93,7 +93,20 @@
             <arg value='-f' />
             <arg value='"${DOCUMENT}"' />
             <arg line='--no-phaseIII' />
-            <arg line='--no-semantic-check' />
+            <env key='BELFRAMEWORK_HOME' value='${BELFRAMEWORK_HOME}' />
+        </exec>
+    </target>
+
+    <target name='compile-with-phaseIII' depends='check'>
+        <exec executable='${belc}' failonerror='true' dir='${basedir}'>
+            <arg value='-s' />
+            <arg value='"${file.syscfg}"' />
+            <arg value='-k' />
+            <arg value='"${KAM}"' />
+            <arg value='-d' />
+            <arg value='"${KAM}"' />
+            <arg value='-f' />
+            <arg value='"${DOCUMENT}"' />
             <env key='BELFRAMEWORK_HOME' value='${BELFRAMEWORK_HOME}' />
         </exec>
     </target>
