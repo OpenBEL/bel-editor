@@ -134,9 +134,16 @@
             id="org.openbel.workbench.ui.visualize"
             objectClass="org.eclipse.core.resources.IFile"
             nameFilter="*.bel">
+            <menu
+                id="o.o.w.u.v"
+                path="Path"
+                label="&amp;Cytoscape">
+                <separator name="&amp;Cytoscape"/>
+            </menu>
             <action
+                menubarPath="o.o.w.u.v/&amp;Cytoscape"
                 id="org.openbel.workbench.ui.actions.visualize"
-                label="Visualize in Cytoscape"
+                label="Visualize in Cytoscape (&amp;no phase III)"
                 class="org.openbel.workbench.ui.actions.Visualize"
                 definitionId="org.openbel.workbench.ui.actions.visualize"
                 enablesFor="1">
@@ -147,9 +154,56 @@
             id="org.openbel.workbench.ui.visualize"
             objectClass="org.eclipse.core.resources.IFile"
             nameFilter="*.xbel">
+            <menu
+                id="o.o.w.u.v"
+                path="Path"
+                label="&amp;Cytoscape">
+                <separator name="&amp;Cytoscape"/>
+            </menu>
             <action
+                menubarPath="o.o.w.u.v/&amp;Cytoscape"
                 id="org.openbel.workbench.ui.actions.visualize"
-                label="Visualize in Cytoscape"
+                label="Visuali&amp;ze in Cytoscape (no phase III)"
+                class="org.openbel.workbench.ui.actions.Visualize"
+                definitionId="org.openbel.workbench.ui.actions.visualize"
+                enablesFor="1">
+            </action>
+        </objectContribution>
+
+        <objectContribution
+            id="org.openbel.workbench.ui.visualize"
+            objectClass="org.eclipse.core.resources.IFile"
+            nameFilter="*.bel">
+            <menu
+                id="o.o.w.u.v"
+                path="Path"
+                label="&amp;Cytoscape">
+                <separator name="&amp;Cytoscape"/>
+            </menu>
+            <action
+                menubarPath="o.o.w.u.v/&amp;Cytoscape"
+                id="org.openbel.workbench.ui.actions.visualize"
+                label="&amp;Visualize in Cytoscape"
+                class="org.openbel.workbench.ui.actions.Visualize"
+                definitionId="org.openbel.workbench.ui.actions.visualize"
+                enablesFor="1">
+            </action>
+        </objectContribution>
+
+        <objectContribution
+            id="org.openbel.workbench.ui.visualize"
+            objectClass="org.eclipse.core.resources.IFile"
+            nameFilter="*.xbel">
+            <menu
+                id="o.o.w.u.v"
+                path="Path"
+                label="&amp;Cytoscape">
+                <separator name="&amp;Cytoscape"/>
+            </menu>
+            <action
+                menubarPath="o.o.w.u.v/&amp;Cytoscape"
+                id="org.openbel.workbench.ui.actions.visualize"
+                label="&amp;Visualize in Cytoscape"
                 class="org.openbel.workbench.ui.actions.Visualize"
                 definitionId="org.openbel.workbench.ui.actions.visualize"
                 enablesFor="1">
