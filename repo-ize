@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 REQ_EXECS=( "mvn" "zip" )
 # Check for executables in PATH
 for REQ_EXEC in "${REQ_EXECS[@]}"; do
