@@ -49,6 +49,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.openbel.workbench.core.Nature;
 import org.openbel.workbench.core.index.Resource;
 import org.openbel.workbench.core.index.ResourceIndex;
+import org.openbel.workbench.core.record.RecordFile;
 import org.openbel.workbench.ui.text.BELTextTools;
 import org.openbel.workbench.ui.util.ValidationUtilities.FileState;
 import org.osgi.framework.BundleContext;
@@ -77,7 +78,7 @@ public class Activator extends DLTKUIPlugin {
     private Listener listener;
 
     private ResourceIndex resourceIndex;
-    private Map<Resource, List<String>> resourceCatalog;
+    private Map<Resource, RecordFile> recordFiles;
     private List<String> selectedProjects;
 
     /**
@@ -322,12 +323,13 @@ public class Activator extends DLTKUIPlugin {
     }
 
     /**
-     * Returns the resource catalog.
+     * Returns the {@link RecordFile record files} built from the
+     * {@link ResourceIndex resource index}.
      * 
-     * @return the {@link Map map} of {@link List resource data}
+     * @return the {@link Map map} of {@link RecordFile}
      */
-    public Map<Resource, List<String>> getResourceCatalog() {
-        return resourceCatalog;
+    public Map<Resource, RecordFile> getRecordFiles() {
+        return recordFiles;
     }
 
     /**
@@ -392,13 +394,14 @@ public class Activator extends DLTKUIPlugin {
     }
 
     /**
-     * Sets the resource catalog.
+     * Sets the {@link RecordFile record files} for the resource in the
+     * {@link ResourceIndex resource index}.
      * 
-     * @param resourceCatalog the resource catalog
+     * @param recordFiles the {@link RecordFile record files} map
      */
-    public void setResourceCatalog(
-            final Map<Resource, List<String>> resourceCatalog) {
-        this.resourceCatalog = resourceCatalog;
+    public void setRecordFiles(
+            final Map<Resource, RecordFile> recordFiles) {
+        this.recordFiles = recordFiles;
     }
 
     /**

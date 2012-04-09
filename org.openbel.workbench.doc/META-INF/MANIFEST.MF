@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: OpenBEL Workbench Doc plugin
 Bundle-SymbolicName: org.openbel.workbench.doc;singleton:=true
-Bundle-Version: 1.0.0.SNAPSHOT
+Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: Selventa
 Require-Bundle: org.eclipse.help
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

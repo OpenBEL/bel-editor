@@ -38,7 +38,7 @@
         <url>https://subversion.assembla.com/svn/selventa_bel/belworkbench/trunk</url>
     </scm>
     <properties>
-        <tycho-version>0.13.0</tycho-version>
+        <tycho-version>0.14.1</tycho-version>
         <platform-version-name>indigo</platform-version-name>
         <platform-version>[3.7,3.8)</platform-version>
     </properties>
