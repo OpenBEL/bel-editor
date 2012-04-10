@@ -64,6 +64,10 @@ echo "okay"
 # Zip up the repo for deployment
 cp "${REQ_FILES[2]}" "${REQ_FILES[3]}" "${REPO}" || exit 1
 cd "${REPO}" || exit 1
+if [ -f "${DEST_DIR}"/"${DEST_FILE_NAME}" ]; then
+    echo -en "Existing ${DEST_FILE_NAME} found. Removing it.\n"
+    rm "${DEST_DIR}"/"${DEST_FILE_NAME}"
+fi
 echo -en "Zipping... "
 zip -9 -q "${DEST_DIR}"/"${DEST_FILE_NAME}" -r *
 echo "done"
