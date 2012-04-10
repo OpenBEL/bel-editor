@@ -20,7 +20,7 @@ fi
 
 ARTIFACT="${BRANCH}-repository.zip"
 LATEST="${BUILD_KEY}/latestSuccessful/artifact/JOB1/repository-zip/${ARTIFACT}"
-wget --quiet http://dev.selventa.com:9092/${LATEST} || exit 1
+wget --quiet http://ci.selventa.com/${LATEST} || exit 1
 echo "Got $(/bin/ls -sh ${ARTIFACT} | awk '{ print $1 }') from Bamboo."
 
 echo -en "Copying... "
