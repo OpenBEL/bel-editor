@@ -1,9 +1,6 @@
 package org.openbel.workbench.ui.text;
 
-import static java.lang.Character.isLetter;
-import static java.lang.Character.isLowerCase;
-import static java.lang.Character.isUpperCase;
-import static java.lang.Character.isWhitespace;
+import static java.lang.Character.*;
 import static org.openbel.workbench.core.CoreConstants.BELSCRIPT_KEYWORDS;
 import static org.openbel.workbench.core.CoreConstants.FUNCTIONS;
 import static org.openbel.workbench.core.CoreConstants.RELATIONSHIPS;
@@ -39,10 +36,8 @@ public class BELCodeScanner extends AbstractScriptScanner {
     /**
      * BEL code scanner.
      * 
-     * @param manager
-     *            Color manager
-     * @param store
-     *            Preference store
+     * @param manager Color manager
+     * @param store Preference store
      */
     public BELCodeScanner(IColorManager manager, IPreferenceStore store) {
         super(manager, store);
@@ -97,7 +92,7 @@ public class BELCodeScanner extends AbstractScriptScanner {
     /**
      * Detects BEL keywords.
      */
-    private static class KeywordDetector implements IWordDetector {
+    private static class KeywordDetector implements IScriptWordDetector {
 
         /**
          * {@inheritDoc}
@@ -113,6 +108,15 @@ public class BELCodeScanner extends AbstractScriptScanner {
         @Override
         public boolean isWordStart(char c) {
             return isUpperCase(c);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean isPriorCharValid(char c) {
+            if (isLetterOrDigit(c)) return false;
+            return true;
         }
     }
 
