@@ -18,3 +18,13 @@ See our `Eclipse repository`_ for our project update sites.
 .. _Eclipse: http://www.eclipse.org/downloads
 .. _Eclipse repository: https://github.com/belframework-org/eclipse
 
+Further Reference
+-----------------
+
+See the `Getting Started`_ page of the wiki for further reference.
+
+.. _BEL: http://www.selventa.com/technology/bel-framework
+.. _BEL Framework: http://openbel.org
+.. _Eclipse: http://www.eclipse.org/downloads
+.. _Eclipse repository: https://github.com/belframework-org/eclipse
+.. _Getting Started: https://github.com/belframework-org/OpenBEL-Workbench/wiki/Getting-Started
