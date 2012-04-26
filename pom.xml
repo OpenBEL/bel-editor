@@ -33,9 +33,9 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:svn:https://subversion.assembla.com/svn/selventa_bel/belworkbench/trunk</connection>
-        <developerConnection>scm:svn:https://subversion.assembla.com/svn/selventa_bel/belworkbench/trunk</developerConnection>
-        <url>https://subversion.assembla.com/svn/selventa_bel/belworkbench/trunk</url>
+        <connection>scm:git:git://github.com/belframework-org/OpenBEL-Workbench.git</connection>
+        <developerConnection>scm:git:git://github.com/belframework-org/OpenBEL-Workbench.git</developerConnection>
+        <url>https://github.com/belframework-org/OpenBEL-Workbench</url>
     </scm>
     <properties>
         <tycho-version>0.14.1</tycho-version>
@@ -151,13 +151,13 @@
     <url>http://www.openbel.org</url>
     <description>OpenBEL Workbench</description>
     <issueManagement>
-        <system>trac</system>
-        <url>https://trac.assembla.com/selventa_bel</url>
+        <system>GitHubtrac</system>
+        <url>https://github.com/belframework-org/OpenBEL-Workbench/issues</url>
     </issueManagement>
     <distributionManagement>
         <site>
             <id>www.openbel.org</id>
-            <url>https://subversion.assembla.com/svn/selventa_bel/belworkbench/trunk</url>
+            <url></url>
         </site>
     </distributionManagement>
 </project>
