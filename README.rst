@@ -11,11 +11,10 @@ Installation
 The OpenBEL Workbench uses recent versions of Eclipse_ (Indigo - 3.7.x).
 Installation and upgrades are handled from the Eclipse application.
 
-For further reference, see our `Eclipse repository`_.
-    https://github.com/belframework-org/eclipse
+See our `Eclipse repository`_ for Eclipse repository information.
 
-    .. _BEL: http://www.selventa.com/technology/bel-framework
-    .. _BEL Framework: http://openbel.org
-    .. _Eclipse: http://www.eclipse.org/downloads
-    .. _Eclipse repository: https://github.com/belframework-org/eclipse
+.. _BEL: http://www.selventa.com/technology/bel-framework
+.. _BEL Framework: http://openbel.org
+.. _Eclipse: http://www.eclipse.org/downloads
+.. _Eclipse repository: https://github.com/belframework-org/eclipse
 
