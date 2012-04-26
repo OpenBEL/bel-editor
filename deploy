@@ -37,4 +37,3 @@ rm ${ARTIFACT}
 echo "okay"
 
 echo "New ${BRANCH} deployed."
-
