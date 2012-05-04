@@ -19,12 +19,15 @@ import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.compiler.IElementRequestor.FieldInfo;
 
-public class BELModuleDeclaration extends ModuleDeclaration {
+/**
+ * This is the top-level representation of a BEL Script document.
+ */
+public class BELScriptDocument extends ModuleDeclaration {
 
     private List<FunctionInfo> functionsInfo;
     private List<FieldInfo> variablesInfo;
 
-    public BELModuleDeclaration(int sourceLength) {
+    public BELScriptDocument(int sourceLength) {
         super(sourceLength);
         functionsInfo = new ArrayList<FunctionInfo>();
         variablesInfo = new ArrayList<FieldInfo>();
