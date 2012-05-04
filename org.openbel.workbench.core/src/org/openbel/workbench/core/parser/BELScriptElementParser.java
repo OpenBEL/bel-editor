@@ -59,7 +59,7 @@ public class BELScriptElementParser extends AbstractSourceElementParser {
     @Override
     public void parseSourceModule(IModuleSource source) {
         String sc = source.getSourceContents();
-        BELModuleDeclaration modules = new BELModuleDeclaration(sc.length());
+        BELScriptDocument modules = new BELScriptDocument(sc.length());
 
         StringReader sr = new StringReader(source.getSourceContents());
         BELModel model = parse(sr, modules);
@@ -70,7 +70,7 @@ public class BELScriptElementParser extends AbstractSourceElementParser {
     }
 
     private BELModel parse(StringReader reader,
-            BELModuleDeclaration moduleDeclaration) {
+            BELScriptDocument moduleDeclaration) {
         BELModel model = new BELModel();
 
         BufferedReader bReader = new BufferedReader(reader);

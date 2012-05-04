@@ -17,7 +17,7 @@ import org.eclipse.dltk.compiler.env.IModuleSource;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
 
 /**
- * 
+ * BEL Script implementation of a source parser.
  */
 public class BELScriptSourceParser extends AbstractSourceParser {
 
