@@ -43,6 +43,7 @@
         <platform-version>[3.7,3.8)</platform-version>
     </properties>
     <modules>
+        <module>org.openbel.workbench.antlr</module>
         <module>org.openbel.workbench.core</module>
         <module>org.openbel.workbench.ui</module>
         <module>org.openbel.workbench.doc</module>
