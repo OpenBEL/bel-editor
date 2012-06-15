@@ -12,8 +12,8 @@ echo -en "Executing mvn -q package.\n"
 mvn -q package || exit 1
 
 LOCAL_REPO=$(mktemp -d) || exit 1
-cp -r org.openbel.workbench-site/target/repository/* \
-      org.openbel.workbench-site/target/publisherRepository/* \
+cp -r org.openbel.editor-site/target/repository/* \
+      org.openbel.editor-site/target/publisherRepository/* \
       "${LOCAL_REPO}" || exit 1
 cd "${LOCAL_REPO}"
 echo

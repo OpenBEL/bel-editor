@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<toc topic="userguide/Introduction.html" label="BEL Editor User Guide">
+    <topic href="userguide/Introduction.html" label="Introduction"></topic>
+    <topic href="userguide/Getting-Started.html" label="Getting Started">
+        <!-- page anchors -->
+        <topic href="userguide/Getting-Started.html#Anchor" label="Anchor Example"></topic>
+    </topic>
+    <topic href="userguide/Updating-This-Guide.html" label="Updating This Guide"></topic>
+</toc>

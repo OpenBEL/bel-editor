@@ -1,0 +1,4 @@
+!*** changelog
+plugin@org.openbel.editor.core=SVN,trunk,https://subversion.assembla.com/svn/selventa_bel,,org.openbel.editor.core
+plugin@org.openbel.editor.ui=SVN,trunk,https://subversion.assembla.com/svn/selventa_bel,,org.openbel.editor.ui
+plugin@org.openbel.editor.doc=SVN,trunk,https://subversion.assembla.com/svn/selventa_bel,,org.openbel.editor.doc

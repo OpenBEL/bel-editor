@@ -30,8 +30,8 @@ echo -en "Will create ${DEST_FILE_NAME} in ${DEST_DIR}.\n"
 echo -en "Executing mvn -q package.\n"
 mvn package || exit 1
 
-REPO="org.openbel.workbench-site/target/repository"
-PUBLISHER_REPO="org.openbel.workbench-site/target/publisherRepository"
+REPO="org.openbel.editor-site/target/repository"
+PUBLISHER_REPO="org.openbel.editor-site/target/publisherRepository"
 REQ_DIRS=( "${REPO}" \
            "${PUBLISHER_REPO}" \
            "${REPO}/features" \

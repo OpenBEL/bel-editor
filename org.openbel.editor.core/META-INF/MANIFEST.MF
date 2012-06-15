@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: BEL Editor Core plugin
+Bundle-SymbolicName: org.openbel.editor.core;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.openbel.editor.core.Activator
+Bundle-Vendor: Selventa
+Require-Bundle: org.openbel.editor.antlr,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.dltk.core;bundle-version="[3.0.0,4.0.0)",
+ org.eclipse.ant.core;bundle-version="3.2.300",
+ org.eclipse.ant.launching;bundle-version="1.0.100"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Export-Package: org.openbel.editor.core,
+ org.openbel.editor.core.builder,
+ org.openbel.editor.core.common,
+ org.openbel.editor.core.common.enums,
+ org.openbel.editor.core.common.lang,
+ org.openbel.editor.core.completion,
+ org.openbel.editor.core.index,
+ org.openbel.editor.core.parser,
+ org.openbel.editor.core.record
+Bundle-ClassPath: .

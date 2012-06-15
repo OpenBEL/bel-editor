@@ -12,12 +12,12 @@
         <artifactId>eclipse-parent</artifactId>
         <version>3</version>
     </parent>
-    <groupId>org.openbel.workbench</groupId>
-    <artifactId>workbench</artifactId>
+    <groupId>org.openbel.editor</groupId>
+    <artifactId>editor</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>OpenBEL Workbench</name>
+    <name>BEL Editor</name>
 
     <licenses>
         <license>
@@ -33,9 +33,9 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:git:git://github.com/belframework-org/OpenBEL-Workbench.git</connection>
-        <developerConnection>scm:git:git://github.com/belframework-org/OpenBEL-Workbench.git</developerConnection>
-        <url>https://github.com/belframework-org/OpenBEL-Workbench</url>
+        <connection>scm:git:git://github.com/OpenBEL/bel-editor.git</connection>
+        <developerConnection>scm:git:git://github.com/OpenBEL/bel-editor.git</developerConnection>
+        <url>https://github.com/OpenBEL/bel-editor</url>
     </scm>
     <properties>
         <tycho-version>0.14.1</tycho-version>
@@ -43,12 +43,12 @@
         <platform-version>[3.7,3.8)</platform-version>
     </properties>
     <modules>
-        <module>org.openbel.workbench.antlr</module>
-        <module>org.openbel.workbench.core</module>
-        <module>org.openbel.workbench.ui</module>
-        <module>org.openbel.workbench.doc</module>
-        <module>org.openbel.workbench-feature</module>
-        <module>org.openbel.workbench-site</module>
+        <module>org.openbel.editor.antlr</module>
+        <module>org.openbel.editor.core</module>
+        <module>org.openbel.editor.ui</module>
+        <module>org.openbel.editor.doc</module>
+        <module>org.openbel.editor-feature</module>
+        <module>org.openbel.editor-site</module>
     </modules>
     <repositories>
         <repository>
@@ -150,10 +150,10 @@
         </pluginManagement>
     </build>
     <url>http://www.openbel.org</url>
-    <description>OpenBEL Workbench</description>
+    <description>BEL Editor</description>
     <issueManagement>
         <system>GitHubtrac</system>
-        <url>https://github.com/belframework-org/OpenBEL-Workbench/issues</url>
+        <url>https://github.com/OpenBEL/bel-editor/issues</url>
     </issueManagement>
     <distributionManagement>
         <site>

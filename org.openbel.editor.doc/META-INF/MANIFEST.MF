@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: BEL Editor Doc plugin
+Bundle-SymbolicName: org.openbel.editor.doc;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: Selventa
+Require-Bundle: org.eclipse.help
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: .

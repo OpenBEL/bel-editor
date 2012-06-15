@@ -1,9 +1,9 @@
-org.openbel.workbench.antlr/target
-org.openbel.workbench.ui/classes
-org.openbel.workbench.core/classes
-org.openbel.workbench-feature/target/
-org.openbel.workbench-site/target/
-org.openbel.workbench.core/target/
-org.openbel.workbench.doc/target/
-org.openbel.workbench.ui/target
+org.openbel.editor.antlr/target
+org.openbel.editor.ui/classes
+org.openbel.editor.core/classes
+org.openbel.editor-feature/target/
+org.openbel.editor-site/target/
+org.openbel.editor.core/target/
+org.openbel.editor.doc/target/
+org.openbel.editor.ui/target
 *.zip
