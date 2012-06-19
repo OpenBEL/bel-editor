@@ -18,6 +18,15 @@ See the `OpenBEL Eclipse repository`_ for our project update sites.
 .. _Eclipse: http://www.eclipse.org/downloads
 .. _OpenBEL Eclipse repository: https://github.com/openbel/eclipse
 
+Sponsors
+--------
+
+`ZeroTurnaround`_
+    `JRebel`_ licenses for committers.
+
+.. _ZeroTurnaround: http://zeroturnaround.com/
+.. _JRebel: http://zeroturnaround.com/software/jrebel/
+
 Further Reference
 -----------------
 
