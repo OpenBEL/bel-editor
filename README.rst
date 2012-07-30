@@ -8,13 +8,14 @@ into KAMs.
 Installation
 ------------
 
-The BEL Editor uses recent versions of Eclipse_ (Indigo - 3.7.x).
+The BEL Editor uses the Indigo_ release of Eclipse_ (version 3.7.x).
 Installation and upgrades are handled from the Eclipse application.
 
 See the `OpenBEL Eclipse repository`_ for our project update sites.
 
 .. _BEL: http://www.selventa.com/technology/bel-framework
 .. _BEL Framework: http://openbel.org
+.. _Indigo: http://www.eclipse.org/downloads/packages/release/indigo/sr2
 .. _Eclipse: http://www.eclipse.org/downloads
 .. _OpenBEL Eclipse repository: https://github.com/openbel/eclipse
 
