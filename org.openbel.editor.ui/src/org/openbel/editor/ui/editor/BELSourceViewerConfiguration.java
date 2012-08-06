@@ -11,15 +11,26 @@
 
 package org.openbel.editor.ui.editor;
 
-import static org.openbel.editor.ui.text.BELPartitions.*;
+import static org.openbel.editor.ui.text.BELPartitions.FUNCTION;
+import static org.openbel.editor.ui.text.BELPartitions.HASH_COMMENT;
+import static org.openbel.editor.ui.text.BELPartitions.KEYWORD;
+import static org.openbel.editor.ui.text.BELPartitions.OTHER;
+import static org.openbel.editor.ui.text.BELPartitions.RELATIONSHIP;
+import static org.openbel.editor.ui.text.BELPartitions.STRING;
 
-import org.eclipse.dltk.ui.text.*;
+import org.eclipse.dltk.ui.text.AbstractScriptScanner;
+import org.eclipse.dltk.ui.text.IColorManager;
+import org.eclipse.dltk.ui.text.ScriptOutlineInformationControl;
+import org.eclipse.dltk.ui.text.ScriptPresentationReconciler;
+import org.eclipse.dltk.ui.text.ScriptSourceViewerConfiguration;
+import org.eclipse.dltk.ui.text.SingleTokenScriptScanner;
 import org.eclipse.dltk.ui.text.completion.ContentAssistPreference;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.text.IInformationControlCreator;
+import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
@@ -44,11 +55,13 @@ public class BELSourceViewerConfiguration extends
     private AbstractScriptScanner codeScanner;
     private AbstractScriptScanner commentScanner;
     private AbstractScriptScanner stringScanner;
+    private final ITextEditor editor;
 
     public BELSourceViewerConfiguration(IColorManager colorManager,
             IPreferenceStore preferenceStore, ITextEditor editor,
             String partitioning) {
         super(colorManager, preferenceStore, editor, partitioning);
+        this.editor = editor;
     }
 
     /**
@@ -196,6 +209,16 @@ public class BELSourceViewerConfiguration extends
 
         codeScanner = new BELCodeScanner(mgr, prefs);
         commentScanner = new CommentScanner(mgr, prefs);
-        stringScanner = new SingleTokenScriptScanner(mgr, prefs, UIConstants.STRING);
+        stringScanner = new SingleTokenScriptScanner(mgr, prefs,
+                UIConstants.STRING);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ITextHover getTextHover(ISourceViewer sourceViewer,
+            String contentType, int stateMask) {
+        return new BELTextHover(editor);
     }
 }
