@@ -9,15 +9,18 @@ Installation
 ------------
 
 The BEL Editor uses the Indigo_ release of Eclipse_ (version 3.7.x).
-Installation and upgrades are handled from the Eclipse application.
-
-See the `OpenBEL Eclipse repository`_ for our project update sites.
+Installation and upgrades are handled from Eclipse. To install the BEL Editor in
+your version of Eclipse, see the `OpenBEL Eclipse repository`_ for our
+repository's URLs. For detailed instructions, see `Getting Started`_ in the
+wiki_.
 
 .. _BEL: http://www.selventa.com/technology/bel-framework
 .. _BEL Framework: http://openbel.org
 .. _Indigo: http://www.eclipse.org/downloads/packages/release/indigo/sr2
 .. _Eclipse: http://www.eclipse.org/downloads
 .. _OpenBEL Eclipse repository: https://github.com/openbel/eclipse
+.. _Getting Started: https://github.com/OpenBEL/bel-editor/wiki/Getting-Started
+.. _wiki: https://github.com/OpenBEL/bel-editor/wiki
 
 Sponsors
 --------
