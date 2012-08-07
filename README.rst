@@ -5,6 +5,9 @@ The BEL Editor allows you to explore BEL_ and the `BEL Framework`_, from the
 syntax and semantics of the BEL language to the compilation of BEL knowledge
 into KAMs.
 
+.. _BEL: http://www.selventa.com/technology/bel-framework
+.. _BEL Framework: http://openbel.org
+
 Installation
 ------------
 
@@ -13,8 +16,6 @@ Installation and upgrades are handled from Eclipse. To install the BEL Editor in
 your version of Eclipse, see the `OpenBEL Eclipse repository`_.
 For detailed instructions, see `Getting Started`_ in the wiki_.
 
-.. _BEL: http://www.selventa.com/technology/bel-framework
-.. _BEL Framework: http://openbel.org
 .. _Indigo: http://www.eclipse.org/downloads/packages/release/indigo/sr2
 .. _Eclipse: http://www.eclipse.org/downloads
 .. _OpenBEL Eclipse repository: https://github.com/openbel/eclipse
@@ -33,10 +34,9 @@ Sponsors
 Further Reference
 -----------------
 
-See the `Getting Started`_ page of the wiki for further reference.
+See the wiki_ for further reference. For mailing lists, IRC info, and more, see
+the `OpenBEL Ecosystem`_ section of the `BEL Framework`_.
 
-.. _BEL: http://www.selventa.com/technology/bel-framework
-.. _OpenBEL Framework: https://github.com/OpenBEL/openbel-framework
-.. _Eclipse: http://www.eclipse.org/downloads
-.. _OpenBEL Eclipse repository: https://github.com/openbel/eclipse
-.. _Getting Started: https://github.com/OpenBEL/bel-editor/wiki/Getting-Started
+.. _wiki: https://github.com/OpenBEL/bel-editor/wiki
+.. _OpenBEL Ecosystem: https://github.com/OpenBEL/openbel-framework#the-openbel-ecosystem
+.. _BEL Framework: https://github.com/OpenBEL/openbel-framework
