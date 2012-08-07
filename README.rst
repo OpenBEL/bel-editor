@@ -6,7 +6,6 @@ syntax and semantics of the BEL language to the compilation of BEL knowledge
 into KAMs.
 
 .. _BEL: http://www.selventa.com/technology/bel-framework
-.. _BEL Framework: http://openbel.org
 
 Installation
 ------------
@@ -35,7 +34,8 @@ Further Reference
 -----------------
 
 See the wiki_ for further reference. For mailing lists, IRC info, and more, see
-the `OpenBEL Ecosystem`_ section of the BEL Framework.
+the `OpenBEL Ecosystem`_ section of the `BEL Framework`_.
 
 .. _wiki: https://github.com/OpenBEL/bel-editor/wiki
 .. _OpenBEL Ecosystem: https://github.com/OpenBEL/openbel-framework#the-openbel-ecosystem
+.. _BEL Framework: https://github.com/OpenBEL/openbel-framework
