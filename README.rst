@@ -35,8 +35,7 @@ Further Reference
 -----------------
 
 See the wiki_ for further reference. For mailing lists, IRC info, and more, see
-the `OpenBEL Ecosystem`_ section of the `BEL Framework`_.
+the `OpenBEL Ecosystem`_ section of the BEL Framework.
 
 .. _wiki: https://github.com/OpenBEL/bel-editor/wiki
 .. _OpenBEL Ecosystem: https://github.com/OpenBEL/openbel-framework#the-openbel-ecosystem
-.. _BEL Framework: https://github.com/OpenBEL/openbel-framework
