@@ -9,7 +9,11 @@
  *     Selventa - initial API and implementation
  */
 
+/* See https://github.com/nbargnesi/belscript-grammar.git */
+
 package org.openbel.editor.core.parser;
+
+// $ANTLR 3.4 BELScript_v1.g 2012-08-08 11:20:33
 
 import org.antlr.runtime.*;
 

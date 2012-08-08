@@ -9,7 +9,11 @@
  *     Selventa - initial API and implementation
  */
 
+/* See https://github.com/nbargnesi/belscript-grammar.git */
+
 package org.openbel.editor.core.parser;
+
+// $ANTLR 3.4 BELScript_v1.g 2012-08-08 11:20:32
 
 import org.antlr.runtime.*;
 import org.antlr.runtime.tree.*;
@@ -401,11 +405,11 @@ public class BELScript_v1Parser extends Parser {
 
                 // AST REWRITE
                 // elements: record
-                // token labels: 
+                // token labels:
                 // rule labels: retval
-                // token list labels: 
-                // rule list labels: 
-                // wildcard labels: 
+                // token list labels:
+                // rule list labels:
+                // wildcard labels:
                 retval.tree = root_0;
                 RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(
                         adaptor, "rule retval", retval != null ? retval.tree
@@ -838,12 +842,12 @@ public class BELScript_v1Parser extends Parser {
                 stream_QUOTED_VALUE.add(val);
 
                 // AST REWRITE
-                // elements: val, document_property
+                // elements: document_property, val
                 // token labels: val
                 // rule labels: retval
-                // token list labels: 
-                // rule list labels: 
-                // wildcard labels: 
+                // token list labels:
+                // rule list labels:
+                // wildcard labels:
                 retval.tree = root_0;
                 RewriteRuleTokenStream stream_val = new RewriteRuleTokenStream(
                         adaptor, "token val", val);
@@ -907,9 +911,9 @@ public class BELScript_v1Parser extends Parser {
                 // elements: document_property, val
                 // token labels: val
                 // rule labels: retval
-                // token list labels: 
-                // rule list labels: 
-                // wildcard labels: 
+                // token list labels:
+                // rule list labels:
+                // wildcard labels:
                 retval.tree = root_0;
                 RewriteRuleTokenStream stream_val = new RewriteRuleTokenStream(
                         adaptor, "token val", val);
@@ -971,12 +975,12 @@ public class BELScript_v1Parser extends Parser {
                 stream_OBJECT_IDENT.add(val);
 
                 // AST REWRITE
-                // elements: val, document_property
+                // elements: document_property, val
                 // token labels: val
                 // rule labels: retval
-                // token list labels: 
-                // rule list labels: 
-                // wildcard labels: 
+                // token list labels:
+                // rule list labels:
+                // wildcard labels:
                 retval.tree = root_0;
                 RewriteRuleTokenStream stream_val = new RewriteRuleTokenStream(
                         adaptor, "token val", val);
@@ -1190,9 +1194,9 @@ public class BELScript_v1Parser extends Parser {
                 // elements: val
                 // token labels: val
                 // rule labels: retval
-                // token list labels: 
-                // rule list labels: 
-                // wildcard labels: 
+                // token list labels:
+                // rule list labels:
+                // wildcard labels:
                 retval.tree = root_0;
                 RewriteRuleTokenStream stream_val = new RewriteRuleTokenStream(
                         adaptor, "token val", val);
@@ -1246,9 +1250,9 @@ public class BELScript_v1Parser extends Parser {
                 // elements: val
                 // token labels: val
                 // rule labels: retval
-                // token list labels: 
-                // rule list labels: 
-                // wildcard labels: 
+                // token list labels:
+                // rule list labels:
+                // wildcard labels:
                 retval.tree = root_0;
                 RewriteRuleTokenStream stream_val = new RewriteRuleTokenStream(
                         adaptor, "token val", val);
@@ -1378,9 +1382,9 @@ public class BELScript_v1Parser extends Parser {
                 // elements: val, OBJECT_IDENT
                 // token labels: val
                 // rule labels: retval
-                // token list labels: 
-                // rule list labels: 
-                // wildcard labels: 
+                // token list labels:
+                // rule list labels:
+                // wildcard labels:
                 retval.tree = root_0;
                 RewriteRuleTokenStream stream_val = new RewriteRuleTokenStream(
                         adaptor, "token val", val);
@@ -1440,9 +1444,9 @@ public class BELScript_v1Parser extends Parser {
                 // elements: OBJECT_IDENT, val
                 // token labels: val
                 // rule labels: retval
-                // token list labels: 
-                // rule list labels: 
-                // wildcard labels: 
+                // token list labels:
+                // rule list labels:
+                // wildcard labels:
                 retval.tree = root_0;
                 RewriteRuleTokenStream stream_val = new RewriteRuleTokenStream(
                         adaptor, "token val", val);
@@ -1499,12 +1503,12 @@ public class BELScript_v1Parser extends Parser {
                 stream_OBJECT_IDENT.add(val);
 
                 // AST REWRITE
-                // elements: val, OBJECT_IDENT
+                // elements: OBJECT_IDENT, val
                 // token labels: val
                 // rule labels: retval
-                // token list labels: 
-                // rule list labels: 
-                // wildcard labels: 
+                // token list labels:
+                // rule list labels:
+                // wildcard labels:
                 retval.tree = root_0;
                 RewriteRuleTokenStream stream_val = new RewriteRuleTokenStream(
                         adaptor, "token val", val);
@@ -1602,12 +1606,12 @@ public class BELScript_v1Parser extends Parser {
                 stream_KWRD_STMT_GROUP.add(KWRD_STMT_GROUP43);
 
                 // AST REWRITE
-                // elements: 
-                // token labels: 
+                // elements:
+                // token labels:
                 // rule labels: retval
-                // token list labels: 
-                // rule list labels: 
-                // wildcard labels: 
+                // token list labels:
+                // rule list labels:
+                // wildcard labels:
                 retval.tree = root_0;
                 RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(
                         adaptor, "rule retval", retval != null ? retval.tree
@@ -1729,9 +1733,9 @@ public class BELScript_v1Parser extends Parser {
                 // elements: val
                 // token labels: val
                 // rule labels: retval
-                // token list labels: 
-                // rule list labels: 
-                // wildcard labels: 
+                // token list labels:
+                // rule list labels:
+                // wildcard labels:
                 retval.tree = root_0;
                 RewriteRuleTokenStream stream_val = new RewriteRuleTokenStream(
                         adaptor, "token val", val);
@@ -1775,9 +1779,9 @@ public class BELScript_v1Parser extends Parser {
                 // elements: val
                 // token labels: val
                 // rule labels: retval
-                // token list labels: 
-                // rule list labels: 
-                // wildcard labels: 
+                // token list labels:
+                // rule list labels:
+                // wildcard labels:
                 retval.tree = root_0;
                 RewriteRuleTokenStream stream_val = new RewriteRuleTokenStream(
                         adaptor, "token val", val);
@@ -1952,11 +1956,11 @@ public class BELScript_v1Parser extends Parser {
 
                 // AST REWRITE
                 // elements: QUOTED_VALUE, OBJECT_IDENT
-                // token labels: 
+                // token labels:
                 // rule labels: retval
-                // token list labels: 
-                // rule list labels: 
-                // wildcard labels: 
+                // token list labels:
+                // rule list labels:
+                // wildcard labels:
                 retval.tree = root_0;
                 RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(
                         adaptor, "rule retval", retval != null ? retval.tree
@@ -2019,11 +2023,11 @@ public class BELScript_v1Parser extends Parser {
 
                 // AST REWRITE
                 // elements: QUOTED_VALUE, OBJECT_IDENT
-                // token labels: 
+                // token labels:
                 // rule labels: retval
-                // token list labels: 
-                // rule list labels: 
-                // wildcard labels: 
+                // token list labels:
+                // rule list labels:
+                // wildcard labels:
                 retval.tree = root_0;
                 RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(
                         adaptor, "rule retval", retval != null ? retval.tree
@@ -2295,9 +2299,9 @@ public class BELScript_v1Parser extends Parser {
                 // elements: OBJECT_IDENT, val
                 // token labels: val
                 // rule labels: retval
-                // token list labels: 
-                // rule list labels: 
-                // wildcard labels: 
+                // token list labels:
+                // rule list labels:
+                // wildcard labels:
                 retval.tree = root_0;
                 RewriteRuleTokenStream stream_val = new RewriteRuleTokenStream(
                         adaptor, "token val", val);
@@ -2358,12 +2362,12 @@ public class BELScript_v1Parser extends Parser {
                 stream_QUOTED_VALUE.add(val);
 
                 // AST REWRITE
-                // elements: val, OBJECT_IDENT
+                // elements: OBJECT_IDENT, val
                 // token labels: val
                 // rule labels: retval
-                // token list labels: 
-                // rule list labels: 
-                // wildcard labels: 
+                // token list labels:
+                // rule list labels:
+                // wildcard labels:
                 retval.tree = root_0;
                 RewriteRuleTokenStream stream_val = new RewriteRuleTokenStream(
                         adaptor, "token val", val);
@@ -2427,9 +2431,9 @@ public class BELScript_v1Parser extends Parser {
                 // elements: val, OBJECT_IDENT
                 // token labels: val
                 // rule labels: retval
-                // token list labels: 
-                // rule list labels: 
-                // wildcard labels: 
+                // token list labels:
+                // rule list labels:
+                // wildcard labels:
                 retval.tree = root_0;
                 RewriteRuleTokenStream stream_val = new RewriteRuleTokenStream(
                         adaptor, "token val", val);
@@ -2726,11 +2730,11 @@ public class BELScript_v1Parser extends Parser {
 
                 // AST REWRITE
                 // elements: term
-                // token labels: 
+                // token labels:
                 // rule labels: retval
-                // token list labels: 
-                // rule list labels: 
-                // wildcard labels: 
+                // token list labels:
+                // rule list labels:
+                // wildcard labels:
                 retval.tree = root_0;
                 RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(
                         adaptor, "rule retval", retval != null ? retval.tree
@@ -2779,11 +2783,11 @@ public class BELScript_v1Parser extends Parser {
 
                 // AST REWRITE
                 // elements: param
-                // token labels: 
+                // token labels:
                 // rule labels: retval
-                // token list labels: 
-                // rule list labels: 
-                // wildcard labels: 
+                // token list labels:
+                // rule list labels:
+                // wildcard labels:
                 retval.tree = root_0;
                 RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(
                         adaptor, "rule retval", retval != null ? retval.tree
@@ -2916,11 +2920,11 @@ public class BELScript_v1Parser extends Parser {
 
                 // AST REWRITE
                 // elements: function, argument
-                // token labels: 
+                // token labels:
                 // rule labels: retval
-                // token list labels: 
-                // rule list labels: 
-                // wildcard labels: 
+                // token list labels:
+                // rule list labels:
+                // wildcard labels:
                 retval.tree = root_0;
                 RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(
                         adaptor, "rule retval", retval != null ? retval.tree
@@ -3160,12 +3164,12 @@ public class BELScript_v1Parser extends Parser {
                 }
 
                 // AST REWRITE
-                // elements: obj_obj, obj_rel, obj, comment, obj_sub, subject, rel
+                // elements: obj_rel, subject, obj_sub, obj, rel, obj_obj, comment
                 // token labels: comment
                 // rule labels: obj_obj, retval, obj_sub, subject, obj, rel, obj_rel
-                // token list labels: 
-                // rule list labels: 
-                // wildcard labels: 
+                // token list labels:
+                // rule list labels:
+                // wildcard labels:
                 retval.tree = root_0;
                 RewriteRuleTokenStream stream_comment = new RewriteRuleTokenStream(
                         adaptor, "token comment", comment);
@@ -3458,12 +3462,12 @@ public class BELScript_v1Parser extends Parser {
                 stream_OBJECT_IDENT.add(OBJECT_IDENT89);
 
                 // AST REWRITE
-                // elements: ns_prefix, OBJECT_IDENT
-                // token labels: 
+                // elements: OBJECT_IDENT, ns_prefix
+                // token labels:
                 // rule labels: retval
-                // token list labels: 
-                // rule list labels: 
-                // wildcard labels: 
+                // token list labels:
+                // rule list labels:
+                // wildcard labels:
                 retval.tree = root_0;
                 RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(
                         adaptor, "rule retval", retval != null ? retval.tree
@@ -3533,11 +3537,11 @@ public class BELScript_v1Parser extends Parser {
 
                 // AST REWRITE
                 // elements: QUOTED_VALUE, ns_prefix
-                // token labels: 
+                // token labels:
                 // rule labels: retval
-                // token list labels: 
-                // rule list labels: 
-                // wildcard labels: 
+                // token list labels:
+                // rule list labels:
+                // wildcard labels:
                 retval.tree = root_0;
                 RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(
                         adaptor, "rule retval", retval != null ? retval.tree
