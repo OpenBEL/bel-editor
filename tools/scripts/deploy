@@ -2,10 +2,13 @@
 ./tools/scripts/repo-ize || exit 1
 rm -fr eclipse
 git clone --quiet git@github.com:OpenBEL/eclipse.git eclipse
-cd eclipse/unstable || exit 1
-git rm plugins/* features/* || exit 1
-unzip -oqq ../../unstable-repository.zip
+cd eclipse || exit 1
+OLD_VERSION=$(ls stable/features/*.jar | grep 20.*\.jar -o | sed 's/.jar//g')
+git mv stable ${OLD_VERSION}
+mkdir stable || exit 1
+cd stable || exit 1
+unzip -oqq ../../stable-repository.zip
 git add --all .
-git commit -a -m "Promoting build ${BUILD} to live repository"
+git commit -a -m "Promoting stable build ${BUILD} to live repository"
 git push 2>&1
 
