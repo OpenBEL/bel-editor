@@ -13,19 +13,15 @@ package org.openbel.editor.ui.editor;
 
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.internal.ui.text.hover.DocumentationHover;
-import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.IRegion;
-import org.eclipse.jface.text.ITextViewer;
-import org.eclipse.jface.text.Region;
+import org.eclipse.jface.text.*;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 /**
  * A text hover implementation that takes into consideration not only the valid
  * Java identifier elements, but it also handles abbreviations. It extends the
  * {@link DocumentationHover} class to inherit the UI and logic of the class.
- * 
- * @author a.bumbas@gmail.com
+ *
+ * @author Adrian Bumbas {@code <a.bumbas@gmail.com>}
  */
 @SuppressWarnings("restriction")
 public class BELTextHover extends DocumentationHover {
@@ -33,7 +29,7 @@ public class BELTextHover extends DocumentationHover {
 
     /**
      * Default constructor.
-     * 
+     *
      * @param editor - the {@link ITextEditor} instance used by the underlying
      *            class.
      */
@@ -110,7 +106,7 @@ public class BELTextHover extends DocumentationHover {
      * Determines if the given char is to be taken into consideration for the
      * hover. The char is valid when is a valid Java identifier or is a part of
      * an abbreviation.
-     * 
+     *
      * @param c - the character to be checked
      * @return true if the character is valid, false otherwise
      */

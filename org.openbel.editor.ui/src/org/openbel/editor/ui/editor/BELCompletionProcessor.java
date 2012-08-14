@@ -27,7 +27,7 @@ import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 class BELCompletionProcessor implements IContentAssistProcessor {
 
     /**
-     * 
+     *
      */
     @Override
     public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer,
@@ -37,35 +37,35 @@ class BELCompletionProcessor implements IContentAssistProcessor {
 
         /*
          * if (path != null) {
-         * 
+         *
          * String filename = path.toOSString(); IDocument document =
          * viewer.getDocument();
-         * 
+         *
          * CodeContext codeContext = codeContexts.get(filename); int linenumber
          * = 0;
-         * 
+         *
          * try { // the following starts on line 0?, so we add 1 to the result
          * linenumber = document.getLineOfOffset(offset)+1; } catch
          * (BadLocationException e1) { e1.printStackTrace(); }
-         * 
+         *
          * if (codeContext == null) {
-         * 
+         *
          * try { codeContext = CodeContext.getCodeContext(filename,
          * document.get()); } catch (IOException e) { e.printStackTrace(); }
          * kkkk }
-         * 
+         *
          * String prefix = lastWord(document, offset); String indent =
          * lastIndent(document, offset); String line =
          * document.get().split("\\r?\\n")[linenumber];
-         * 
+         *
          * if(codeContext!=null){
-         * 
+         *
          * List<Node> units = codeContext.getCompletionsForString(line, prefix,
          * linenumber);
-         * 
+         *
          * for(Node unit:units){ IContextInformation info = new
          * ContextInformation(unit.getDocumentation(),unit.getDocumentation());
-         * 
+         *
          * int prefix_len = prefix.lastIndexOf('.');
          * if(unit.getInsertionText()!=null){ int len =
          * unit.getInsertionText().length(); if(len>0){ results.add(new
@@ -85,18 +85,19 @@ class BELCompletionProcessor implements IContentAssistProcessor {
          * prefix.length() + 1, null, keyword, info, values[i]
          * .getDescription())); } } } return results.toArray(new
          * ICompletionProposal[results.size()]);
-         * 
+         *
          * }
          */
         return null;
     }
 
     /**
-     * 
+     *
      * @param doc
      * @param offset
      * @return
      */
+    @SuppressWarnings("unused")
     private String lastWord(IDocument doc, int offset) {
         try {
             for (int n = offset - 1; n >= 0; n--) {
@@ -111,11 +112,12 @@ class BELCompletionProcessor implements IContentAssistProcessor {
     }
 
     /**
-     * 
+     *
      * @param doc
      * @param offset
      * @return
      */
+    @SuppressWarnings("unused")
     private String lastIndent(IDocument doc, int offset) {
         try {
             int start = offset - 1;
@@ -134,7 +136,7 @@ class BELCompletionProcessor implements IContentAssistProcessor {
     }
 
     /**
-     * 
+     *
      */
     @Override
     public IContextInformation[] computeContextInformation(ITextViewer viewer,
