@@ -10,7 +10,8 @@
  */
 package org.openbel.editor.core.parser.ast;
 
-import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
+import org.eclipse.dltk.ast.expressions.Expression;
+import org.openbel.editor.core.parser.BELScript_v1Parser;
 
 /**
  * Represents a BEL Script document in the BEL Editor AST.
@@ -18,16 +19,11 @@ import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
  * This is analogous to a complete BEL Script document.
  * </p>
  */
-public class ASTDocument extends ModuleDeclaration {
+public class ASTDocument extends Expression {
 
-    /**
-     * Constructs a document AST node.
-     * 
-     * @param length Length of the source document
-     */
-    public ASTDocument(int length) {
-        // true allows for doRebuild behavior
-        super(length, true);
+    @Override
+    public int getKind() {
+        return BELScript_v1Parser.DOCDEF;
     }
 
 }

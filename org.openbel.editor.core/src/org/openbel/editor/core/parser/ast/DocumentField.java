@@ -10,7 +10,9 @@
  */
 package org.openbel.editor.core.parser.ast;
 
-import org.eclipse.dltk.ast.declarations.FieldDeclaration;
+import org.eclipse.dltk.ast.ASTVisitor;
+import org.eclipse.dltk.ast.expressions.Expression;
+import org.openbel.editor.core.parser.BELScript_v1Parser;
 
 /**
  * Represents a field of a BEL Script document in the BEL Editor AST.
@@ -29,20 +31,44 @@ import org.eclipse.dltk.ast.declarations.FieldDeclaration;
  * 
  * </p>
  */
-public class DocumentField extends FieldDeclaration {
+public class DocumentField extends Expression {
+    private Keyword keyword;
+    private QuotedValue value;
 
     /**
-     * Constructs a document field AST node.
-     * 
-     * @param name
-     * @param nameStart
-     * @param nameEnd
-     * @param declStart
-     * @param declEnd
+     * @see org.eclipse.dltk.ast.ASTNode#traverse(org.eclipse.dltk.ast.ASTVisitor)
      */
-    public DocumentField(String name, int nameStart, int nameEnd,
-            int declStart, int declEnd) {
-        super(name, nameStart, nameEnd, declStart, declEnd);
+    @Override
+    public void traverse(ASTVisitor pVisitor) throws Exception {
+        if (pVisitor.visit(this)) {
+            if (getKeyword() != null) {
+                getKeyword().traverse(pVisitor);
+            }
+            if (value != null) {
+                value.traverse(pVisitor);
+            }
+            pVisitor.endvisit(this);
+        }
     }
 
+    @Override
+    public int getKind() {
+        return BELScript_v1Parser.DOCSET_QV;
+    }
+
+    public QuotedValue getValue() {
+        return value;
+    }
+
+    public void setValue(QuotedValue value) {
+        this.value = value;
+    }
+
+    public Keyword getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(Keyword keyword) {
+        this.keyword = keyword;
+    }
 }

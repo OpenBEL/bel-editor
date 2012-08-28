@@ -10,7 +10,9 @@
  */
 package org.openbel.editor.core.parser.ast;
 
+import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.Expression;
+import org.openbel.editor.core.parser.BELScript_v1Parser;
 
 /**
  * Represents the use of a defined annotation within the current context of the
@@ -32,22 +34,38 @@ import org.eclipse.dltk.ast.expressions.Expression;
  * 
  * </p>
  */
-public class ASTSet extends Expression {
+public class SetExpression extends Expression {
+
+    private Expression name;
+    private String text;
 
     /**
-     * Constructs a set AST node.
+     * @see org.eclipse.dltk.ast.ASTNode#traverse(org.eclipse.dltk.ast.ASTVisitor)
      */
-    public ASTSet() {
+    @Override
+    public void traverse(ASTVisitor pVisitor) throws Exception {
+        if (pVisitor.visit(this)) {
+            if (name != null) {
+                name.traverse(pVisitor);
+            }
+            pVisitor.endvisit(this);
+        }
     }
 
-    /**
-     * Constructs a set AST node.
-     * 
-     * @param start
-     * @param end
-     */
-    public ASTSet(int start, int end) {
-        super(start, end);
+    public Expression getName() {
+        return name;
+    }
+
+    public void setName(Expression name) {
+        this.name = name;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
     /**
@@ -55,7 +73,7 @@ public class ASTSet extends Expression {
      */
     @Override
     public int getKind() {
-        return 0;
+        return BELScript_v1Parser.ANNO_SET_QV;
     }
 
 }

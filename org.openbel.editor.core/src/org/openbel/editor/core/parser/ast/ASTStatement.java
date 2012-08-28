@@ -14,6 +14,7 @@ import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.core.ISourceRange;
+import org.openbel.editor.core.parser.BELScript_v1Parser;
 
 /**
  * Represents a statement in BEL Script.
@@ -30,23 +31,9 @@ import org.eclipse.dltk.core.ISourceRange;
  * </p>
  */
 public class ASTStatement extends Statement {
-
-    /**
-     * Constructs a statement AST node.
-     */
-    public ASTStatement() {
-        super();
-    }
-
-    /**
-     * Constructs a statement AST node.
-     * 
-     * @param start
-     * @param end
-     */
-    public ASTStatement(int start, int end) {
-        super(start, end);
-    }
+    private TermDefinition leftTerm;
+    private TermDefinition rightTerm;
+    private RelationshipLiteral relationship;
 
     /**
      * {@inheritDoc}
@@ -61,7 +48,7 @@ public class ASTStatement extends Statement {
      */
     @Override
     public int getKind() {
-        return 0;
+        return BELScript_v1Parser.STMTDEF;
     }
 
     /**
@@ -86,6 +73,39 @@ public class ASTStatement extends Statement {
     @Override
     public void traverse(ASTVisitor visitor) throws Exception {
         super.traverse(visitor);
+        if (leftTerm != null) {
+            leftTerm.traverse(visitor);
+        }
+        if (rightTerm != null) {
+            rightTerm.traverse(visitor);
+        }
+        if (relationship != null) {
+            relationship.traverse(visitor);
+        }
+    }
+
+    public TermDefinition getLeftTerm() {
+        return leftTerm;
+    }
+
+    public void setLeftTerm(TermDefinition leftTerm) {
+        this.leftTerm = leftTerm;
+    }
+
+    public TermDefinition getRightTerm() {
+        return rightTerm;
+    }
+
+    public void setRightTerm(TermDefinition rightTerm) {
+        this.rightTerm = rightTerm;
+    }
+
+    public RelationshipLiteral getRelationship() {
+        return relationship;
+    }
+
+    public void setRelationship(RelationshipLiteral relationship) {
+        this.relationship = relationship;
     }
 
 }

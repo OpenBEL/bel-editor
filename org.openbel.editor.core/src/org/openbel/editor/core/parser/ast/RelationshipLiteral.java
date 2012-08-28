@@ -47,6 +47,7 @@ public class RelationshipLiteral extends Literal {
      */
     @Override
     public int getKind() {
+        //TODO: revisit later
         return 0;
     }
 
