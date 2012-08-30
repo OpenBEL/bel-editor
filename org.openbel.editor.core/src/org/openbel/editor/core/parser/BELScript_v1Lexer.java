@@ -2020,12 +2020,12 @@ public class BELScript_v1Lexer extends Lexer {
         try {
             int _type = DOCUMENT_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // BELScript_v1.g:293:5: ( '#' (~ ( '\\n' | '\\r' ) )* )
-            // BELScript_v1.g:293:9: '#' (~ ( '\\n' | '\\r' ) )*
+            // BELScript_v1.g:278:5: ( '#' (~ ( '\\n' | '\\r' ) )* )
+            // BELScript_v1.g:278:9: '#' (~ ( '\\n' | '\\r' ) )*
             {
                 match('#');
 
-                // BELScript_v1.g:293:13: (~ ( '\\n' | '\\r' ) )*
+                // BELScript_v1.g:278:13: (~ ( '\\n' | '\\r' ) )*
                 loop1: do {
                     int alt1 = 2;
                     int LA1_0 = input.LA(1);
@@ -2075,12 +2075,12 @@ public class BELScript_v1Lexer extends Lexer {
         try {
             int _type = STATEMENT_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // BELScript_v1.g:297:5: ( '//' ( ( '\\\\\\n' ) | ( '\\\\\\r\\n' ) |~ ( '\\n' | '\\r' ) )* )
-            // BELScript_v1.g:297:9: '//' ( ( '\\\\\\n' ) | ( '\\\\\\r\\n' ) |~ ( '\\n' | '\\r' ) )*
+            // BELScript_v1.g:282:5: ( '//' ( ( '\\\\\\n' ) | ( '\\\\\\r\\n' ) |~ ( '\\n' | '\\r' ) )* )
+            // BELScript_v1.g:282:9: '//' ( ( '\\\\\\n' ) | ( '\\\\\\r\\n' ) |~ ( '\\n' | '\\r' ) )*
             {
                 match("//");
 
-                // BELScript_v1.g:297:14: ( ( '\\\\\\n' ) | ( '\\\\\\r\\n' ) |~ ( '\\n' | '\\r' ) )*
+                // BELScript_v1.g:282:14: ( ( '\\\\\\n' ) | ( '\\\\\\r\\n' ) |~ ( '\\n' | '\\r' ) )*
                 loop2: do {
                     int alt2 = 4;
                     int LA2_0 = input.LA(1);
@@ -2111,10 +2111,10 @@ public class BELScript_v1Lexer extends Lexer {
 
                     switch (alt2) {
                     case 1:
-                    // BELScript_v1.g:297:15: ( '\\\\\\n' )
+                    // BELScript_v1.g:282:15: ( '\\\\\\n' )
                     {
-                        // BELScript_v1.g:297:15: ( '\\\\\\n' )
-                        // BELScript_v1.g:297:16: '\\\\\\n'
+                        // BELScript_v1.g:282:15: ( '\\\\\\n' )
+                        // BELScript_v1.g:282:16: '\\\\\\n'
                         {
                             match("\\\n");
 
@@ -2123,10 +2123,10 @@ public class BELScript_v1Lexer extends Lexer {
                     }
                         break;
                     case 2:
-                    // BELScript_v1.g:297:26: ( '\\\\\\r\\n' )
+                    // BELScript_v1.g:282:26: ( '\\\\\\r\\n' )
                     {
-                        // BELScript_v1.g:297:26: ( '\\\\\\r\\n' )
-                        // BELScript_v1.g:297:27: '\\\\\\r\\n'
+                        // BELScript_v1.g:282:26: ( '\\\\\\r\\n' )
+                        // BELScript_v1.g:282:27: '\\\\\\r\\n'
                         {
                             match("\\\r\n");
 
@@ -2135,7 +2135,7 @@ public class BELScript_v1Lexer extends Lexer {
                     }
                         break;
                     case 3:
-                    // BELScript_v1.g:297:39: ~ ( '\\n' | '\\r' )
+                    // BELScript_v1.g:282:39: ~ ( '\\n' | '\\r' )
                     {
                         if ((input.LA(1) >= '\u0000' && input.LA(1) <= '\t')
                                 || (input.LA(1) >= '\u000B' && input.LA(1) <= '\f')
@@ -2173,14 +2173,14 @@ public class BELScript_v1Lexer extends Lexer {
         try {
             int _type = IDENT_LIST;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // BELScript_v1.g:301:5: ( '{' OBJECT_IDENT ( COMMA OBJECT_IDENT )* '}' )
-            // BELScript_v1.g:301:9: '{' OBJECT_IDENT ( COMMA OBJECT_IDENT )* '}'
+            // BELScript_v1.g:286:5: ( '{' OBJECT_IDENT ( COMMA OBJECT_IDENT )* '}' )
+            // BELScript_v1.g:286:9: '{' OBJECT_IDENT ( COMMA OBJECT_IDENT )* '}'
             {
                 match('{');
 
                 mOBJECT_IDENT();
 
-                // BELScript_v1.g:301:26: ( COMMA OBJECT_IDENT )*
+                // BELScript_v1.g:286:26: ( COMMA OBJECT_IDENT )*
                 loop3: do {
                     int alt3 = 2;
                     int LA3_0 = input.LA(1);
@@ -2191,7 +2191,7 @@ public class BELScript_v1Lexer extends Lexer {
 
                     switch (alt3) {
                     case 1:
-                    // BELScript_v1.g:301:27: COMMA OBJECT_IDENT
+                    // BELScript_v1.g:286:27: COMMA OBJECT_IDENT
                     {
                         mCOMMA();
 
@@ -2223,12 +2223,12 @@ public class BELScript_v1Lexer extends Lexer {
         try {
             int _type = VALUE_LIST;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // BELScript_v1.g:305:5: ( '{' ( OBJECT_IDENT | QUOTED_VALUE | VALUE_LIST )? ( COMMA ( ' ' )* ( OBJECT_IDENT | QUOTED_VALUE | VALUE_LIST )? )* '}' )
-            // BELScript_v1.g:305:9: '{' ( OBJECT_IDENT | QUOTED_VALUE | VALUE_LIST )? ( COMMA ( ' ' )* ( OBJECT_IDENT | QUOTED_VALUE | VALUE_LIST )? )* '}'
+            // BELScript_v1.g:290:5: ( '{' ( OBJECT_IDENT | QUOTED_VALUE | VALUE_LIST )? ( COMMA ( ' ' )* ( OBJECT_IDENT | QUOTED_VALUE | VALUE_LIST )? )* '}' )
+            // BELScript_v1.g:290:9: '{' ( OBJECT_IDENT | QUOTED_VALUE | VALUE_LIST )? ( COMMA ( ' ' )* ( OBJECT_IDENT | QUOTED_VALUE | VALUE_LIST )? )* '}'
             {
                 match('{');
 
-                // BELScript_v1.g:305:13: ( OBJECT_IDENT | QUOTED_VALUE | VALUE_LIST )?
+                // BELScript_v1.g:290:13: ( OBJECT_IDENT | QUOTED_VALUE | VALUE_LIST )?
                 int alt4 = 4;
                 switch (input.LA(1)) {
                 case '0':
@@ -2309,21 +2309,21 @@ public class BELScript_v1Lexer extends Lexer {
 
                 switch (alt4) {
                 case 1:
-                // BELScript_v1.g:305:14: OBJECT_IDENT
+                // BELScript_v1.g:290:14: OBJECT_IDENT
                 {
                     mOBJECT_IDENT();
 
                 }
                     break;
                 case 2:
-                // BELScript_v1.g:305:29: QUOTED_VALUE
+                // BELScript_v1.g:290:29: QUOTED_VALUE
                 {
                     mQUOTED_VALUE();
 
                 }
                     break;
                 case 3:
-                // BELScript_v1.g:305:44: VALUE_LIST
+                // BELScript_v1.g:290:44: VALUE_LIST
                 {
                     mVALUE_LIST();
 
@@ -2332,7 +2332,7 @@ public class BELScript_v1Lexer extends Lexer {
 
                 }
 
-                // BELScript_v1.g:305:57: ( COMMA ( ' ' )* ( OBJECT_IDENT | QUOTED_VALUE | VALUE_LIST )? )*
+                // BELScript_v1.g:290:57: ( COMMA ( ' ' )* ( OBJECT_IDENT | QUOTED_VALUE | VALUE_LIST )? )*
                 loop7: do {
                     int alt7 = 2;
                     int LA7_0 = input.LA(1);
@@ -2343,11 +2343,11 @@ public class BELScript_v1Lexer extends Lexer {
 
                     switch (alt7) {
                     case 1:
-                    // BELScript_v1.g:305:58: COMMA ( ' ' )* ( OBJECT_IDENT | QUOTED_VALUE | VALUE_LIST )?
+                    // BELScript_v1.g:290:58: COMMA ( ' ' )* ( OBJECT_IDENT | QUOTED_VALUE | VALUE_LIST )?
                     {
                         mCOMMA();
 
-                        // BELScript_v1.g:305:64: ( ' ' )*
+                        // BELScript_v1.g:290:64: ( ' ' )*
                         loop5: do {
                             int alt5 = 2;
                             int LA5_0 = input.LA(1);
@@ -2358,7 +2358,7 @@ public class BELScript_v1Lexer extends Lexer {
 
                             switch (alt5) {
                             case 1:
-                            // BELScript_v1.g:305:65: ' '
+                            // BELScript_v1.g:290:65: ' '
                             {
                                 match(' ');
 
@@ -2370,7 +2370,7 @@ public class BELScript_v1Lexer extends Lexer {
                             }
                         } while (true);
 
-                        // BELScript_v1.g:305:71: ( OBJECT_IDENT | QUOTED_VALUE | VALUE_LIST )?
+                        // BELScript_v1.g:290:71: ( OBJECT_IDENT | QUOTED_VALUE | VALUE_LIST )?
                         int alt6 = 4;
                         switch (input.LA(1)) {
                         case '0':
@@ -2451,21 +2451,21 @@ public class BELScript_v1Lexer extends Lexer {
 
                         switch (alt6) {
                         case 1:
-                        // BELScript_v1.g:305:72: OBJECT_IDENT
+                        // BELScript_v1.g:290:72: OBJECT_IDENT
                         {
                             mOBJECT_IDENT();
 
                         }
                             break;
                         case 2:
-                        // BELScript_v1.g:305:87: QUOTED_VALUE
+                        // BELScript_v1.g:290:87: QUOTED_VALUE
                         {
                             mQUOTED_VALUE();
 
                         }
                             break;
                         case 3:
-                        // BELScript_v1.g:305:102: VALUE_LIST
+                        // BELScript_v1.g:290:102: VALUE_LIST
                         {
                             mVALUE_LIST();
 
@@ -2500,12 +2500,12 @@ public class BELScript_v1Lexer extends Lexer {
         try {
             int _type = QUOTED_VALUE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // BELScript_v1.g:309:5: ( '\"' ( ESCAPE_SEQUENCE | '\\\\\\n' | '\\\\\\r\\n' |~ ( '\\\\' | '\"' ) )* '\"' )
-            // BELScript_v1.g:309:9: '\"' ( ESCAPE_SEQUENCE | '\\\\\\n' | '\\\\\\r\\n' |~ ( '\\\\' | '\"' ) )* '\"'
+            // BELScript_v1.g:294:5: ( '\"' ( ESCAPE_SEQUENCE | '\\\\\\n' | '\\\\\\r\\n' |~ ( '\\\\' | '\"' ) )* '\"' )
+            // BELScript_v1.g:294:9: '\"' ( ESCAPE_SEQUENCE | '\\\\\\n' | '\\\\\\r\\n' |~ ( '\\\\' | '\"' ) )* '\"'
             {
                 match('\"');
 
-                // BELScript_v1.g:309:13: ( ESCAPE_SEQUENCE | '\\\\\\n' | '\\\\\\r\\n' |~ ( '\\\\' | '\"' ) )*
+                // BELScript_v1.g:294:13: ( ESCAPE_SEQUENCE | '\\\\\\n' | '\\\\\\r\\n' |~ ( '\\\\' | '\"' ) )*
                 loop8: do {
                     int alt8 = 5;
                     int LA8_0 = input.LA(1);
@@ -2551,28 +2551,28 @@ public class BELScript_v1Lexer extends Lexer {
 
                     switch (alt8) {
                     case 1:
-                    // BELScript_v1.g:309:15: ESCAPE_SEQUENCE
+                    // BELScript_v1.g:294:15: ESCAPE_SEQUENCE
                     {
                         mESCAPE_SEQUENCE();
 
                     }
                         break;
                     case 2:
-                    // BELScript_v1.g:309:33: '\\\\\\n'
+                    // BELScript_v1.g:294:33: '\\\\\\n'
                     {
                         match("\\\n");
 
                     }
                         break;
                     case 3:
-                    // BELScript_v1.g:309:42: '\\\\\\r\\n'
+                    // BELScript_v1.g:294:42: '\\\\\\r\\n'
                     {
                         match("\\\r\n");
 
                     }
                         break;
                     case 4:
-                    // BELScript_v1.g:309:53: ~ ( '\\\\' | '\"' )
+                    // BELScript_v1.g:294:53: ~ ( '\\\\' | '\"' )
                     {
                         if ((input.LA(1) >= '\u0000' && input.LA(1) <= '!')
                                 || (input.LA(1) >= '#' && input.LA(1) <= '[')
@@ -2612,8 +2612,8 @@ public class BELScript_v1Lexer extends Lexer {
         try {
             int _type = LP;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // BELScript_v1.g:312:3: ( '(' )
-            // BELScript_v1.g:312:5: '('
+            // BELScript_v1.g:297:3: ( '(' )
+            // BELScript_v1.g:297:5: '('
             {
                 match('(');
 
@@ -2633,8 +2633,8 @@ public class BELScript_v1Lexer extends Lexer {
         try {
             int _type = RP;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // BELScript_v1.g:313:3: ( ')' )
-            // BELScript_v1.g:313:5: ')'
+            // BELScript_v1.g:298:3: ( ')' )
+            // BELScript_v1.g:298:5: ')'
             {
                 match(')');
 
@@ -2654,8 +2654,8 @@ public class BELScript_v1Lexer extends Lexer {
         try {
             int _type = EQ;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // BELScript_v1.g:314:3: ( '=' )
-            // BELScript_v1.g:314:5: '='
+            // BELScript_v1.g:299:3: ( '=' )
+            // BELScript_v1.g:299:5: '='
             {
                 match('=');
 
@@ -2675,8 +2675,8 @@ public class BELScript_v1Lexer extends Lexer {
         try {
             int _type = COLON;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // BELScript_v1.g:315:6: ( ':' )
-            // BELScript_v1.g:315:8: ':'
+            // BELScript_v1.g:300:6: ( ':' )
+            // BELScript_v1.g:300:8: ':'
             {
                 match(':');
 
@@ -2696,8 +2696,8 @@ public class BELScript_v1Lexer extends Lexer {
         try {
             int _type = COMMA;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // BELScript_v1.g:316:6: ( ',' )
-            // BELScript_v1.g:316:8: ','
+            // BELScript_v1.g:301:6: ( ',' )
+            // BELScript_v1.g:301:8: ','
             {
                 match(',');
 
@@ -2717,7 +2717,7 @@ public class BELScript_v1Lexer extends Lexer {
         try {
             int _type = NEWLINE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // BELScript_v1.g:319:5: ( ( '\
+            // BELScript_v1.g:304:5: ( ( '\
             int alt10 = 2;
             int LA10_0 = input.LA(1);
 
@@ -2743,9 +2743,9 @@ public class BELScript_v1Lexer extends Lexer {
             }
             switch (alt10) {
             case 1:
-            // BELScript_v1.g:319:9: ( '\
+            // BELScript_v1.g:304:9: ( '\
             {
-                // BELScript_v1.g:319:9: ( '\
+                // BELScript_v1.g:304:9: ( '\
                 int alt9 = 2;
                 int LA9_0 = input.LA(1);
 
@@ -2754,7 +2754,7 @@ public class BELScript_v1Lexer extends Lexer {
                 }
                 switch (alt9) {
                 case 1:
-                // BELScript_v1.g:319:9: '\
+                // BELScript_v1.g:304:9: '\
                 {
                     match('\r');
 
@@ -2768,7 +2768,7 @@ public class BELScript_v1Lexer extends Lexer {
             }
                 break;
             case 2:
-            // BELScript_v1.g:319:30: '\
+            // BELScript_v1.g:304:30: '\
             {
                 match('\r');
 
@@ -2790,10 +2790,10 @@ public class BELScript_v1Lexer extends Lexer {
         try {
             int _type = WS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // BELScript_v1.g:322:3: ( ( ' ' | '\\t' | '\\n' | '\\r' | '\\f' | '\\\\\\n' | '\\\\\\r\\n' )+ )
-            // BELScript_v1.g:322:5: ( ' ' | '\\t' | '\\n' | '\\r' | '\\f' | '\\\\\\n' | '\\\\\\r\\n' )+
+            // BELScript_v1.g:307:3: ( ( ' ' | '\\t' | '\\n' | '\\r' | '\\f' | '\\\\\\n' | '\\\\\\r\\n' )+ )
+            // BELScript_v1.g:307:5: ( ' ' | '\\t' | '\\n' | '\\r' | '\\f' | '\\\\\\n' | '\\\\\\r\\n' )+
             {
-                // BELScript_v1.g:322:5: ( ' ' | '\\t' | '\\n' | '\\r' | '\\f' | '\\\\\\n' | '\\\\\\r\\n' )+
+                // BELScript_v1.g:307:5: ( ' ' | '\\t' | '\\n' | '\\r' | '\\f' | '\\\\\\n' | '\\\\\\r\\n' )+
                 int cnt11 = 0;
                 loop11: do {
                     int alt11 = 8;
@@ -2835,49 +2835,49 @@ public class BELScript_v1Lexer extends Lexer {
 
                     switch (alt11) {
                     case 1:
-                    // BELScript_v1.g:322:6: ' '
+                    // BELScript_v1.g:307:6: ' '
                     {
                         match(' ');
 
                     }
                         break;
                     case 2:
-                    // BELScript_v1.g:322:12: '\\t'
+                    // BELScript_v1.g:307:12: '\\t'
                     {
                         match('\t');
 
                     }
                         break;
                     case 3:
-                    // BELScript_v1.g:322:19: '\\n'
+                    // BELScript_v1.g:307:19: '\\n'
                     {
                         match('\n');
 
                     }
                         break;
                     case 4:
-                    // BELScript_v1.g:322:26: '\\r'
+                    // BELScript_v1.g:307:26: '\\r'
                     {
                         match('\r');
 
                     }
                         break;
                     case 5:
-                    // BELScript_v1.g:322:32: '\\f'
+                    // BELScript_v1.g:307:32: '\\f'
                     {
                         match('\f');
 
                     }
                         break;
                     case 6:
-                    // BELScript_v1.g:322:39: '\\\\\\n'
+                    // BELScript_v1.g:307:39: '\\\\\\n'
                     {
                         match("\\\n");
 
                     }
                         break;
                     case 7:
-                    // BELScript_v1.g:322:48: '\\\\\\r\\n'
+                    // BELScript_v1.g:307:48: '\\\\\\r\\n'
                     {
                         match("\\\r\n");
 
@@ -2911,8 +2911,8 @@ public class BELScript_v1Lexer extends Lexer {
         try {
             int _type = KWRD_ANNO;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // BELScript_v1.g:327:5: ( ( 'A' | 'a' ) ( 'N' | 'n' ) ( 'N' | 'n' ) ( 'O' | 'o' ) ( 'T' | 't' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'I' | 'i' ) ( 'O' | 'o' ) ( 'N' | 'n' ) )
-            // BELScript_v1.g:327:9: ( 'A' | 'a' ) ( 'N' | 'n' ) ( 'N' | 'n' ) ( 'O' | 'o' ) ( 'T' | 't' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'I' | 'i' ) ( 'O' | 'o' ) ( 'N' | 'n' )
+            // BELScript_v1.g:312:5: ( ( 'A' | 'a' ) ( 'N' | 'n' ) ( 'N' | 'n' ) ( 'O' | 'o' ) ( 'T' | 't' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'I' | 'i' ) ( 'O' | 'o' ) ( 'N' | 'n' ) )
+            // BELScript_v1.g:312:9: ( 'A' | 'a' ) ( 'N' | 'n' ) ( 'N' | 'n' ) ( 'O' | 'o' ) ( 'T' | 't' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'I' | 'i' ) ( 'O' | 'o' ) ( 'N' | 'n' )
             {
                 if (input.LA(1) == 'A' || input.LA(1) == 'a') {
                     input.consume();
@@ -3030,8 +3030,8 @@ public class BELScript_v1Lexer extends Lexer {
         try {
             int _type = KWRD_AS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // BELScript_v1.g:331:5: ( ( 'A' | 'a' ) ( 'S' | 's' ) )
-            // BELScript_v1.g:331:9: ( 'A' | 'a' ) ( 'S' | 's' )
+            // BELScript_v1.g:316:5: ( ( 'A' | 'a' ) ( 'S' | 's' ) )
+            // BELScript_v1.g:316:9: ( 'A' | 'a' ) ( 'S' | 's' )
             {
                 if (input.LA(1) == 'A' || input.LA(1) == 'a') {
                     input.consume();
@@ -3069,8 +3069,8 @@ public class BELScript_v1Lexer extends Lexer {
         try {
             int _type = KWRD_AUTHORS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // BELScript_v1.g:335:5: ( ( 'A' | 'a' ) ( 'U' | 'u' ) ( 'T' | 't' ) ( 'H' | 'h' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'S' | 's' ) )
-            // BELScript_v1.g:335:9: ( 'A' | 'a' ) ( 'U' | 'u' ) ( 'T' | 't' ) ( 'H' | 'h' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'S' | 's' )
+            // BELScript_v1.g:320:5: ( ( 'A' | 'a' ) ( 'U' | 'u' ) ( 'T' | 't' ) ( 'H' | 'h' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'S' | 's' ) )
+            // BELScript_v1.g:320:9: ( 'A' | 'a' ) ( 'U' | 'u' ) ( 'T' | 't' ) ( 'H' | 'h' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'S' | 's' )
             {
                 if (input.LA(1) == 'A' || input.LA(1) == 'a') {
                     input.consume();
@@ -3158,8 +3158,8 @@ public class BELScript_v1Lexer extends Lexer {
         try {
             int _type = KWRD_CONTACTINFO;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // BELScript_v1.g:339:5: ( ( 'C' | 'c' ) ( 'O' | 'o' ) ( 'N' | 'n' ) ( 'T' | 't' ) ( 'A' | 'a' ) ( 'C' | 'c' ) ( 'T' | 't' ) ( 'I' | 'i' ) ( 'N' | 'n' ) ( 'F' | 'f' ) ( 'O' | 'o' ) )
-            // BELScript_v1.g:339:9: ( 'C' | 'c' ) ( 'O' | 'o' ) ( 'N' | 'n' ) ( 'T' | 't' ) ( 'A' | 'a' ) ( 'C' | 'c' ) ( 'T' | 't' ) ( 'I' | 'i' ) ( 'N' | 'n' ) ( 'F' | 'f' ) ( 'O' | 'o' )
+            // BELScript_v1.g:324:5: ( ( 'C' | 'c' ) ( 'O' | 'o' ) ( 'N' | 'n' ) ( 'T' | 't' ) ( 'A' | 'a' ) ( 'C' | 'c' ) ( 'T' | 't' ) ( 'I' | 'i' ) ( 'N' | 'n' ) ( 'F' | 'f' ) ( 'O' | 'o' ) )
+            // BELScript_v1.g:324:9: ( 'C' | 'c' ) ( 'O' | 'o' ) ( 'N' | 'n' ) ( 'T' | 't' ) ( 'A' | 'a' ) ( 'C' | 'c' ) ( 'T' | 't' ) ( 'I' | 'i' ) ( 'N' | 'n' ) ( 'F' | 'f' ) ( 'O' | 'o' )
             {
                 if (input.LA(1) == 'C' || input.LA(1) == 'c') {
                     input.consume();
@@ -3287,8 +3287,8 @@ public class BELScript_v1Lexer extends Lexer {
         try {
             int _type = KWRD_COPYRIGHT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // BELScript_v1.g:343:5: ( ( 'C' | 'c' ) ( 'O' | 'o' ) ( 'P' | 'p' ) ( 'Y' | 'y' ) ( 'R' | 'r' ) ( 'I' | 'i' ) ( 'G' | 'g' ) ( 'H' | 'h' ) ( 'T' | 't' ) )
-            // BELScript_v1.g:343:9: ( 'C' | 'c' ) ( 'O' | 'o' ) ( 'P' | 'p' ) ( 'Y' | 'y' ) ( 'R' | 'r' ) ( 'I' | 'i' ) ( 'G' | 'g' ) ( 'H' | 'h' ) ( 'T' | 't' )
+            // BELScript_v1.g:328:5: ( ( 'C' | 'c' ) ( 'O' | 'o' ) ( 'P' | 'p' ) ( 'Y' | 'y' ) ( 'R' | 'r' ) ( 'I' | 'i' ) ( 'G' | 'g' ) ( 'H' | 'h' ) ( 'T' | 't' ) )
+            // BELScript_v1.g:328:9: ( 'C' | 'c' ) ( 'O' | 'o' ) ( 'P' | 'p' ) ( 'Y' | 'y' ) ( 'R' | 'r' ) ( 'I' | 'i' ) ( 'G' | 'g' ) ( 'H' | 'h' ) ( 'T' | 't' )
             {
                 if (input.LA(1) == 'C' || input.LA(1) == 'c') {
                     input.consume();
@@ -3396,8 +3396,8 @@ public class BELScript_v1Lexer extends Lexer {
         try {
             int _type = KWRD_DFLT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // BELScript_v1.g:347:5: ( ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'F' | 'f' ) ( 'A' | 'a' ) ( 'U' | 'u' ) ( 'L' | 'l' ) ( 'T' | 't' ) )
-            // BELScript_v1.g:347:9: ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'F' | 'f' ) ( 'A' | 'a' ) ( 'U' | 'u' ) ( 'L' | 'l' ) ( 'T' | 't' )
+            // BELScript_v1.g:332:5: ( ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'F' | 'f' ) ( 'A' | 'a' ) ( 'U' | 'u' ) ( 'L' | 'l' ) ( 'T' | 't' ) )
+            // BELScript_v1.g:332:9: ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'F' | 'f' ) ( 'A' | 'a' ) ( 'U' | 'u' ) ( 'L' | 'l' ) ( 'T' | 't' )
             {
                 if (input.LA(1) == 'D' || input.LA(1) == 'd') {
                     input.consume();
@@ -3485,8 +3485,8 @@ public class BELScript_v1Lexer extends Lexer {
         try {
             int _type = KWRD_DEFINE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // BELScript_v1.g:351:5: ( ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'F' | 'f' ) ( 'I' | 'i' ) ( 'N' | 'n' ) ( 'E' | 'e' ) )
-            // BELScript_v1.g:351:9: ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'F' | 'f' ) ( 'I' | 'i' ) ( 'N' | 'n' ) ( 'E' | 'e' )
+            // BELScript_v1.g:336:5: ( ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'F' | 'f' ) ( 'I' | 'i' ) ( 'N' | 'n' ) ( 'E' | 'e' ) )
+            // BELScript_v1.g:336:9: ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'F' | 'f' ) ( 'I' | 'i' ) ( 'N' | 'n' ) ( 'E' | 'e' )
             {
                 if (input.LA(1) == 'D' || input.LA(1) == 'd') {
                     input.consume();
@@ -3564,8 +3564,8 @@ public class BELScript_v1Lexer extends Lexer {
         try {
             int _type = KWRD_DESC;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // BELScript_v1.g:355:5: ( ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'S' | 's' ) ( 'C' | 'c' ) ( 'R' | 'r' ) ( 'I' | 'i' ) ( 'P' | 'p' ) ( 'T' | 't' ) ( 'I' | 'i' ) ( 'O' | 'o' ) ( 'N' | 'n' ) )
-            // BELScript_v1.g:355:9: ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'S' | 's' ) ( 'C' | 'c' ) ( 'R' | 'r' ) ( 'I' | 'i' ) ( 'P' | 'p' ) ( 'T' | 't' ) ( 'I' | 'i' ) ( 'O' | 'o' ) ( 'N' | 'n' )
+            // BELScript_v1.g:340:5: ( ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'S' | 's' ) ( 'C' | 'c' ) ( 'R' | 'r' ) ( 'I' | 'i' ) ( 'P' | 'p' ) ( 'T' | 't' ) ( 'I' | 'i' ) ( 'O' | 'o' ) ( 'N' | 'n' ) )
+            // BELScript_v1.g:340:9: ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'S' | 's' ) ( 'C' | 'c' ) ( 'R' | 'r' ) ( 'I' | 'i' ) ( 'P' | 'p' ) ( 'T' | 't' ) ( 'I' | 'i' ) ( 'O' | 'o' ) ( 'N' | 'n' )
             {
                 if (input.LA(1) == 'D' || input.LA(1) == 'd') {
                     input.consume();
@@ -3693,8 +3693,8 @@ public class BELScript_v1Lexer extends Lexer {
         try {
             int _type = KWRD_DISCLAIMER;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // BELScript_v1.g:359:5: ( ( 'D' | 'd' ) ( 'I' | 'i' ) ( 'S' | 's' ) ( 'C' | 'c' ) ( 'L' | 'l' ) ( 'A' | 'a' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'E' | 'e' ) ( 'R' | 'r' ) )
-            // BELScript_v1.g:359:9: ( 'D' | 'd' ) ( 'I' | 'i' ) ( 'S' | 's' ) ( 'C' | 'c' ) ( 'L' | 'l' ) ( 'A' | 'a' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'E' | 'e' ) ( 'R' | 'r' )
+            // BELScript_v1.g:344:5: ( ( 'D' | 'd' ) ( 'I' | 'i' ) ( 'S' | 's' ) ( 'C' | 'c' ) ( 'L' | 'l' ) ( 'A' | 'a' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'E' | 'e' ) ( 'R' | 'r' ) )
+            // BELScript_v1.g:344:9: ( 'D' | 'd' ) ( 'I' | 'i' ) ( 'S' | 's' ) ( 'C' | 'c' ) ( 'L' | 'l' ) ( 'A' | 'a' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'E' | 'e' ) ( 'R' | 'r' )
             {
                 if (input.LA(1) == 'D' || input.LA(1) == 'd') {
                     input.consume();
@@ -3812,8 +3812,8 @@ public class BELScript_v1Lexer extends Lexer {
         try {
             int _type = KWRD_DOCUMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // BELScript_v1.g:363:5: ( ( 'D' | 'd' ) ( 'O' | 'o' ) ( 'C' | 'c' ) ( 'U' | 'u' ) ( 'M' | 'm' ) ( 'E' | 'e' ) ( 'N' | 'n' ) ( 'T' | 't' ) )
-            // BELScript_v1.g:363:9: ( 'D' | 'd' ) ( 'O' | 'o' ) ( 'C' | 'c' ) ( 'U' | 'u' ) ( 'M' | 'm' ) ( 'E' | 'e' ) ( 'N' | 'n' ) ( 'T' | 't' )
+            // BELScript_v1.g:348:5: ( ( 'D' | 'd' ) ( 'O' | 'o' ) ( 'C' | 'c' ) ( 'U' | 'u' ) ( 'M' | 'm' ) ( 'E' | 'e' ) ( 'N' | 'n' ) ( 'T' | 't' ) )
+            // BELScript_v1.g:348:9: ( 'D' | 'd' ) ( 'O' | 'o' ) ( 'C' | 'c' ) ( 'U' | 'u' ) ( 'M' | 'm' ) ( 'E' | 'e' ) ( 'N' | 'n' ) ( 'T' | 't' )
             {
                 if (input.LA(1) == 'D' || input.LA(1) == 'd') {
                     input.consume();
@@ -3911,8 +3911,8 @@ public class BELScript_v1Lexer extends Lexer {
         try {
             int _type = KWRD_LICENSES;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // BELScript_v1.g:367:5: ( ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'C' | 'c' ) ( 'E' | 'e' ) ( 'N' | 'n' ) ( 'S' | 's' ) ( 'E' | 'e' ) ( 'S' | 's' ) )
-            // BELScript_v1.g:367:9: ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'C' | 'c' ) ( 'E' | 'e' ) ( 'N' | 'n' ) ( 'S' | 's' ) ( 'E' | 'e' ) ( 'S' | 's' )
+            // BELScript_v1.g:352:5: ( ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'C' | 'c' ) ( 'E' | 'e' ) ( 'N' | 'n' ) ( 'S' | 's' ) ( 'E' | 'e' ) ( 'S' | 's' ) )
+            // BELScript_v1.g:352:9: ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'C' | 'c' ) ( 'E' | 'e' ) ( 'N' | 'n' ) ( 'S' | 's' ) ( 'E' | 'e' ) ( 'S' | 's' )
             {
                 if (input.LA(1) == 'L' || input.LA(1) == 'l') {
                     input.consume();
@@ -4010,8 +4010,8 @@ public class BELScript_v1Lexer extends Lexer {
         try {
             int _type = KWRD_LIST;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // BELScript_v1.g:371:5: ( ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'S' | 's' ) ( 'T' | 't' ) )
-            // BELScript_v1.g:371:9: ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'S' | 's' ) ( 'T' | 't' )
+            // BELScript_v1.g:356:5: ( ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'S' | 's' ) ( 'T' | 't' ) )
+            // BELScript_v1.g:356:9: ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'S' | 's' ) ( 'T' | 't' )
             {
                 if (input.LA(1) == 'L' || input.LA(1) == 'l') {
                     input.consume();
@@ -4069,8 +4069,8 @@ public class BELScript_v1Lexer extends Lexer {
         try {
             int _type = KWRD_NAME;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // BELScript_v1.g:375:5: ( ( 'N' | 'n' ) ( 'A' | 'a' ) ( 'M' | 'm' ) ( 'E' | 'e' ) )
-            // BELScript_v1.g:375:9: ( 'N' | 'n' ) ( 'A' | 'a' ) ( 'M' | 'm' ) ( 'E' | 'e' )
+            // BELScript_v1.g:360:5: ( ( 'N' | 'n' ) ( 'A' | 'a' ) ( 'M' | 'm' ) ( 'E' | 'e' ) )
+            // BELScript_v1.g:360:9: ( 'N' | 'n' ) ( 'A' | 'a' ) ( 'M' | 'm' ) ( 'E' | 'e' )
             {
                 if (input.LA(1) == 'N' || input.LA(1) == 'n') {
                     input.consume();
@@ -4128,8 +4128,8 @@ public class BELScript_v1Lexer extends Lexer {
         try {
             int _type = KWRD_NS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // BELScript_v1.g:379:5: ( ( 'N' | 'n' ) ( 'A' | 'a' ) ( 'M' | 'm' ) ( 'E' | 'e' ) ( 'S' | 's' ) ( 'P' | 'p' ) ( 'A' | 'a' ) ( 'C' | 'c' ) ( 'E' | 'e' ) )
-            // BELScript_v1.g:379:9: ( 'N' | 'n' ) ( 'A' | 'a' ) ( 'M' | 'm' ) ( 'E' | 'e' ) ( 'S' | 's' ) ( 'P' | 'p' ) ( 'A' | 'a' ) ( 'C' | 'c' ) ( 'E' | 'e' )
+            // BELScript_v1.g:364:5: ( ( 'N' | 'n' ) ( 'A' | 'a' ) ( 'M' | 'm' ) ( 'E' | 'e' ) ( 'S' | 's' ) ( 'P' | 'p' ) ( 'A' | 'a' ) ( 'C' | 'c' ) ( 'E' | 'e' ) )
+            // BELScript_v1.g:364:9: ( 'N' | 'n' ) ( 'A' | 'a' ) ( 'M' | 'm' ) ( 'E' | 'e' ) ( 'S' | 's' ) ( 'P' | 'p' ) ( 'A' | 'a' ) ( 'C' | 'c' ) ( 'E' | 'e' )
             {
                 if (input.LA(1) == 'N' || input.LA(1) == 'n') {
                     input.consume();
@@ -4237,8 +4237,8 @@ public class BELScript_v1Lexer extends Lexer {
         try {
             int _type = KWRD_PATTERN;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // BELScript_v1.g:383:5: ( ( 'P' | 'p' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' ) ( 'N' | 'n' ) )
-            // BELScript_v1.g:383:9: ( 'P' | 'p' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' ) ( 'N' | 'n' )
+            // BELScript_v1.g:368:5: ( ( 'P' | 'p' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' ) ( 'N' | 'n' ) )
+            // BELScript_v1.g:368:9: ( 'P' | 'p' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' ) ( 'N' | 'n' )
             {
                 if (input.LA(1) == 'P' || input.LA(1) == 'p') {
                     input.consume();
@@ -4326,8 +4326,8 @@ public class BELScript_v1Lexer extends Lexer {
         try {
             int _type = KWRD_SET;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // BELScript_v1.g:387:5: ( ( 'S' | 's' ) ( 'E' | 'e' ) ( 'T' | 't' ) )
-            // BELScript_v1.g:387:9: ( 'S' | 's' ) ( 'E' | 'e' ) ( 'T' | 't' )
+            // BELScript_v1.g:372:5: ( ( 'S' | 's' ) ( 'E' | 'e' ) ( 'T' | 't' ) )
+            // BELScript_v1.g:372:9: ( 'S' | 's' ) ( 'E' | 'e' ) ( 'T' | 't' )
             {
                 if (input.LA(1) == 'S' || input.LA(1) == 's') {
                     input.consume();
@@ -4375,8 +4375,8 @@ public class BELScript_v1Lexer extends Lexer {
         try {
             int _type = KWRD_STMT_GROUP;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // BELScript_v1.g:391:5: ( ( 'S' | 's' ) ( 'T' | 't' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'M' | 'm' ) ( 'E' | 'e' ) ( 'N' | 'n' ) ( 'T' | 't' ) ( '_' ) ( 'G' | 'g' ) ( 'R' | 'r' ) ( 'O' | 'o' ) ( 'U' | 'u' ) ( 'P' | 'p' ) )
-            // BELScript_v1.g:391:9: ( 'S' | 's' ) ( 'T' | 't' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'M' | 'm' ) ( 'E' | 'e' ) ( 'N' | 'n' ) ( 'T' | 't' ) ( '_' ) ( 'G' | 'g' ) ( 'R' | 'r' ) ( 'O' | 'o' ) ( 'U' | 'u' ) ( 'P' | 'p' )
+            // BELScript_v1.g:376:5: ( ( 'S' | 's' ) ( 'T' | 't' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'M' | 'm' ) ( 'E' | 'e' ) ( 'N' | 'n' ) ( 'T' | 't' ) ( '_' ) ( 'G' | 'g' ) ( 'R' | 'r' ) ( 'O' | 'o' ) ( 'U' | 'u' ) ( 'P' | 'p' ) )
+            // BELScript_v1.g:376:9: ( 'S' | 's' ) ( 'T' | 't' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'M' | 'm' ) ( 'E' | 'e' ) ( 'N' | 'n' ) ( 'T' | 't' ) ( '_' ) ( 'G' | 'g' ) ( 'R' | 'r' ) ( 'O' | 'o' ) ( 'U' | 'u' ) ( 'P' | 'p' )
             {
                 if (input.LA(1) == 'S' || input.LA(1) == 's') {
                     input.consume();
@@ -4468,8 +4468,8 @@ public class BELScript_v1Lexer extends Lexer {
                     throw mse;
                 }
 
-                // BELScript_v1.g:391:90: ( '_' )
-                // BELScript_v1.g:391:91: '_'
+                // BELScript_v1.g:376:90: ( '_' )
+                // BELScript_v1.g:376:91: '_'
                 {
                     match('_');
 
@@ -4541,8 +4541,8 @@ public class BELScript_v1Lexer extends Lexer {
         try {
             int _type = KWRD_UNSET;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // BELScript_v1.g:395:5: ( ( 'U' | 'u' ) ( 'N' | 'n' ) ( 'S' | 's' ) ( 'E' | 'e' ) ( 'T' | 't' ) )
-            // BELScript_v1.g:395:9: ( 'U' | 'u' ) ( 'N' | 'n' ) ( 'S' | 's' ) ( 'E' | 'e' ) ( 'T' | 't' )
+            // BELScript_v1.g:380:5: ( ( 'U' | 'u' ) ( 'N' | 'n' ) ( 'S' | 's' ) ( 'E' | 'e' ) ( 'T' | 't' ) )
+            // BELScript_v1.g:380:9: ( 'U' | 'u' ) ( 'N' | 'n' ) ( 'S' | 's' ) ( 'E' | 'e' ) ( 'T' | 't' )
             {
                 if (input.LA(1) == 'U' || input.LA(1) == 'u') {
                     input.consume();
@@ -4610,8 +4610,8 @@ public class BELScript_v1Lexer extends Lexer {
         try {
             int _type = KWRD_URL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // BELScript_v1.g:399:5: ( ( 'U' | 'u' ) ( 'R' | 'r' ) ( 'L' | 'l' ) )
-            // BELScript_v1.g:399:9: ( 'U' | 'u' ) ( 'R' | 'r' ) ( 'L' | 'l' )
+            // BELScript_v1.g:384:5: ( ( 'U' | 'u' ) ( 'R' | 'r' ) ( 'L' | 'l' ) )
+            // BELScript_v1.g:384:9: ( 'U' | 'u' ) ( 'R' | 'r' ) ( 'L' | 'l' )
             {
                 if (input.LA(1) == 'U' || input.LA(1) == 'u') {
                     input.consume();
@@ -4659,8 +4659,8 @@ public class BELScript_v1Lexer extends Lexer {
         try {
             int _type = KWRD_VERSION;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // BELScript_v1.g:403:5: ( ( 'V' | 'v' ) ( 'E' | 'e' ) ( 'R' | 'r' ) ( 'S' | 's' ) ( 'I' | 'i' ) ( 'O' | 'o' ) ( 'N' | 'n' ) )
-            // BELScript_v1.g:403:9: ( 'V' | 'v' ) ( 'E' | 'e' ) ( 'R' | 'r' ) ( 'S' | 's' ) ( 'I' | 'i' ) ( 'O' | 'o' ) ( 'N' | 'n' )
+            // BELScript_v1.g:388:5: ( ( 'V' | 'v' ) ( 'E' | 'e' ) ( 'R' | 'r' ) ( 'S' | 's' ) ( 'I' | 'i' ) ( 'O' | 'o' ) ( 'N' | 'n' ) )
+            // BELScript_v1.g:388:9: ( 'V' | 'v' ) ( 'E' | 'e' ) ( 'R' | 'r' ) ( 'S' | 's' ) ( 'I' | 'i' ) ( 'O' | 'o' ) ( 'N' | 'n' )
             {
                 if (input.LA(1) == 'V' || input.LA(1) == 'v') {
                     input.consume();
@@ -4748,10 +4748,10 @@ public class BELScript_v1Lexer extends Lexer {
         try {
             int _type = OBJECT_IDENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // BELScript_v1.g:407:5: ( ( '_' | LETTER | DIGIT )+ )
-            // BELScript_v1.g:407:9: ( '_' | LETTER | DIGIT )+
+            // BELScript_v1.g:392:5: ( ( '_' | LETTER | DIGIT )+ )
+            // BELScript_v1.g:392:9: ( '_' | LETTER | DIGIT )+
             {
-                // BELScript_v1.g:407:9: ( '_' | LETTER | DIGIT )+
+                // BELScript_v1.g:392:9: ( '_' | LETTER | DIGIT )+
                 int cnt12 = 0;
                 loop12: do {
                     int alt12 = 2;
@@ -4806,7 +4806,7 @@ public class BELScript_v1Lexer extends Lexer {
     // $ANTLR start "LETTER"
     public final void mLETTER() throws RecognitionException {
         try {
-            // BELScript_v1.g:415:5: ( ( 'a' .. 'z' | 'A' .. 'Z' ) )
+            // BELScript_v1.g:400:5: ( ( 'a' .. 'z' | 'A' .. 'Z' ) )
             // BELScript_v1.g:
             {
                 if ((input.LA(1) >= 'A' && input.LA(1) <= 'Z')
@@ -4832,7 +4832,7 @@ public class BELScript_v1Lexer extends Lexer {
     // $ANTLR start "DIGIT"
     public final void mDIGIT() throws RecognitionException {
         try {
-            // BELScript_v1.g:419:5: ( '0' .. '9' )
+            // BELScript_v1.g:404:5: ( '0' .. '9' )
             // BELScript_v1.g:
             {
                 if ((input.LA(1) >= '0' && input.LA(1) <= '9')) {
@@ -4857,7 +4857,7 @@ public class BELScript_v1Lexer extends Lexer {
     // $ANTLR start "ESCAPE_SEQUENCE"
     public final void mESCAPE_SEQUENCE() throws RecognitionException {
         try {
-            // BELScript_v1.g:423:5: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) | UNICODE_ESCAPE | OCTAL_ESCAPE )
+            // BELScript_v1.g:408:5: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) | UNICODE_ESCAPE | OCTAL_ESCAPE )
             int alt13 = 3;
             int LA13_0 = input.LA(1);
 
@@ -4907,7 +4907,7 @@ public class BELScript_v1Lexer extends Lexer {
             }
             switch (alt13) {
             case 1:
-            // BELScript_v1.g:423:9: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' )
+            // BELScript_v1.g:408:9: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' )
             {
                 match('\\');
 
@@ -4927,14 +4927,14 @@ public class BELScript_v1Lexer extends Lexer {
             }
                 break;
             case 2:
-            // BELScript_v1.g:424:9: UNICODE_ESCAPE
+            // BELScript_v1.g:409:9: UNICODE_ESCAPE
             {
                 mUNICODE_ESCAPE();
 
             }
                 break;
             case 3:
-            // BELScript_v1.g:425:9: OCTAL_ESCAPE
+            // BELScript_v1.g:410:9: OCTAL_ESCAPE
             {
                 mOCTAL_ESCAPE();
 
@@ -4953,7 +4953,7 @@ public class BELScript_v1Lexer extends Lexer {
     // $ANTLR start "OCTAL_ESCAPE"
     public final void mOCTAL_ESCAPE() throws RecognitionException {
         try {
-            // BELScript_v1.g:429:5: ( '\\\\' ( '0' .. '3' ) ( '0' .. '7' ) ( '0' .. '7' ) | '\\\\' ( '0' .. '7' ) ( '0' .. '7' ) | '\\\\' ( '0' .. '7' ) )
+            // BELScript_v1.g:414:5: ( '\\\\' ( '0' .. '3' ) ( '0' .. '7' ) ( '0' .. '7' ) | '\\\\' ( '0' .. '7' ) ( '0' .. '7' ) | '\\\\' ( '0' .. '7' ) )
             int alt14 = 3;
             int LA14_0 = input.LA(1);
 
@@ -5004,7 +5004,7 @@ public class BELScript_v1Lexer extends Lexer {
             }
             switch (alt14) {
             case 1:
-            // BELScript_v1.g:429:9: '\\\\' ( '0' .. '3' ) ( '0' .. '7' ) ( '0' .. '7' )
+            // BELScript_v1.g:414:9: '\\\\' ( '0' .. '3' ) ( '0' .. '7' ) ( '0' .. '7' )
             {
                 match('\\');
 
@@ -5041,7 +5041,7 @@ public class BELScript_v1Lexer extends Lexer {
             }
                 break;
             case 2:
-            // BELScript_v1.g:430:9: '\\\\' ( '0' .. '7' ) ( '0' .. '7' )
+            // BELScript_v1.g:415:9: '\\\\' ( '0' .. '7' ) ( '0' .. '7' )
             {
                 match('\\');
 
@@ -5068,7 +5068,7 @@ public class BELScript_v1Lexer extends Lexer {
             }
                 break;
             case 3:
-            // BELScript_v1.g:431:9: '\\\\' ( '0' .. '7' )
+            // BELScript_v1.g:416:9: '\\\\' ( '0' .. '7' )
             {
                 match('\\');
 
@@ -5097,8 +5097,8 @@ public class BELScript_v1Lexer extends Lexer {
     // $ANTLR start "UNICODE_ESCAPE"
     public final void mUNICODE_ESCAPE() throws RecognitionException {
         try {
-            // BELScript_v1.g:435:5: ( '\\\\' 'u' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT )
-            // BELScript_v1.g:435:9: '\\\\' 'u' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT
+            // BELScript_v1.g:420:5: ( '\\\\' 'u' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT )
+            // BELScript_v1.g:420:9: '\\\\' 'u' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT
             {
                 match('\\');
 
@@ -5124,7 +5124,7 @@ public class BELScript_v1Lexer extends Lexer {
     // $ANTLR start "HEX_DIGIT"
     public final void mHEX_DIGIT() throws RecognitionException {
         try {
-            // BELScript_v1.g:439:5: ( ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' ) )
+            // BELScript_v1.g:424:5: ( ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' ) )
             // BELScript_v1.g:
             {
                 if ((input.LA(1) >= '0' && input.LA(1) <= '9')
