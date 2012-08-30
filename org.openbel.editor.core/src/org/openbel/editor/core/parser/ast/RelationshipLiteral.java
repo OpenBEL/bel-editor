@@ -29,6 +29,7 @@ import org.openbel.editor.core.common.enums.RelationshipType;
  * </pre>
  * 
  * </p>
+ * 
  */
 public class RelationshipLiteral extends Literal {
 

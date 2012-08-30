@@ -1,11 +1,37 @@
+/**
+ * Copyright (c) 2012 Selventa.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Selventa - initial API and implementation
+ */
 package org.openbel.editor.core.parser.ast;
 
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.openbel.editor.core.parser.BELScript_v1Parser;
 
+/**
+ * Represents the definition of an SET element within a BEL Script document. For
+ * example, the following BEL Script snippet defines a <i>Species</i>
+ * annotation.
+ * 
+ * <pre>
+ * <code>
+ * SET Species = "9606"
+ * </code>
+ * </pre>
+ * 
+ * </p>
+ * <p>
+ * The ANTLR corresponding node is {@link BELScript_v1Parser#ANNO_SET_QV}
+ * </p>
+ */
 public class AnnotationSetField extends Expression {
-    private Expression name;
+    private ObjectIdentExpression name;
     private QuotedValue value;
 
     /**
@@ -24,14 +50,6 @@ public class AnnotationSetField extends Expression {
         }
     }
 
-    public Expression getName() {
-        return name;
-    }
-
-    public void setName(Expression name) {
-        this.name = name;
-    }
-
     @Override
     public int getKind() {
         return BELScript_v1Parser.ANNO_SET_QV;
@@ -43,6 +61,14 @@ public class AnnotationSetField extends Expression {
 
     public void setValue(QuotedValue value) {
         this.value = value;
+    }
+
+    public ObjectIdentExpression getName() {
+        return name;
+    }
+
+    public void setName(ObjectIdentExpression name) {
+        this.name = name;
     }
 
 }

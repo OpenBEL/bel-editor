@@ -17,7 +17,6 @@ import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.tree.Tree;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.ast.ASTNode;
-import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.parser.AbstractSourceParser;
 import org.eclipse.dltk.ast.parser.IModuleDeclaration;
 import org.eclipse.dltk.compiler.env.IModuleSource;
@@ -26,6 +25,7 @@ import org.openbel.editor.core.parser.BELScript_v1Parser.document_return;
 import org.openbel.editor.core.parser.ast.ASTDocument;
 import org.openbel.editor.core.parser.ast.ASTStatement;
 import org.openbel.editor.core.parser.ast.AnnotationDefineField;
+import org.openbel.editor.core.parser.ast.AnnotationDefineListField;
 import org.openbel.editor.core.parser.ast.AnnotationSetField;
 import org.openbel.editor.core.parser.ast.AnnotationSetListField;
 import org.openbel.editor.core.parser.ast.DocumentField;
@@ -37,7 +37,9 @@ import org.openbel.editor.core.parser.ast.ParameterDefinitionExpression;
 import org.openbel.editor.core.parser.ast.ParameterDefinitionIdExpression;
 import org.openbel.editor.core.parser.ast.QuotedValue;
 import org.openbel.editor.core.parser.ast.RelationshipLiteral;
+import org.openbel.editor.core.parser.ast.SetStatementGroupExpression;
 import org.openbel.editor.core.parser.ast.TermDefinition;
+import org.openbel.editor.core.parser.ast.UnsetStatementGroupExpression;
 import org.openbel.editor.core.parser.ast.ValueListExpression;
 
 /**
@@ -75,18 +77,19 @@ public class BELScriptSourceParser extends AbstractSourceParser {
          */
         System.out.println("parsed document");
         script = new BELScriptDocument(str.length());
-        transformScript((Tree) DOC.getTree());
+        //visit all nodes from the tree
+        visitNode((Tree) DOC.getTree());
         return script;
     }
 
-    public void transformScript(Tree root) {
-        Assert.isNotNull(root);
-        prettyPrint(1, root);
-
-        visitNode(root);
-    }
-
+    /**
+     * Visits the given node and his children.
+     * 
+     * @param node - the node to be visited
+     * @return the AST node created by visiting
+     */
     private ASTNode visitNode(Tree node) {
+        //        prettyPrint(1, node);
         ASTNode accept = visit(node);
         for (int i = 0; i < node.getChildCount(); i++) {
             visitNode(node.getChild(i));
@@ -94,6 +97,12 @@ public class BELScriptSourceParser extends AbstractSourceParser {
         return accept;
     }
 
+    /**
+     * Visits the given node.
+     * 
+     * @param node - the node to be visited
+     * @return the AST node created by visiting
+     */
     private ASTNode visit(Tree node) {
         Assert.isNotNull(node);
         switch (node.getType()) {
@@ -219,6 +228,12 @@ public class BELScriptSourceParser extends AbstractSourceParser {
             return visitStatementExpression(node);
         case BELScript_v1Parser.VALUE_LIST:
             return visitValueListExpression(node);
+        case BELScript_v1Parser.UNSET_SG:
+            return visitUnsetExpression(node);
+        case BELScript_v1Parser.SG_SET_QV:
+            return visitSetGroupExpression(node);
+        case BELScript_v1Parser.ANNO_DEF_LIST:
+            return visitAnnotationDefineListExpression(node);
 
         default:
             return visitUnknown(node);
@@ -248,7 +263,7 @@ public class BELScriptSourceParser extends AbstractSourceParser {
 
     private ASTNode visitDefineAnnotation(Tree node) {
         AnnotationDefineField field = new AnnotationDefineField();
-        field.setName((Expression) visit(node.getChild(0)));
+        field.setName((ObjectIdentExpression) visit(node.getChild(0)));
         field.setValue((QuotedValue) visit(node.getChild(1)));
         script.getAnnotationDefineFields().add(field);
         return field;
@@ -256,7 +271,7 @@ public class BELScriptSourceParser extends AbstractSourceParser {
 
     private ASTNode visitDefineNamespace(Tree node) {
         NamespaceDefineField field = new NamespaceDefineField();
-        field.setName((Expression) visit(node.getChild(0)));
+        field.setName((ObjectIdentExpression) visit(node.getChild(0)));
         field.setValue((QuotedValue) visit(node.getChild(1)));
         script.getNamespaceDefineFields().add(field);
         return field;
@@ -272,7 +287,7 @@ public class BELScriptSourceParser extends AbstractSourceParser {
 
     private ASTNode visitAnnotationSet(Tree node) {
         AnnotationSetField field = new AnnotationSetField();
-        field.setName((Expression) visit(node.getChild(0)));
+        field.setName((ObjectIdentExpression) visit(node.getChild(0)));
         field.setValue((QuotedValue) visit(node.getChild(1)));
         script.getAnnotationListFields().add(field);
 
@@ -281,7 +296,7 @@ public class BELScriptSourceParser extends AbstractSourceParser {
 
     private ASTNode visitParameterExpression(Tree node) {
         ParameterDefinitionExpression field = new ParameterDefinitionExpression();
-        field.setName((Expression) visit(node.getChild(0)));
+        field.setName((ObjectIdentExpression) visit(node.getChild(0)));
         field.setValue((QuotedValue) visit(node.getChild(1)));
         script.getParameterExpressions().add(field);
 
@@ -346,6 +361,19 @@ public class BELScriptSourceParser extends AbstractSourceParser {
         return field;
     }
 
+    private ASTNode visitUnsetExpression(Tree node) {
+        UnsetStatementGroupExpression field = new UnsetStatementGroupExpression();
+        script.getUnsetStatementGroupExpressions().add(field);
+        return field;
+    }
+
+    private ASTNode visitSetGroupExpression(Tree node) {
+        SetStatementGroupExpression field = new SetStatementGroupExpression();
+        field.setValue((QuotedValue) visit(node.getChild(0)));
+        script.getSetStatementGroupExpressions().add(field);
+        return field;
+    }
+
     private ASTNode visitStatementExpression(Tree node) {
         ASTStatement field = new ASTStatement();
         if (node.getChildCount() == 3) {
@@ -368,11 +396,21 @@ public class BELScriptSourceParser extends AbstractSourceParser {
         return field;
     }
 
+    private ASTNode visitAnnotationDefineListExpression(Tree node) {
+        AnnotationDefineListField field = new AnnotationDefineListField();
+        field.setName((ObjectIdentExpression) visit(node.getChild(0)));
+        field.setValue((ValueListExpression) visit(node.getChild(1)));
+        script.getAnnotationDefineListFields().add(field);
+
+        return field;
+    }
+
     private ASTNode visitUnknown(Tree node) {
         System.out.println("Unknown token "
                 + BELScript_v1Parser.tokenNames[node.getType()] + " ("
                 + node.getText()
                 + ")");
+        prettyPrint(1, node);
         return new InvalidNode(node.toString());
     }
 
@@ -386,5 +424,4 @@ public class BELScriptSourceParser extends AbstractSourceParser {
             prettyPrint(indent + 4, tree.getChild(i));
         }
     }
-
 }

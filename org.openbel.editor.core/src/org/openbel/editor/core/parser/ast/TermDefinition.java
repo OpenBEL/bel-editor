@@ -1,3 +1,13 @@
+/**
+ * Copyright (c) 2012 Selventa.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Selventa - initial API and implementation
+ */
 package org.openbel.editor.core.parser.ast;
 
 import java.util.ArrayList;
@@ -7,6 +17,23 @@ import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.openbel.editor.core.parser.BELScript_v1Parser;
 
+/**
+ * Represents a BEL term definition in a BEL script document.
+ * <p>
+ * The term in the snippet below is composed of a relationship and a parameter
+ * definition.
+ * 
+ * <pre>
+ * <code>
+ * p(HGNC:DUSP1)
+ * </code>
+ * </pre>
+ * 
+ * </p>
+ * <p>
+ * The ANTLR corresponding node is {@link BELScript_v1Parser#TERMDEF}
+ * </p>
+ */
 public class TermDefinition extends Expression {
     private TermDefinition termDefinition;
     private RelationshipLiteral relationshipLiteral;

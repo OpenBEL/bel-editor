@@ -21,6 +21,7 @@ import org.eclipse.dltk.compiler.IElementRequestor.FieldInfo;
 import org.openbel.editor.core.parser.ast.ASTDocument;
 import org.openbel.editor.core.parser.ast.ASTStatement;
 import org.openbel.editor.core.parser.ast.AnnotationDefineField;
+import org.openbel.editor.core.parser.ast.AnnotationDefineListField;
 import org.openbel.editor.core.parser.ast.AnnotationSetField;
 import org.openbel.editor.core.parser.ast.AnnotationSetListField;
 import org.openbel.editor.core.parser.ast.DocumentField;
@@ -31,7 +32,9 @@ import org.openbel.editor.core.parser.ast.ParameterDefinitionExpression;
 import org.openbel.editor.core.parser.ast.ParameterDefinitionIdExpression;
 import org.openbel.editor.core.parser.ast.QuotedValue;
 import org.openbel.editor.core.parser.ast.RelationshipLiteral;
+import org.openbel.editor.core.parser.ast.SetStatementGroupExpression;
 import org.openbel.editor.core.parser.ast.TermDefinition;
+import org.openbel.editor.core.parser.ast.UnsetStatementGroupExpression;
 import org.openbel.editor.core.parser.ast.ValueListExpression;
 
 /**
@@ -56,6 +59,9 @@ public class BELScriptDocument extends ModuleDeclaration {
     private List<Keyword> keywords;
     private List<ValueListExpression> valueListExpressions;
     private ASTDocument docDef;
+    private List<UnsetStatementGroupExpression> unsetStatementGroupExpressions;
+    private List<SetStatementGroupExpression> setStatementGroupExpressions;
+    private List<AnnotationDefineListField> annotationDefineListFields;
 
     public BELScriptDocument(int sourceLength) {
         super(sourceLength);
@@ -76,6 +82,9 @@ public class BELScriptDocument extends ModuleDeclaration {
         keywords = new ArrayList<Keyword>();
         valueListExpressions = new ArrayList<ValueListExpression>();
         docDef = new ASTDocument();
+        unsetStatementGroupExpressions = new ArrayList<UnsetStatementGroupExpression>();
+        setStatementGroupExpressions = new ArrayList<SetStatementGroupExpression>();
+        annotationDefineListFields = new ArrayList<AnnotationDefineListField>();
     }
 
     public List<FieldInfo> getFieldsInfo() {
@@ -234,5 +243,32 @@ public class BELScriptDocument extends ModuleDeclaration {
 
     public void setDocDef(ASTDocument docDef) {
         this.docDef = docDef;
+    }
+
+    public List<UnsetStatementGroupExpression> getUnsetStatementGroupExpressions() {
+        return unsetStatementGroupExpressions;
+    }
+
+    public void setUnsetStatementGroupExpressions(
+            List<UnsetStatementGroupExpression> unsetStatementGroupExpressions) {
+        this.unsetStatementGroupExpressions = unsetStatementGroupExpressions;
+    }
+
+    public List<SetStatementGroupExpression> getSetStatementGroupExpressions() {
+        return setStatementGroupExpressions;
+    }
+
+    public void setSetStatementGroupExpressions(
+            List<SetStatementGroupExpression> setStatementGroupExpressions) {
+        this.setStatementGroupExpressions = setStatementGroupExpressions;
+    }
+
+    public List<AnnotationDefineListField> getAnnotationDefineListFields() {
+        return annotationDefineListFields;
+    }
+
+    public void setAnnotationDefineListFields(
+            List<AnnotationDefineListField> annotationDefineListFields) {
+        this.annotationDefineListFields = annotationDefineListFields;
     }
 }

@@ -15,29 +15,30 @@ import org.eclipse.dltk.ast.expressions.Expression;
 import org.openbel.editor.core.parser.BELScript_v1Parser;
 
 /**
- * Represents the use of a defined annotation within the current context of the
- * AST.
+ * Represents a statement group within the BEL Editor AST.
  * <p>
- * This is analogous to the {@code SET} statement within the context of the body
+ * This is analogous to setting a statement group within the context of the body
  * of a BEL Script document. For example, the following BEL Script snippet
- * applies the <i>species</i> annotation with a value of {@code 9606} to a BEL
- * statement.
+ * defines a statement group designed to capture species-specific statements.
  * 
  * <pre>
  * <code>
  * SET DOCUMENT Name = "Corpus"
  * DEFINE ANNOTATION Species AS URL "http://internal/bel-annotations/species"
+ * SET STATEMENT_GROUP = "9606"
  * SET Species = "9606"
  * proteinAbundance(HGNC:AKT1,proteinModification(P,T,308)) directlyIncreases kinaseActivity(proteinAbundance(HGNC:AKT1))
  * </code>
  * </pre>
  * 
  * </p>
+ * 
+ * <p>
+ * The ANTLR corresponding node is {@link BELScript_v1Parser#SG_SET_QV}
+ * </p>
  */
-public class SetExpression extends Expression {
-
-    private Expression name;
-    private String text;
+public class SetStatementGroupExpression extends Expression {
+    private QuotedValue value;
 
     /**
      * @see org.eclipse.dltk.ast.ASTNode#traverse(org.eclipse.dltk.ast.ASTVisitor)
@@ -45,35 +46,28 @@ public class SetExpression extends Expression {
     @Override
     public void traverse(ASTVisitor pVisitor) throws Exception {
         if (pVisitor.visit(this)) {
-            if (name != null) {
-                name.traverse(pVisitor);
+            if (value != null) {
+                value.traverse(pVisitor);
             }
             pVisitor.endvisit(this);
         }
     }
 
-    public Expression getName() {
-        return name;
-    }
-
-    public void setName(Expression name) {
-        this.name = name;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
     /**
+     * 
      * {@inheritDoc}
      */
     @Override
     public int getKind() {
-        return BELScript_v1Parser.ANNO_SET_QV;
+        return BELScript_v1Parser.SG_SET_QV;
+    }
+
+    public QuotedValue getValue() {
+        return value;
+    }
+
+    public void setValue(QuotedValue value) {
+        this.value = value;
     }
 
 }

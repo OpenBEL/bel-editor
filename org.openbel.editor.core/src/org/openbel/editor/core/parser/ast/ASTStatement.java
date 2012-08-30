@@ -29,6 +29,10 @@ import org.openbel.editor.core.parser.BELScript_v1Parser;
  * </pre>
  * 
  * </p>
+ * <p>
+ * The ANTLR corresponding node is {@link BELScript_v1Parser#STMTDEF}
+ * </p>
+ * 
  */
 public class ASTStatement extends Statement {
     private TermDefinition leftTerm;

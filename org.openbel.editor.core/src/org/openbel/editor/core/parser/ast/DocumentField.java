@@ -30,6 +30,10 @@ import org.openbel.editor.core.parser.BELScript_v1Parser;
  * </pre>
  * 
  * </p>
+ * *
+ * <p>
+ * The ANTLR corresponding node is {@link BELScript_v1Parser#DOCSET_QV}
+ * </p>
  */
 public class DocumentField extends Expression {
     private Keyword keyword;
@@ -41,8 +45,8 @@ public class DocumentField extends Expression {
     @Override
     public void traverse(ASTVisitor pVisitor) throws Exception {
         if (pVisitor.visit(this)) {
-            if (getKeyword() != null) {
-                getKeyword().traverse(pVisitor);
+            if (keyword != null) {
+                keyword.traverse(pVisitor);
             }
             if (value != null) {
                 value.traverse(pVisitor);
@@ -51,6 +55,10 @@ public class DocumentField extends Expression {
         }
     }
 
+    /**
+     * 
+     * {@inheritDoc}
+     */
     @Override
     public int getKind() {
         return BELScript_v1Parser.DOCSET_QV;

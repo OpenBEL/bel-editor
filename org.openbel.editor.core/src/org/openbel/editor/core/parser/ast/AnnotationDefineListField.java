@@ -15,26 +15,34 @@ import org.eclipse.dltk.ast.expressions.Expression;
 import org.openbel.editor.core.parser.BELScript_v1Parser;
 
 /**
- * Represents a parameter definition in a BEL Script document.
+ * Represents an annotation declaration using a list of strings within the BEL
+ * Editor AST.
  * <p>
- * For example, the following BEL Script snippet defines a parameter definition
- * called CHEBI with the value "phorbol 13-acetate 12-myristate".
  * 
  * <pre>
  * <code>
- * a(CHEBI:"phorbol 13-acetate 12-myristate")
+ *  DEFINE ANNOTATION TextLocation AS  LIST {"Abstract","Results","Legend","Review"}
  * </code>
  * </pre>
  * 
  * </p>
- * *
+ * 
  * <p>
- * The ANTLR corresponding node is {@link BELScript_v1Parser#PARAM_DEF_QV}
+ * The ANTLR corresponding node is {@link BELScript_v1Parser#ANNO_DEF_LIST}
  * </p>
  */
-public class ParameterDefinitionExpression extends Expression {
+public class AnnotationDefineListField extends Expression {
     private ObjectIdentExpression name;
-    private QuotedValue value;
+    private ValueListExpression value;
+
+    /**
+     * 
+     * {@inheritDoc}
+     */
+    @Override
+    public int getKind() {
+        return BELScript_v1Parser.ANNO_DEF_LIST;
+    }
 
     /**
      * @see org.eclipse.dltk.ast.ASTNode#traverse(org.eclipse.dltk.ast.ASTVisitor)
@@ -52,28 +60,20 @@ public class ParameterDefinitionExpression extends Expression {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getKind() {
-        return BELScript_v1Parser.PARAM_DEF_QV;
-    }
-
-    public QuotedValue getValue() {
-        return value;
-    }
-
-    public void setValue(QuotedValue value) {
-        this.value = value;
-    }
-
     public ObjectIdentExpression getName() {
         return name;
     }
 
     public void setName(ObjectIdentExpression name) {
         this.name = name;
+    }
+
+    public ValueListExpression getValue() {
+        return value;
+    }
+
+    public void setValue(ValueListExpression value) {
+        this.value = value;
     }
 
 }

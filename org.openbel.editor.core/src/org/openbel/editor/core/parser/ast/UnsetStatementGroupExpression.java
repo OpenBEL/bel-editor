@@ -14,16 +14,26 @@ import org.eclipse.dltk.ast.expressions.Expression;
 import org.openbel.editor.core.parser.BELScript_v1Parser;
 
 /**
- * Represents the root element of a BEL Script document.
+ * Represents UNSET statement in a BEL script document.
  * <p>
- * The ANTLR corresponding node is {@link BELScript_v1Parser#DOCDEF}
+ * Example:
+ * 
+ * <pre>
+ * <code>
+ * UNSET STATEMENT_GROUP
+ * </code>
+ * </pre>
+ * 
+ * </p>
+ * <p>
+ * The ANTLR corresponding node is {@link BELScript_v1Parser#UNSET_SG}
  * </p>
  */
-public class ASTDocument extends Expression {
+public class UnsetStatementGroupExpression extends Expression {
 
     @Override
     public int getKind() {
-        return BELScript_v1Parser.DOCDEF;
+        return BELScript_v1Parser.UNSET_SG;
     }
 
 }

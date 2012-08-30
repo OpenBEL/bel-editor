@@ -28,10 +28,13 @@ import org.openbel.editor.core.parser.BELScript_v1Parser;
  * </pre>
  * 
  * </p>
+ * <p>
+ * The ANTLR corresponding node is {@link BELScript_v1Parser#NSDEF}
+ * </p>
  */
 public class NamespaceDefineField extends Expression {
 
-    private Expression name;
+    private ObjectIdentExpression name;
     private QuotedValue value;
 
     /**
@@ -50,14 +53,10 @@ public class NamespaceDefineField extends Expression {
         }
     }
 
-    public Expression getName() {
-        return name;
-    }
-
-    public void setName(Expression name) {
-        this.name = name;
-    }
-
+    /**
+     * 
+     * {@inheritDoc}
+     */
     @Override
     public int getKind() {
         return BELScript_v1Parser.NSDEF;
@@ -69,6 +68,14 @@ public class NamespaceDefineField extends Expression {
 
     public void setValue(QuotedValue value) {
         this.value = value;
+    }
+
+    public ObjectIdentExpression getName() {
+        return name;
+    }
+
+    public void setName(ObjectIdentExpression name) {
+        this.name = name;
     }
 
 }
