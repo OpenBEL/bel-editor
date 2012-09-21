@@ -45,7 +45,7 @@ public class AstTreeViewPart extends ViewPart implements
                 | SWT.FULL_SELECTION);
         table.setLinesVisible(true);
         table.setHeaderVisible(true);
-        String[] titles = { "Description", "Resource" };
+        String[] titles = { "Annotation Name", "Annotation Value" };
         for (String title : titles) {
             TableColumn column = new TableColumn(table, SWT.NONE);
             column.setText(title);
