@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+if [ -z "${BUILD}" ]; then
+    echo "BUILD is not set, exiting"
+    exit 1
+fi
 ./tools/scripts/repo-ize || exit 1
 rm -fr eclipse
 git clone --quiet git@github.com:OpenBEL/eclipse.git eclipse
