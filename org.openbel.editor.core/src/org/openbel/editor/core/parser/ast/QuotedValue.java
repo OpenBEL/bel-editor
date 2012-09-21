@@ -69,4 +69,9 @@ public class QuotedValue extends Expression {
         this.text = value;
     }
 
+    @Override
+    public String toString() {
+        return text;
+    }
+
 }

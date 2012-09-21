@@ -33,14 +33,14 @@ import org.openbel.editor.ui.text.BELPartitions;
 import org.openbel.editor.ui.text.BELTextTools;
 
 @SuppressWarnings("deprecation")
-public class BELScriptEditor extends ScriptEditor {
+public class BELScriptEditor extends ScriptEditor
+{
 
     public static final String EDITOR_CONTEXT = "#BELScriptEditorContext";
     public static final String EDITOR_ID = "org.openbel.editor.ui.editor.bel";
     private final BELOutlinePage outline = new BELOutlinePage();
 
     public BELScriptEditor() {
-
     }
 
     /**

@@ -645,6 +645,15 @@
              name="Annotations">
        </view>
     </extension>
+    <extension
+          point="org.eclipse.ui.views">
+       <view
+             class="org.openbel.editor.ui.AstTreeViewPart"
+             id="org.openbel.editor.ui.AstTreeViewPart"
+             name="Statement Context"
+             restorable="true">
+       </view>
+    </extension>
 
 </plugin>
 

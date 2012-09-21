@@ -32,6 +32,7 @@ import org.openbel.editor.core.common.enums.RelationshipType;
  * 
  */
 public class RelationshipLiteral extends Literal {
+    private String text;
 
     /**
      * Constructs a relationship literal AST node.
@@ -52,4 +53,16 @@ public class RelationshipLiteral extends Literal {
         return 0;
     }
 
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    @Override
+    public String toString() {
+        return text;
+    }
 }

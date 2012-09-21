@@ -11,6 +11,8 @@
 
 package org.openbel.editor.core.parser;
 
+import java.util.List;
+
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
@@ -286,10 +288,10 @@ public class BELScriptSourceParser extends AbstractSourceParser {
     }
 
     private ASTNode visitAnnotationSet(Tree node) {
-        AnnotationSetField field = new AnnotationSetField();
+        AnnotationSetField field = new AnnotationSetField(
+                visit(node.getParent()));
         field.setName((ObjectIdentExpression) visit(node.getChild(0)));
         field.setValue((QuotedValue) visit(node.getChild(1)));
-        script.getAnnotationListFields().add(field);
 
         return field;
     }
@@ -306,6 +308,7 @@ public class BELScriptSourceParser extends AbstractSourceParser {
     private ASTNode visitRelationshipLiteral(Tree node) {
         RelationshipLiteral field = new RelationshipLiteral(
                 node.getTokenStartIndex(), node.getTokenStopIndex());
+        field.setText(node.getText());
         script.getRelationshipLiterals().add(field);
         return field;
     }
@@ -314,21 +317,24 @@ public class BELScriptSourceParser extends AbstractSourceParser {
         TermDefinition field = new TermDefinition();
         field.setRelationshipLiteral((RelationshipLiteral) visit(node
                 .getChild(0)));
-        int type = node.getChild(1).getType();
-        //nested term
-        if (type == BELScript_v1Parser.TERMDEF) {
-            field.setTermDefinition((TermDefinition) visit(node
-                    .getChild(1)));
-        }
-        //parameter
-        if (type == BELScript_v1Parser.PARAM_DEF_QV) {
-            field.setParameterExpression((ParameterDefinitionExpression) visit(node
-                    .getChild(1)));
-        }
-        //parameter
-        if (type == BELScript_v1Parser.PARAM_DEF_ID) {
-            field.addParameterDefinitionIdExpression((ParameterDefinitionIdExpression) visit(node
-                    .getChild(1)));
+        for (int i = 0; i < node.getChildCount(); i++) {
+            int type = node.getChild(i).getType();
+            //nested term
+            if (type == BELScript_v1Parser.TERMDEF) {
+                field.getTermDefinition().add((TermDefinition) visit(node
+                        .getChild(i)));
+            }
+            //parameter
+            if (type == BELScript_v1Parser.PARAM_DEF_QV) {
+                field.getParameterExpression().add(
+                        (ParameterDefinitionExpression) visit(node
+                                .getChild(i)));
+            }
+            //parameter
+            if (type == BELScript_v1Parser.PARAM_DEF_ID) {
+                field.addParameterDefinitionIdExpression((ParameterDefinitionIdExpression) visit(node
+                        .getChild(i)));
+            }
         }
         script.getTermDefinitions().add(field);
 
@@ -344,13 +350,15 @@ public class BELScriptSourceParser extends AbstractSourceParser {
 
     private ASTNode visitParamaterDefinitionIdExpression(Tree node) {
         ParameterDefinitionIdExpression field = new ParameterDefinitionIdExpression();
+        for (int i = 0; i < node.getChildCount(); i++) {
+            field.addObjects((ObjectIdentExpression) visit(node.getChild(i)));
+        }
         script.getParameterDefinitionIdExpressions().add(field);
         return field;
     }
 
     private ASTNode visitQuotedValueExpression(Tree node) {
         QuotedValue field = new QuotedValue(node.getText());
-        script.getQuotedValues().add(field);
         return field;
     }
 
@@ -375,7 +383,28 @@ public class BELScriptSourceParser extends AbstractSourceParser {
     }
 
     private ASTNode visitStatementExpression(Tree node) {
-        ASTStatement field = new ASTStatement();
+        ASTStatement field = new ASTStatement(visit(node.getParent()));
+        for (int i = 0; i < node.getParent().getChildCount(); i++) {
+            if (i >= node.getChildIndex()) {
+                break;
+            }
+            if (node.getParent().getChild(i).getType() == BELScript_v1Parser.ANNO_SET_QV) {
+                List<AnnotationSetField> annotationsList = field
+                        .getAnnotationsList();
+                for (int j = 0; j < annotationsList.size(); j++) {
+                    if (annotationsList.get(j).getName().getName()
+                            .equals(node.getParent()
+                                    .getChild(i).getChild(0).getText())) {
+                        annotationsList.remove(annotationsList.get(j));
+                    }
+                }
+                annotationsList
+                        .add(
+                        (AnnotationSetField) visit(node.getParent()
+                                .getChild(i)));
+            }
+
+        }
         if (node.getChildCount() == 3) {
             if (node
                     .getChild(0).getType() == BELScript_v1Parser.TERMDEF) {
@@ -393,6 +422,7 @@ public class BELScriptSourceParser extends AbstractSourceParser {
         }
 
         script.getStatementsList().add(field);
+        System.out.println(field);
         return field;
     }
 
@@ -406,22 +436,7 @@ public class BELScriptSourceParser extends AbstractSourceParser {
     }
 
     private ASTNode visitUnknown(Tree node) {
-        System.out.println("Unknown token "
-                + BELScript_v1Parser.tokenNames[node.getType()] + " ("
-                + node.getText()
-                + ")");
-        prettyPrint(1, node);
         return new InvalidNode(node.toString());
     }
 
-    private void prettyPrint(int indent, Tree tree) {
-
-        for (int i = 0; i < indent; i++) {
-            System.out.print('-');
-        }
-        System.out.println(tree.getText() + "=" + tree.getType());
-        for (int i = 0; i < tree.getChildCount(); i++) {
-            prettyPrint(indent + 4, tree.getChild(i));
-        }
-    }
 }

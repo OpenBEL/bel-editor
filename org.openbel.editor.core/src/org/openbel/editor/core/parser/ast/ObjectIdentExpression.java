@@ -68,4 +68,9 @@ public class ObjectIdentExpression extends Expression {
         this.name = name;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
 }

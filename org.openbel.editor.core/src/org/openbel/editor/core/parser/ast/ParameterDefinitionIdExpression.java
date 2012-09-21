@@ -69,4 +69,15 @@ public class ParameterDefinitionIdExpression extends Expression {
         }
     }
 
+    @Override
+    public String toString() {
+        String ret = "";
+        for (int i = 0; i < objects.size(); i++) {
+            ret += objects.get(i).toString();
+            if (i < objects.size() - 1) {
+                ret += ":";
+            }
+        }
+        return ret;
+    }
 }

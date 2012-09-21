@@ -10,6 +10,9 @@
  */
 package org.openbel.editor.core.parser.ast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.statements.Statement;
@@ -38,6 +41,12 @@ public class ASTStatement extends Statement {
     private TermDefinition leftTerm;
     private TermDefinition rightTerm;
     private RelationshipLiteral relationship;
+    private final ASTNode parent;
+    private List<AnnotationSetField> annotationsList = new ArrayList<AnnotationSetField>();
+
+    public ASTStatement(ASTNode parent) {
+        this.parent = parent;
+    }
 
     /**
      * {@inheritDoc}
@@ -112,4 +121,33 @@ public class ASTStatement extends Statement {
         this.relationship = relationship;
     }
 
+    public ASTNode getParent() {
+        return parent;
+    }
+
+    public List<AnnotationSetField> getAnnotationsList() {
+        return annotationsList;
+    }
+
+    public void setAnnotationsList(List<AnnotationSetField> annotationsList) {
+        this.annotationsList = annotationsList;
+    }
+
+    @Override
+    public String toString() {
+        String leftTermAsString = "";
+        if (leftTerm != null) {
+            leftTermAsString = leftTerm.toString();
+        }
+        String relationshipAsString = "";
+        if (relationship != null) {
+            relationshipAsString = relationship.toString();
+        }
+        String rightTermAsString = "";
+        if (rightTerm != null) {
+            rightTermAsString = rightTerm.toString();
+        }
+        return leftTermAsString + " " + relationshipAsString + " "
+                + rightTermAsString;
+    }
 }

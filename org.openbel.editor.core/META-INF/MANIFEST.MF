@@ -21,5 +21,6 @@ Export-Package: org.openbel.editor.core,
  org.openbel.editor.core.completion,
  org.openbel.editor.core.index,
  org.openbel.editor.core.parser,
+ org.openbel.editor.core.parser.ast,
  org.openbel.editor.core.record
 Bundle-ClassPath: .

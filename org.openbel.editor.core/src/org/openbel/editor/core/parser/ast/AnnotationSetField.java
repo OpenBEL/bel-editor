@@ -10,6 +10,7 @@
  */
 package org.openbel.editor.core.parser.ast;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.openbel.editor.core.parser.BELScript_v1Parser;
@@ -33,6 +34,11 @@ import org.openbel.editor.core.parser.BELScript_v1Parser;
 public class AnnotationSetField extends Expression {
     private ObjectIdentExpression name;
     private QuotedValue value;
+    private final ASTNode parent;
+
+    public AnnotationSetField(ASTNode parent) {
+        this.parent = parent;
+    }
 
     /**
      * @see org.eclipse.dltk.ast.ASTNode#traverse(org.eclipse.dltk.ast.ASTVisitor)
@@ -69,6 +75,10 @@ public class AnnotationSetField extends Expression {
 
     public void setName(ObjectIdentExpression name) {
         this.name = name;
+    }
+
+    public ASTNode getParent() {
+        return parent;
     }
 
 }

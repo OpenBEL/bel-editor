@@ -15,6 +15,7 @@ import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 import org.eclipse.ui.console.IConsoleConstants;
+import org.openbel.editor.ui.AstTreeViewPart;
 import org.openbel.editor.ui.views.AnnotationView;
 import org.openbel.editor.ui.views.NamespaceView;
 import org.openbel.editor.ui.views.ResourceView;
@@ -68,6 +69,7 @@ public class BELEditorPerspective implements IPerspectiveFactory {
                 IPageLayout.BOTTOM, 0.75f, factory.getEditorArea());
 
         bottom.addView(IPageLayout.ID_PROGRESS_VIEW);
+        bottom.addView(AstTreeViewPart.ID);
         bottom.addView(IPageLayout.ID_PROBLEM_VIEW);
         bottom.addView("org.eclipse.team.ui.GenericHistoryView"); // NON-NLS-1
         bottom.addView(IConsoleConstants.ID_CONSOLE_VIEW);

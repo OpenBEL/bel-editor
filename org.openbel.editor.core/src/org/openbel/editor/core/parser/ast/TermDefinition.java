@@ -35,9 +35,12 @@ import org.openbel.editor.core.parser.BELScript_v1Parser;
  * </p>
  */
 public class TermDefinition extends Expression {
-    private TermDefinition termDefinition;
+    private static final String CLOSE_BRACKET = ")";
+    private static final String OPEN_BRACKET = "(";
+    private static final String ITEM_SEPARATOR = ", ";
+    private List<TermDefinition> termDefinition = new ArrayList<TermDefinition>();
     private RelationshipLiteral relationshipLiteral;
-    private ParameterDefinitionExpression parameterExpression;
+    private List<ParameterDefinitionExpression> parameterExpression = new ArrayList<ParameterDefinitionExpression>();
     private List<ParameterDefinitionIdExpression> definitionIdExpressions = new ArrayList<ParameterDefinitionIdExpression>();
 
     /**
@@ -54,14 +57,21 @@ public class TermDefinition extends Expression {
     @Override
     public void traverse(ASTVisitor pVisitor) throws Exception {
         if (pVisitor.visit(this)) {
-            if (termDefinition != null) {
-                termDefinition.traverse(pVisitor);
+
+            for (TermDefinition expr : termDefinition) {
+                if (expr != null) {
+                    expr.traverse(pVisitor);
+                }
             }
+
             if (relationshipLiteral != null) {
                 relationshipLiteral.traverse(pVisitor);
             }
-            if (parameterExpression != null) {
-                parameterExpression.traverse(pVisitor);
+
+            for (ParameterDefinitionExpression expr : parameterExpression) {
+                if (expr != null) {
+                    expr.traverse(pVisitor);
+                }
             }
             for (ParameterDefinitionIdExpression expr : definitionIdExpressions) {
                 if (expr != null) {
@@ -72,17 +82,86 @@ public class TermDefinition extends Expression {
         }
     }
 
-    public void addParameterDefinitionIdExpression(
-            ParameterDefinitionIdExpression expression) {
-        definitionIdExpressions.add(expression);
+    @Override
+    public String toString() {
+        StringBuilder parameterExpressionSb = new StringBuilder();
+        StringBuilder termDefinitionSb = new StringBuilder();
+        StringBuilder definitionIdExpressionsSb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < parameterExpression.size(); i++) {
+            parameterExpressionSb.append(parameterExpression.get(i)
+                    .toString());
+            if (i < parameterExpression.size() - 1) {
+                parameterExpressionSb.append(ITEM_SEPARATOR);
+            }
+        }
+
+        for (int i = 0; i < termDefinition.size(); i++) {
+            termDefinitionSb.append(termDefinition.get(i)
+                    .toString());
+            if (i < termDefinition.size() - 1) {
+                termDefinitionSb.append(ITEM_SEPARATOR);
+            }
+        }
+
+        for (int i = 0; i < definitionIdExpressions.size(); i++) {
+            definitionIdExpressionsSb.append(definitionIdExpressions.get(i)
+                    .toString());
+            if (i < definitionIdExpressions.size() - 1) {
+                definitionIdExpressionsSb.append(ITEM_SEPARATOR);
+            }
+        }
+
+        sb.append(relationshipLiteral.toString());
+        if (parameterExpressionSb.toString().length() != 0) {
+            sb.append(OPEN_BRACKET);
+            sb.append(parameterExpressionSb);
+            if (termDefinitionSb.toString().length() != 0) {
+                sb.append(ITEM_SEPARATOR);
+                sb.append(termDefinitionSb);
+            }
+            sb.append(CLOSE_BRACKET);
+        } else if (definitionIdExpressionsSb.length() != 0) {
+            sb.append(OPEN_BRACKET);
+            sb.append(definitionIdExpressionsSb);
+
+            if (termDefinitionSb.toString().length() != 0) {
+                sb.append(ITEM_SEPARATOR);
+                sb.append(termDefinitionSb);
+            }
+            sb.append(CLOSE_BRACKET);
+        }
+        if (termDefinitionSb.toString().length() != 0
+                && parameterExpressionSb.toString().length() == 0
+                && definitionIdExpressionsSb.length() == 0) {
+            sb.append(OPEN_BRACKET);
+            sb.append(termDefinitionSb);
+            sb.append(CLOSE_BRACKET);
+        }
+
+        return sb.toString();
     }
 
-    public TermDefinition getTermDefinition() {
+    public List<TermDefinition> getTermDefinition() {
         return termDefinition;
     }
 
-    public void setTermDefinition(TermDefinition termDefinition) {
+    public void setTermDefinition(List<TermDefinition> termDefinition) {
         this.termDefinition = termDefinition;
+    }
+
+    public List<ParameterDefinitionExpression> getParameterExpression() {
+        return parameterExpression;
+    }
+
+    public void setParameterExpression(
+            List<ParameterDefinitionExpression> parameterExpression) {
+        this.parameterExpression = parameterExpression;
+    }
+
+    public void addParameterDefinitionIdExpression(
+            ParameterDefinitionIdExpression expression) {
+        definitionIdExpressions.add(expression);
     }
 
     public RelationshipLiteral getRelationshipLiteral() {
@@ -91,15 +170,6 @@ public class TermDefinition extends Expression {
 
     public void setRelationshipLiteral(RelationshipLiteral relationshipLiteral) {
         this.relationshipLiteral = relationshipLiteral;
-    }
-
-    public ParameterDefinitionExpression getParameterExpression() {
-        return parameterExpression;
-    }
-
-    public void setParameterExpression(
-            ParameterDefinitionExpression parameterExpression) {
-        this.parameterExpression = parameterExpression;
     }
 
 }
