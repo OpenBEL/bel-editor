@@ -10,6 +10,9 @@
  */
 package org.openbel.editor.core.parser.ast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.openbel.editor.core.parser.BELScript_v1Parser;
 
@@ -20,10 +23,68 @@ import org.openbel.editor.core.parser.BELScript_v1Parser;
  * </p>
  */
 public class ASTDocument extends Expression {
+    private List<ASTStatement> statementsList = new ArrayList<ASTStatement>();
+    private List<DocumentField> setDocumentInfo = new ArrayList<DocumentField>();
+    private List<NamespaceDefineField> namespaceDefineFields = new ArrayList<NamespaceDefineField>();
+    private List<AnnotationDefineField> annotationDefineFields = new ArrayList<AnnotationDefineField>();
+    private List<AnnotationDefineListField> annotationDefineListFields = new ArrayList<AnnotationDefineListField>();
+    private List<AnnotationSetField> annotationListFields = new ArrayList<AnnotationSetField>();
 
     @Override
     public int getKind() {
         return BELScript_v1Parser.DOCDEF;
+    }
+
+    public List<ASTStatement> getStatementsList() {
+        return statementsList;
+    }
+
+    public void setStatementsList(List<ASTStatement> statementsList) {
+        this.statementsList = statementsList;
+    }
+
+    public List<DocumentField> getSetDocumentInfo() {
+        return setDocumentInfo;
+    }
+
+    public void setSetDocumentInfo(List<DocumentField> setDocumentInfo) {
+        this.setDocumentInfo = setDocumentInfo;
+    }
+
+    public List<NamespaceDefineField> getNamespaceDefineFields() {
+        return namespaceDefineFields;
+    }
+
+    public void setNamespaceDefineFields(
+            List<NamespaceDefineField> namespaceDefineFields) {
+        this.namespaceDefineFields = namespaceDefineFields;
+    }
+
+    public List<AnnotationDefineField> getAnnotationDefineFields() {
+        return annotationDefineFields;
+    }
+
+    public void setAnnotationDefineFields(
+            List<AnnotationDefineField> annotationDefineFields) {
+        this.annotationDefineFields = annotationDefineFields;
+    }
+
+    public List<AnnotationDefineListField> getAnnotationDefineListFields() {
+        return annotationDefineListFields;
+    }
+
+    public void setAnnotationDefineListFields(
+            List<AnnotationDefineListField> annotationDefineListFields) {
+        this.annotationDefineListFields = annotationDefineListFields;
+    }
+
+    public List<AnnotationSetField> getAnnotationListFields() {
+        return annotationListFields;
+    }
+
+    public void setAnnotationListFields(
+            List<AnnotationSetField> annotationListFields) {
+        this.annotationListFields = annotationListFields;
     }
 
 }

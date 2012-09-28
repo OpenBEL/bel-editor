@@ -43,6 +43,7 @@ public class ASTStatement extends Statement {
     private RelationshipLiteral relationship;
     private final ASTNode parent;
     private List<AnnotationSetField> annotationsList = new ArrayList<AnnotationSetField>();
+    private List<AnnotationSetListField> annotationSetList = new ArrayList<AnnotationSetListField>();
 
     public ASTStatement(ASTNode parent) {
         this.parent = parent;
@@ -133,6 +134,15 @@ public class ASTStatement extends Statement {
         this.annotationsList = annotationsList;
     }
 
+    public List<AnnotationSetListField> getAnnotationSetList() {
+        return annotationSetList;
+    }
+
+    public void setAnnotationSetList(
+            List<AnnotationSetListField> annotationSetList) {
+        this.annotationSetList = annotationSetList;
+    }
+
     @Override
     public String toString() {
         String leftTermAsString = "";
@@ -150,4 +160,5 @@ public class ASTStatement extends Statement {
         return leftTermAsString + " " + relationshipAsString + " "
                 + rightTermAsString;
     }
+
 }

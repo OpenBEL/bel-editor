@@ -24,7 +24,6 @@ import org.eclipse.dltk.ast.parser.IModuleDeclaration;
 import org.eclipse.dltk.compiler.env.IModuleSource;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.openbel.editor.core.parser.BELScript_v1Parser.document_return;
-import org.openbel.editor.core.parser.ast.ASTDocument;
 import org.openbel.editor.core.parser.ast.ASTStatement;
 import org.openbel.editor.core.parser.ast.AnnotationDefineField;
 import org.openbel.editor.core.parser.ast.AnnotationDefineListField;
@@ -81,6 +80,7 @@ public class BELScriptSourceParser extends AbstractSourceParser {
         script = new BELScriptDocument(str.length());
         //visit all nodes from the tree
         visitNode((Tree) DOC.getTree());
+
         return script;
     }
 
@@ -118,6 +118,8 @@ public class BELScriptSourceParser extends AbstractSourceParser {
             return visitDefineNamespace(node);
         case BELScript_v1Parser.ANNO_SET_LIST:
             return visitAnnotationSetList(node);
+        case BELScript_v1Parser.ANNO_DEF_LIST:
+            return visitAnnotationDefineListExpression(node);
         case BELScript_v1Parser.ANNO_SET_QV:
             return visitAnnotationSet(node);
         case BELScript_v1Parser.PARAM_DEF_QV:
@@ -234,8 +236,6 @@ public class BELScriptSourceParser extends AbstractSourceParser {
             return visitUnsetExpression(node);
         case BELScript_v1Parser.SG_SET_QV:
             return visitSetGroupExpression(node);
-        case BELScript_v1Parser.ANNO_DEF_LIST:
-            return visitAnnotationDefineListExpression(node);
 
         default:
             return visitUnknown(node);
@@ -243,16 +243,14 @@ public class BELScriptSourceParser extends AbstractSourceParser {
     }
 
     private ASTNode visitDocDef(Tree node) {
-        ASTDocument field = new ASTDocument();
-        script.setDocDef(field);
-        return field;
+        return script.getDocDef();
     }
 
     private ASTNode visitSetDocument(Tree node) {
         DocumentField field = new DocumentField();
         field.setKeyword((Keyword) visit(node.getChild(0)));
         field.setValue((QuotedValue) visit(node.getChild(1)));
-        script.getSetDocumentInfo().add(field);
+        script.getDocDef().getSetDocumentInfo().add(field);
         return field;
     }
 
@@ -267,7 +265,7 @@ public class BELScriptSourceParser extends AbstractSourceParser {
         AnnotationDefineField field = new AnnotationDefineField();
         field.setName((ObjectIdentExpression) visit(node.getChild(0)));
         field.setValue((QuotedValue) visit(node.getChild(1)));
-        script.getAnnotationDefineFields().add(field);
+        script.getDocDef().getAnnotationDefineFields().add(field);
         return field;
     }
 
@@ -275,7 +273,7 @@ public class BELScriptSourceParser extends AbstractSourceParser {
         NamespaceDefineField field = new NamespaceDefineField();
         field.setName((ObjectIdentExpression) visit(node.getChild(0)));
         field.setValue((QuotedValue) visit(node.getChild(1)));
-        script.getNamespaceDefineFields().add(field);
+        script.getDocDef().getNamespaceDefineFields().add(field);
         return field;
     }
 
@@ -292,7 +290,7 @@ public class BELScriptSourceParser extends AbstractSourceParser {
                 visit(node.getParent()));
         field.setName((ObjectIdentExpression) visit(node.getChild(0)));
         field.setValue((QuotedValue) visit(node.getChild(1)));
-
+        script.getDocDef().getAnnotationListFields().add(field);
         return field;
     }
 
@@ -336,8 +334,6 @@ public class BELScriptSourceParser extends AbstractSourceParser {
                         .getChild(i)));
             }
         }
-        script.getTermDefinitions().add(field);
-
         return field;
     }
 
@@ -404,6 +400,22 @@ public class BELScriptSourceParser extends AbstractSourceParser {
                                 .getChild(i)));
             }
 
+            if (node.getParent().getChild(i).getType() == BELScript_v1Parser.ANNO_SET_LIST) {
+                List<AnnotationSetListField> annotationsSetList = field
+                        .getAnnotationSetList();
+                for (int j = 0; j < annotationsSetList.size(); j++) {
+                    if (annotationsSetList.get(j).getObjectIdent().getName()
+                            .equals(node.getParent()
+                                    .getChild(i).getChild(0).getText())) {
+                        annotationsSetList.remove(annotationsSetList.get(j));
+                    }
+                }
+                annotationsSetList
+                        .add(
+                        (AnnotationSetListField) visit(node.getParent()
+                                .getChild(i)));
+            }
+
         }
         if (node.getChildCount() == 3) {
             if (node
@@ -421,8 +433,7 @@ public class BELScriptSourceParser extends AbstractSourceParser {
             field.setLeftTerm((TermDefinition) visit(node.getChild(0)));
         }
 
-        script.getStatementsList().add(field);
-        System.out.println(field);
+        script.getDocDef().getStatementsList().add(field);
         return field;
     }
 
@@ -430,7 +441,7 @@ public class BELScriptSourceParser extends AbstractSourceParser {
         AnnotationDefineListField field = new AnnotationDefineListField();
         field.setName((ObjectIdentExpression) visit(node.getChild(0)));
         field.setValue((ValueListExpression) visit(node.getChild(1)));
-        script.getAnnotationDefineListFields().add(field);
+        script.getDocDef().getAnnotationDefineListFields().add(field);
 
         return field;
     }

@@ -20,20 +20,14 @@ import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.compiler.IElementRequestor.FieldInfo;
 import org.openbel.editor.core.parser.ast.ASTDocument;
 import org.openbel.editor.core.parser.ast.ASTStatement;
-import org.openbel.editor.core.parser.ast.AnnotationDefineField;
-import org.openbel.editor.core.parser.ast.AnnotationDefineListField;
-import org.openbel.editor.core.parser.ast.AnnotationSetField;
 import org.openbel.editor.core.parser.ast.AnnotationSetListField;
-import org.openbel.editor.core.parser.ast.DocumentField;
 import org.openbel.editor.core.parser.ast.Keyword;
-import org.openbel.editor.core.parser.ast.NamespaceDefineField;
 import org.openbel.editor.core.parser.ast.ObjectIdentExpression;
 import org.openbel.editor.core.parser.ast.ParameterDefinitionExpression;
 import org.openbel.editor.core.parser.ast.ParameterDefinitionIdExpression;
 import org.openbel.editor.core.parser.ast.QuotedValue;
 import org.openbel.editor.core.parser.ast.RelationshipLiteral;
 import org.openbel.editor.core.parser.ast.SetStatementGroupExpression;
-import org.openbel.editor.core.parser.ast.TermDefinition;
 import org.openbel.editor.core.parser.ast.UnsetStatementGroupExpression;
 import org.openbel.editor.core.parser.ast.ValueListExpression;
 
@@ -44,13 +38,10 @@ public class BELScriptDocument extends ModuleDeclaration {
 
     private List<FunctionInfo> functionsInfo;
     private List<FieldInfo> variablesInfo;
-    private List<DocumentField> setDocumentInfo;
-    private List<AnnotationDefineField> annotationDefineFields;
-    private List<NamespaceDefineField> namespaceDefineFields;
+
     private List<AnnotationSetListField> annotationSetListFields;
-    private List<AnnotationSetField> annotationListFields;
+
     private List<ParameterDefinitionExpression> parameterExpressions;
-    private List<TermDefinition> termDefinitions;
     private List<ObjectIdentExpression> identExpressions;
     private List<ParameterDefinitionIdExpression> definitionIdExpressions;
     private List<QuotedValue> quotedValues;
@@ -61,19 +52,13 @@ public class BELScriptDocument extends ModuleDeclaration {
     private ASTDocument docDef;
     private List<UnsetStatementGroupExpression> unsetStatementGroupExpressions;
     private List<SetStatementGroupExpression> setStatementGroupExpressions;
-    private List<AnnotationDefineListField> annotationDefineListFields;
 
     public BELScriptDocument(int sourceLength) {
         super(sourceLength);
         functionsInfo = new ArrayList<FunctionInfo>();
         variablesInfo = new ArrayList<FieldInfo>();
-        setDocumentInfo = new ArrayList<DocumentField>();
-        annotationDefineFields = new ArrayList<AnnotationDefineField>();
-        namespaceDefineFields = new ArrayList<NamespaceDefineField>();
         annotationSetListFields = new ArrayList<AnnotationSetListField>();
-        annotationListFields = new ArrayList<AnnotationSetField>();
         parameterExpressions = new ArrayList<ParameterDefinitionExpression>();
-        termDefinitions = new ArrayList<TermDefinition>();
         identExpressions = new ArrayList<ObjectIdentExpression>();
         definitionIdExpressions = new ArrayList<ParameterDefinitionIdExpression>();
         relationshipliterals = new ArrayList<RelationshipLiteral>();
@@ -84,7 +69,6 @@ public class BELScriptDocument extends ModuleDeclaration {
         docDef = new ASTDocument();
         unsetStatementGroupExpressions = new ArrayList<UnsetStatementGroupExpression>();
         setStatementGroupExpressions = new ArrayList<SetStatementGroupExpression>();
-        annotationDefineListFields = new ArrayList<AnnotationDefineListField>();
     }
 
     public List<FieldInfo> getFieldsInfo() {
@@ -93,28 +77,6 @@ public class BELScriptDocument extends ModuleDeclaration {
 
     public List<FunctionInfo> getFunctionsInfo() {
         return functionsInfo;
-    }
-
-    public List<DocumentField> getSetDocumentInfo() {
-        return setDocumentInfo;
-    }
-
-    public List<AnnotationDefineField> getAnnotationDefineFields() {
-        return annotationDefineFields;
-    }
-
-    public void setAnnotationDefineFields(
-            List<AnnotationDefineField> annotationDefineFields) {
-        this.annotationDefineFields = annotationDefineFields;
-    }
-
-    public List<NamespaceDefineField> getNamespaceDefineFields() {
-        return namespaceDefineFields;
-    }
-
-    public void setNamespaceDefineFields(
-            List<NamespaceDefineField> namespaceDefineFields) {
-        this.namespaceDefineFields = namespaceDefineFields;
     }
 
     @SuppressWarnings("unchecked")
@@ -153,15 +115,6 @@ public class BELScriptDocument extends ModuleDeclaration {
         this.annotationSetListFields = annotationSetListFields;
     }
 
-    public List<AnnotationSetField> getAnnotationListFields() {
-        return annotationListFields;
-    }
-
-    public void setAnnotationListFields(
-            List<AnnotationSetField> annotationListFields) {
-        this.annotationListFields = annotationListFields;
-    }
-
     public List<ParameterDefinitionExpression> getParameterExpressions() {
         return parameterExpressions;
     }
@@ -169,14 +122,6 @@ public class BELScriptDocument extends ModuleDeclaration {
     public void setParameterExpressions(
             List<ParameterDefinitionExpression> parameterExpressions) {
         this.parameterExpressions = parameterExpressions;
-    }
-
-    public List<TermDefinition> getTermDefinitions() {
-        return termDefinitions;
-    }
-
-    public void setTermDefinitions(List<TermDefinition> termDefinitions) {
-        this.termDefinitions = termDefinitions;
     }
 
     public List<ParameterDefinitionIdExpression> getParameterDefinitionIdExpressions() {
@@ -263,12 +208,4 @@ public class BELScriptDocument extends ModuleDeclaration {
         this.setStatementGroupExpressions = setStatementGroupExpressions;
     }
 
-    public List<AnnotationDefineListField> getAnnotationDefineListFields() {
-        return annotationDefineListFields;
-    }
-
-    public void setAnnotationDefineListFields(
-            List<AnnotationDefineListField> annotationDefineListFields) {
-        this.annotationDefineListFields = annotationDefineListFields;
-    }
 }
