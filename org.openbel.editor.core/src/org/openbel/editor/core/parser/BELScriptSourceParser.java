@@ -41,6 +41,7 @@ import org.openbel.editor.core.parser.ast.RelationshipLiteral;
 import org.openbel.editor.core.parser.ast.SetStatementGroupExpression;
 import org.openbel.editor.core.parser.ast.TermDefinition;
 import org.openbel.editor.core.parser.ast.UnsetStatementGroupExpression;
+import org.openbel.editor.core.parser.ast.UnsetStatementIdExpression;
 import org.openbel.editor.core.parser.ast.ValueListExpression;
 
 /**
@@ -80,7 +81,6 @@ public class BELScriptSourceParser extends AbstractSourceParser {
         script = new BELScriptDocument(str.length());
         //visit all nodes from the tree
         visitNode((Tree) DOC.getTree());
-
         return script;
     }
 
@@ -91,7 +91,6 @@ public class BELScriptSourceParser extends AbstractSourceParser {
      * @return the AST node created by visiting
      */
     private ASTNode visitNode(Tree node) {
-        //        prettyPrint(1, node);
         ASTNode accept = visit(node);
         for (int i = 0; i < node.getChildCount(); i++) {
             visitNode(node.getChild(i));
@@ -233,7 +232,9 @@ public class BELScriptSourceParser extends AbstractSourceParser {
         case BELScript_v1Parser.VALUE_LIST:
             return visitValueListExpression(node);
         case BELScript_v1Parser.UNSET_SG:
-            return visitUnsetExpression(node);
+            return visitUnsetSegmentExpression(node);
+        case BELScript_v1Parser.UNSET_ID:
+            return visitUnsetAnnotationIdExpression(node);
         case BELScript_v1Parser.SG_SET_QV:
             return visitSetGroupExpression(node);
 
@@ -365,9 +366,16 @@ public class BELScriptSourceParser extends AbstractSourceParser {
         return field;
     }
 
-    private ASTNode visitUnsetExpression(Tree node) {
+    private ASTNode visitUnsetSegmentExpression(Tree node) {
         UnsetStatementGroupExpression field = new UnsetStatementGroupExpression();
         script.getUnsetStatementGroupExpressions().add(field);
+        return field;
+    }
+
+    private ASTNode visitUnsetAnnotationIdExpression(Tree node) {
+        UnsetStatementIdExpression field = new UnsetStatementIdExpression();
+        field.setAnnotationId((ObjectIdentExpression) visit(node.getChild(0)));
+        script.getUnsetStatementIdExpressions().add(field);
         return field;
     }
 
@@ -394,10 +402,22 @@ public class BELScriptSourceParser extends AbstractSourceParser {
                         annotationsList.remove(annotationsList.get(j));
                     }
                 }
-                annotationsList
-                        .add(
-                        (AnnotationSetField) visit(node.getParent()
-                                .getChild(i)));
+
+                //process UNSET elements
+                boolean found = false;
+                for (UnsetStatementIdExpression st : script
+                        .getUnsetStatementIdExpressions()) {
+                    if (st.getAnnotationId().getName().equals(node.getParent()
+                            .getChild(i).getChild(0).getText())) {
+                        found = true;
+                    }
+                }
+                if (!found) {
+                    annotationsList
+                            .add(
+                            (AnnotationSetField) visit(node.getParent()
+                                    .getChild(i)));
+                }
             }
 
             if (node.getParent().getChild(i).getType() == BELScript_v1Parser.ANNO_SET_LIST) {
@@ -417,22 +437,16 @@ public class BELScriptSourceParser extends AbstractSourceParser {
             }
 
         }
-        if (node.getChildCount() == 3) {
-            if (node
-                    .getChild(0).getType() == BELScript_v1Parser.TERMDEF) {
-                field.setLeftTerm((TermDefinition) visit(node
-                        .getChild(0)));
+        for (int i = 0; i < node.getChildCount(); i++) {
+            Tree currentNode = node
+                    .getChild(i);
+            if (currentNode.getType() == BELScript_v1Parser.TERMDEF) {
+                field.getTerms().add((TermDefinition) visit(currentNode));
+            } else {
+                field.getOperators().add(
+                        (RelationshipLiteral) visit(currentNode));
             }
-            field.setRelationship((RelationshipLiteral) visit(node
-                    .getChild(1)));
-            field.setRightTerm((TermDefinition) visit(node
-                    .getChild(2)));
-
         }
-        if (node.getChildCount() == 1) {
-            field.setLeftTerm((TermDefinition) visit(node.getChild(0)));
-        }
-
         script.getDocDef().getStatementsList().add(field);
         return field;
     }
@@ -449,5 +463,4 @@ public class BELScriptSourceParser extends AbstractSourceParser {
     private ASTNode visitUnknown(Tree node) {
         return new InvalidNode(node.toString());
     }
-
 }

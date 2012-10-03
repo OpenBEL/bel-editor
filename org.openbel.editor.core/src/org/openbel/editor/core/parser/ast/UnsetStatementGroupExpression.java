@@ -14,7 +14,7 @@ import org.eclipse.dltk.ast.expressions.Expression;
 import org.openbel.editor.core.parser.BELScript_v1Parser;
 
 /**
- * Represents UNSET statement in a BEL script document.
+ * Represents UNSET statement group in a BEL script document.
  * <p>
  * Example:
  * 

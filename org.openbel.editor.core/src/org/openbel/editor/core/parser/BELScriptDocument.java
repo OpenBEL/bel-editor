@@ -29,6 +29,7 @@ import org.openbel.editor.core.parser.ast.QuotedValue;
 import org.openbel.editor.core.parser.ast.RelationshipLiteral;
 import org.openbel.editor.core.parser.ast.SetStatementGroupExpression;
 import org.openbel.editor.core.parser.ast.UnsetStatementGroupExpression;
+import org.openbel.editor.core.parser.ast.UnsetStatementIdExpression;
 import org.openbel.editor.core.parser.ast.ValueListExpression;
 
 /**
@@ -52,6 +53,7 @@ public class BELScriptDocument extends ModuleDeclaration {
     private ASTDocument docDef;
     private List<UnsetStatementGroupExpression> unsetStatementGroupExpressions;
     private List<SetStatementGroupExpression> setStatementGroupExpressions;
+    private List<UnsetStatementIdExpression> unsetStatementIdExpressions;
 
     public BELScriptDocument(int sourceLength) {
         super(sourceLength);
@@ -69,6 +71,7 @@ public class BELScriptDocument extends ModuleDeclaration {
         docDef = new ASTDocument();
         unsetStatementGroupExpressions = new ArrayList<UnsetStatementGroupExpression>();
         setStatementGroupExpressions = new ArrayList<SetStatementGroupExpression>();
+        unsetStatementIdExpressions = new ArrayList<UnsetStatementIdExpression>();
     }
 
     public List<FieldInfo> getFieldsInfo() {
@@ -206,6 +209,15 @@ public class BELScriptDocument extends ModuleDeclaration {
     public void setSetStatementGroupExpressions(
             List<SetStatementGroupExpression> setStatementGroupExpressions) {
         this.setStatementGroupExpressions = setStatementGroupExpressions;
+    }
+
+    public List<UnsetStatementIdExpression> getUnsetStatementIdExpressions() {
+        return unsetStatementIdExpressions;
+    }
+
+    public void setUnsetStatementIdExpressions(
+            List<UnsetStatementIdExpression> unsetStatementIdExpressions) {
+        this.unsetStatementIdExpressions = unsetStatementIdExpressions;
     }
 
 }

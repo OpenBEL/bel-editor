@@ -68,7 +68,14 @@ public class AstTreeViewPart extends ViewPart implements
     public void selectionChanged(IEditorPart part, ITextSelection selection,
             ISourceModule module, IModuleDeclaration astRoot) {
         BELScriptDocument script = (BELScriptDocument) astRoot;
-
+        String selectedText = null;
+        if (selection.getStartLine() != selection.getEndLine()) {
+            //multiline statement detected
+            selectedText = selection.getText().replace("\n", "")
+                    .replace("\r", "").replace("\\", " ");
+        } else {
+            selectedText = selection.getText();
+        }
         display.syncExec(
                 new Runnable() {
                     public void run() {
@@ -76,7 +83,7 @@ public class AstTreeViewPart extends ViewPart implements
                     }
                 });
         for (ASTStatement field : script.getDocDef().getStatementsList()) {
-            if (selection.getText().equals(field.toString())) {
+            if (selectedText.equals(field.toString().trim())) {
                 for (final AnnotationSetField annotatioSetField : field
                         .getAnnotationsList()) {
                     display.syncExec(
