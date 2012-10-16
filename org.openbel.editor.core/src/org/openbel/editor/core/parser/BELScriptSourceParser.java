@@ -437,15 +437,21 @@ public class BELScriptSourceParser extends AbstractSourceParser {
             }
 
         }
-        for (int i = 0; i < node.getChildCount(); i++) {
-            Tree currentNode = node
-                    .getChild(i);
-            if (currentNode.getType() == BELScript_v1Parser.TERMDEF) {
-                field.getTerms().add((TermDefinition) visit(currentNode));
-            } else {
-                field.getOperators().add(
-                        (RelationshipLiteral) visit(currentNode));
+        System.out.println(node.getChildCount());
+        if (node.getChildCount() == 3) {
+            if (node
+                    .getChild(0).getType() == BELScript_v1Parser.TERMDEF) {
+                field.setLeftTerm((TermDefinition) visit(node
+                        .getChild(0)));
             }
+            field.setRelationship((RelationshipLiteral) visit(node
+                    .getChild(1)));
+            field.setRightTerm((TermDefinition) visit(node
+                    .getChild(2)));
+
+        }
+        if (node.getChildCount() == 1) {
+            field.setLeftTerm((TermDefinition) visit(node.getChild(0)));
         }
         script.getDocDef().getStatementsList().add(field);
         return field;

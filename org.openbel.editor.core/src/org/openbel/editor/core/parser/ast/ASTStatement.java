@@ -38,9 +38,10 @@ import org.openbel.editor.core.parser.BELScript_v1Parser;
  * 
  */
 public class ASTStatement extends Statement {
+    private TermDefinition leftTerm;
+    private TermDefinition rightTerm;
+    private RelationshipLiteral relationship;
     private final ASTNode parent;
-    private List<TermDefinition> terms = new ArrayList<TermDefinition>();
-    private List<RelationshipLiteral> operators = new ArrayList<RelationshipLiteral>();
     private List<AnnotationSetField> annotationsList = new ArrayList<AnnotationSetField>();
     private List<AnnotationSetListField> annotationSetList = new ArrayList<AnnotationSetListField>();
 
@@ -86,28 +87,39 @@ public class ASTStatement extends Statement {
     @Override
     public void traverse(ASTVisitor visitor) throws Exception {
         super.traverse(visitor);
-        for (TermDefinition term : terms) {
-            term.traverse(visitor);
+        if (leftTerm != null) {
+            leftTerm.traverse(visitor);
         }
-        for (RelationshipLiteral operator : operators) {
-            operator.traverse(visitor);
+        if (rightTerm != null) {
+            rightTerm.traverse(visitor);
+        }
+        if (relationship != null) {
+            relationship.traverse(visitor);
         }
     }
 
-    public List<TermDefinition> getTerms() {
-        return terms;
+    public TermDefinition getLeftTerm() {
+        return leftTerm;
     }
 
-    public void setTerms(List<TermDefinition> terms) {
-        this.terms = terms;
+    public void setLeftTerm(TermDefinition leftTerm) {
+        this.leftTerm = leftTerm;
     }
 
-    public List<RelationshipLiteral> getOperators() {
-        return operators;
+    public TermDefinition getRightTerm() {
+        return rightTerm;
     }
 
-    public void setOperators(List<RelationshipLiteral> operators) {
-        this.operators = operators;
+    public void setRightTerm(TermDefinition rightTerm) {
+        this.rightTerm = rightTerm;
+    }
+
+    public RelationshipLiteral getRelationship() {
+        return relationship;
+    }
+
+    public void setRelationship(RelationshipLiteral relationship) {
+        this.relationship = relationship;
     }
 
     public ASTNode getParent() {
@@ -133,16 +145,21 @@ public class ASTStatement extends Statement {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < terms.size(); i++) {
-            builder.append(terms.get(i).toString());
-            builder.append(" ");
-            if (operators.size() > i) {
-                builder.append(operators.get(i));
-            }
-            builder.append(" ");
+        String leftTermAsString = "";
+        if (leftTerm != null) {
+            leftTermAsString = leftTerm.toString();
         }
-        return builder.toString();
+        String relationshipAsString = "";
+        if (relationship != null) {
+            relationshipAsString = relationship.toString();
+        }
+        String rightTermAsString = "";
+        if (rightTerm != null) {
+            rightTermAsString = rightTerm.toString();
+        }
+
+        return leftTermAsString + " " + relationshipAsString + " "
+                + rightTermAsString;
     }
 
 }

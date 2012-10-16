@@ -4,6 +4,9 @@ import org.eclipse.dltk.ast.parser.IModuleDeclaration;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.ui.viewsupport.ISelectionListenerWithAST;
 import org.eclipse.dltk.ui.viewsupport.SelectionListenerWithASTManager;
+import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -65,17 +68,33 @@ public class AstTreeViewPart extends ViewPart implements
     }
 
     @Override
-    public void selectionChanged(IEditorPart part, ITextSelection selection,
+    public void selectionChanged(final IEditorPart part,
+            ITextSelection selection,
             ISourceModule module, IModuleDeclaration astRoot) {
+        final IDocument document = ((ITextEditor) part).getDocumentProvider()
+                .getDocument(
+                        part.getEditorInput());
         BELScriptDocument script = (BELScriptDocument) astRoot;
         String selectedText = null;
         if (selection.getStartLine() != selection.getEndLine()) {
             //multiline statement detected
-            selectedText = selection.getText().replace("\n", "")
-                    .replace("\r", "").replace("\\", " ");
-        } else {
             selectedText = selection.getText();
+        } else {
+            try {
+                //get line from offset
+                IRegion lineInformation = document
+                        .getLineInformationOfOffset(selection.getOffset());
+                //get text from line
+                selectedText = document.get(
+                        lineInformation.getOffset(),
+                        document.getLineLength(selection.getStartLine()));
+            } catch (BadLocationException e) {
+                e.printStackTrace();
+            }
         }
+        //remove newline char
+        selectedText = selectedText.replace("\n", "")
+                .replace("\r", "").replace("\\", " ");
         display.syncExec(
                 new Runnable() {
                     public void run() {
@@ -83,6 +102,7 @@ public class AstTreeViewPart extends ViewPart implements
                     }
                 });
         for (ASTStatement field : script.getDocDef().getStatementsList()) {
+            System.out.println(field);
             if (selectedText.equals(field.toString().trim())) {
                 for (final AnnotationSetField annotatioSetField : field
                         .getAnnotationsList()) {
