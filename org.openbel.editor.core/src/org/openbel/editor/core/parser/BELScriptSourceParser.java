@@ -437,7 +437,6 @@ public class BELScriptSourceParser extends AbstractSourceParser {
             }
 
         }
-        System.out.println(node.getChildCount());
         if (node.getChildCount() == 3) {
             if (node
                     .getChild(0).getType() == BELScript_v1Parser.TERMDEF) {

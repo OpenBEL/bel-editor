@@ -76,25 +76,42 @@ public class AstTreeViewPart extends ViewPart implements
                         part.getEditorInput());
         BELScriptDocument script = (BELScriptDocument) astRoot;
         String selectedText = null;
-        if (selection.getStartLine() != selection.getEndLine()) {
-            //multiline statement detected
-            selectedText = selection.getText();
-        } else {
-            try {
-                //get line from offset
-                IRegion lineInformation = document
-                        .getLineInformationOfOffset(selection.getOffset());
-                //get text from line
-                selectedText = document.get(
-                        lineInformation.getOffset(),
-                        document.getLineLength(selection.getStartLine()));
-            } catch (BadLocationException e) {
-                e.printStackTrace();
+        try {
+            //get line from offset
+            IRegion lineInformation = document
+                    .getLineInformationOfOffset(selection.getOffset());
+
+            //get selected line length
+            int lineLength = document.getLineLength(selection.getStartLine());
+            //get selected line start offset
+            int offset = lineInformation.getOffset();
+            //get text from line
+            selectedText = document
+                    .get(offset, lineLength);
+            //search for multi-line statements
+            String nextline = null;
+            String previousLine = null;
+            if (selectedText.endsWith("\\\r\n")) {
+                //the cursor is on the first line of the multiple line statement
+                nextline = document.get(
+                        document.getLineOffset(selection.getStartLine() + 1),
+                        document.getLineLength(selection.getStartLine() + 1));
+                selectedText = selectedText + nextline;
             }
+            previousLine = document.get(
+                    document.getLineOffset(selection.getStartLine() - 1),
+                    document.getLineLength(selection.getStartLine() - 1));
+            if (previousLine.endsWith("\\\r\n")) {
+                ///the cursor is on the second line of the multiple line statement
+                selectedText = previousLine
+                        + selectedText;
+            }
+        } catch (BadLocationException e) {
+            e.printStackTrace();
         }
-        //remove newline char
-        selectedText = selectedText.replace("\n", "")
-                .replace("\r", "").replace("\\", " ");
+        //remove newline char and \
+        selectedText = selectedText.replaceAll("\r\n", "")
+                .replaceAll("\\\\", " ");
         display.syncExec(
                 new Runnable() {
                     public void run() {
@@ -102,7 +119,6 @@ public class AstTreeViewPart extends ViewPart implements
                     }
                 });
         for (ASTStatement field : script.getDocDef().getStatementsList()) {
-            System.out.println(field);
             if (selectedText.equals(field.toString().trim())) {
                 for (final AnnotationSetField annotatioSetField : field
                         .getAnnotationsList()) {
@@ -140,4 +156,5 @@ public class AstTreeViewPart extends ViewPart implements
         }
 
     }
+
 }
