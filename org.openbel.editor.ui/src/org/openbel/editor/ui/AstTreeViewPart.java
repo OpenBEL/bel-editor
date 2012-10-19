@@ -119,7 +119,8 @@ public class AstTreeViewPart extends ViewPart implements
                     }
                 });
         for (ASTStatement field : script.getDocDef().getStatementsList()) {
-            if (selectedText.equals(field.toString().trim())) {
+            if (selectedText.replaceAll(" ", "").equals(
+                    field.toString().replaceAll(" ", ""))) {
                 for (final AnnotationSetField annotatioSetField : field
                         .getAnnotationsList()) {
                     display.syncExec(

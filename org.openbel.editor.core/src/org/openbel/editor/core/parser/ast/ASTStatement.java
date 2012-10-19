@@ -11,6 +11,7 @@
 package org.openbel.editor.core.parser.ast;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.dltk.ast.ASTNode;
@@ -38,10 +39,9 @@ import org.openbel.editor.core.parser.BELScript_v1Parser;
  * 
  */
 public class ASTStatement extends Statement {
-    private TermDefinition leftTerm;
-    private TermDefinition rightTerm;
-    private RelationshipLiteral relationship;
     private final ASTNode parent;
+    private LinkedList<TermDefinition> termsList = new LinkedList<TermDefinition>();
+    private LinkedList<RelationshipLiteral> relationshipList = new LinkedList<RelationshipLiteral>();
     private List<AnnotationSetField> annotationsList = new ArrayList<AnnotationSetField>();
     private List<AnnotationSetListField> annotationSetList = new ArrayList<AnnotationSetListField>();
 
@@ -87,39 +87,16 @@ public class ASTStatement extends Statement {
     @Override
     public void traverse(ASTVisitor visitor) throws Exception {
         super.traverse(visitor);
-        if (leftTerm != null) {
-            leftTerm.traverse(visitor);
+        for (TermDefinition term : termsList) {
+            if (term != null) {
+                term.traverse(visitor);
+            }
         }
-        if (rightTerm != null) {
-            rightTerm.traverse(visitor);
+        for (RelationshipLiteral rel : relationshipList) {
+            if (rel != null) {
+                rel.traverse(visitor);
+            }
         }
-        if (relationship != null) {
-            relationship.traverse(visitor);
-        }
-    }
-
-    public TermDefinition getLeftTerm() {
-        return leftTerm;
-    }
-
-    public void setLeftTerm(TermDefinition leftTerm) {
-        this.leftTerm = leftTerm;
-    }
-
-    public TermDefinition getRightTerm() {
-        return rightTerm;
-    }
-
-    public void setRightTerm(TermDefinition rightTerm) {
-        this.rightTerm = rightTerm;
-    }
-
-    public RelationshipLiteral getRelationship() {
-        return relationship;
-    }
-
-    public void setRelationship(RelationshipLiteral relationship) {
-        this.relationship = relationship;
     }
 
     public ASTNode getParent() {
@@ -143,23 +120,39 @@ public class ASTStatement extends Statement {
         this.annotationSetList = annotationSetList;
     }
 
+    public LinkedList<TermDefinition> getTermsList() {
+        return termsList;
+    }
+
+    public void setTermsList(LinkedList<TermDefinition> termsList) {
+        this.termsList = termsList;
+    }
+
+    public LinkedList<RelationshipLiteral> getRelationshipList() {
+        return relationshipList;
+    }
+
+    public void setRelationshipList(
+            LinkedList<RelationshipLiteral> relationshipList) {
+        this.relationshipList = relationshipList;
+    }
+
     @Override
     public String toString() {
-        String leftTermAsString = "";
-        if (leftTerm != null) {
-            leftTermAsString = leftTerm.toString();
+        StringBuffer ret = new StringBuffer();
+        for (int i = 0; i < termsList.size(); i++) {
+            if (termsList.size() > 2 && i == 1) {
+                ret.append("(");
+            }
+            ret.append(termsList.get(i).toString());
+            if (relationshipList.size() > i) {
+                ret.append(" " + relationshipList.get(i).toString() + " ");
+            }
         }
-        String relationshipAsString = "";
-        if (relationship != null) {
-            relationshipAsString = relationship.toString();
+        if (termsList.size() > 2) {
+            ret.append(")");
         }
-        String rightTermAsString = "";
-        if (rightTerm != null) {
-            rightTermAsString = rightTerm.toString();
-        }
-
-        return leftTermAsString + " " + relationshipAsString + " "
-                + rightTermAsString;
+        return ret.toString();
     }
 
 }
