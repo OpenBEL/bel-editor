@@ -44,6 +44,7 @@ public class ASTStatement extends Statement {
     private LinkedList<RelationshipLiteral> relationshipList = new LinkedList<RelationshipLiteral>();
     private List<AnnotationSetField> annotationsList = new ArrayList<AnnotationSetField>();
     private List<AnnotationSetListField> annotationSetList = new ArrayList<AnnotationSetListField>();
+    private StatementComment comment;
 
     public ASTStatement(ASTNode parent) {
         this.parent = parent;
@@ -97,6 +98,9 @@ public class ASTStatement extends Statement {
                 rel.traverse(visitor);
             }
         }
+        if (comment != null) {
+            comment.traverse(visitor);
+        }
     }
 
     public ASTNode getParent() {
@@ -137,6 +141,14 @@ public class ASTStatement extends Statement {
         this.relationshipList = relationshipList;
     }
 
+    public StatementComment getComment() {
+        return comment;
+    }
+
+    public void setComment(StatementComment comment) {
+        this.comment = comment;
+    }
+
     @Override
     public String toString() {
         StringBuffer ret = new StringBuffer();
@@ -151,6 +163,9 @@ public class ASTStatement extends Statement {
         }
         if (termsList.size() > 2) {
             ret.append(")");
+        }
+        if (comment != null) {
+            ret.append(comment.getComment());
         }
         return ret.toString();
     }

@@ -39,6 +39,7 @@ import org.openbel.editor.core.parser.ast.ParameterDefinitionIdExpression;
 import org.openbel.editor.core.parser.ast.QuotedValue;
 import org.openbel.editor.core.parser.ast.RelationshipLiteral;
 import org.openbel.editor.core.parser.ast.SetStatementGroupExpression;
+import org.openbel.editor.core.parser.ast.StatementComment;
 import org.openbel.editor.core.parser.ast.TermDefinition;
 import org.openbel.editor.core.parser.ast.UnsetStatementGroupExpression;
 import org.openbel.editor.core.parser.ast.UnsetStatementIdExpression;
@@ -237,6 +238,8 @@ public class BELScriptSourceParser extends AbstractSourceParser {
             return visitUnsetAnnotationIdExpression(node);
         case BELScript_v1Parser.SG_SET_QV:
             return visitSetGroupExpression(node);
+        case BELScript_v1Parser.STATEMENT_COMMENT:
+            return visitStatementComment(node);
 
         default:
             return visitUnknown(node);
@@ -335,6 +338,12 @@ public class BELScriptSourceParser extends AbstractSourceParser {
                         .getChild(i)));
             }
         }
+        return field;
+    }
+
+    private ASTNode visitStatementComment(Tree node) {
+        StatementComment field = new StatementComment();
+        field.setComment(node.getText());
         return field;
     }
 
@@ -441,12 +450,15 @@ public class BELScriptSourceParser extends AbstractSourceParser {
             if (node.getChild(i).getType() == BELScript_v1Parser.TERMDEF) {
                 field.getTermsList().add(((TermDefinition) visit(node
                         .getChild(i))));
+            } else if (node.getChild(i).getType() == BELScript_v1Parser.STATEMENT_COMMENT) {
+                field.setComment(((StatementComment) visit(node.getChild(i))));
             } else {
                 field.getRelationshipList().add(
                         ((RelationshipLiteral) visit(node
                                 .getChild(i))));
             }
         }
+
         script.getDocDef().getStatementsList().add(field);
         return field;
     }
