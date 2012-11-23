@@ -28,7 +28,6 @@ public class ASTDocument extends Expression {
     private List<NamespaceDefineField> namespaceDefineFields = new ArrayList<NamespaceDefineField>();
     private List<AnnotationDefineField> annotationDefineFields = new ArrayList<AnnotationDefineField>();
     private List<AnnotationDefineListField> annotationDefineListFields = new ArrayList<AnnotationDefineListField>();
-    private List<AnnotationSetField> annotationListFields = new ArrayList<AnnotationSetField>();
 
     @Override
     public int getKind() {
@@ -76,15 +75,6 @@ public class ASTDocument extends Expression {
     public void setAnnotationDefineListFields(
             List<AnnotationDefineListField> annotationDefineListFields) {
         this.annotationDefineListFields = annotationDefineListFields;
-    }
-
-    public List<AnnotationSetField> getAnnotationListFields() {
-        return annotationListFields;
-    }
-
-    public void setAnnotationListFields(
-            List<AnnotationSetField> annotationListFields) {
-        this.annotationListFields = annotationListFields;
     }
 
 }

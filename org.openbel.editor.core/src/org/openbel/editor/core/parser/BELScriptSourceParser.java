@@ -11,7 +11,7 @@
 
 package org.openbel.editor.core.parser;
 
-import java.util.List;
+import java.util.Set;
 
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
@@ -285,7 +285,6 @@ public class BELScriptSourceParser extends AbstractSourceParser {
         AnnotationSetListField field = new AnnotationSetListField();
         field.setObjectIdent((ObjectIdentExpression) visit(node.getChild(0)));
         field.setValueList((ValueListExpression) visit(node.getChild(1)));
-        script.getAnnotationSetListFields().add(field);
         return field;
     }
 
@@ -294,7 +293,6 @@ public class BELScriptSourceParser extends AbstractSourceParser {
                 visit(node.getParent()));
         field.setName((ObjectIdentExpression) visit(node.getChild(0)));
         field.setValue((QuotedValue) visit(node.getChild(1)));
-        script.getDocDef().getAnnotationListFields().add(field);
         return field;
     }
 
@@ -396,55 +394,54 @@ public class BELScriptSourceParser extends AbstractSourceParser {
     }
 
     private ASTNode visitStatementExpression(Tree node) {
-        ASTStatement field = new ASTStatement(visit(node.getParent()));
-        for (int i = 0; i < node.getParent().getChildCount(); i++) {
+        Tree parentNode = node.getParent();
+        ASTStatement field = new ASTStatement(visit(parentNode));
+        Set<AnnotationSetField> annotationsSet = field.getAnnotationsList();
+        Set<AnnotationSetListField> annotationsListSet = field
+                .getAnnotationSetList();
+        ASTNode childNode;
+        for (int i = 0; i < parentNode.getChildCount(); i++) {
             if (i >= node.getChildIndex()) {
                 break;
             }
-            if (node.getParent().getChild(i).getType() == BELScript_v1Parser.ANNO_SET_QV) {
-                List<AnnotationSetField> annotationsList = field
-                        .getAnnotationsList();
-                for (int j = 0; j < annotationsList.size(); j++) {
-                    if (annotationsList.get(j).getName().getName()
-                            .equals(node.getParent()
-                                    .getChild(i).getChild(0).getText())) {
-                        annotationsList.remove(annotationsList.get(j));
-                    }
-                }
 
+            //process annotations
+            if (parentNode.getChild(i).getType() == BELScript_v1Parser.ANNO_SET_QV) {
+                childNode = visit(parentNode.getChild(i));
+                annotationsSet.remove(childNode);
+                //add the annotation to the list
+                annotationsSet.add((AnnotationSetField) childNode);
                 //process UNSET elements
-                boolean found = false;
                 for (UnsetStatementIdExpression st : script
                         .getUnsetStatementIdExpressions()) {
-                    if (st.getAnnotationId().getName().equals(node.getParent()
-                            .getChild(i).getChild(0).getText())) {
-                        found = true;
-                    }
-                }
-                if (!found) {
-                    annotationsList
-                            .add(
-                            (AnnotationSetField) visit(node.getParent()
-                                    .getChild(i)));
-                }
-            }
-
-            if (node.getParent().getChild(i).getType() == BELScript_v1Parser.ANNO_SET_LIST) {
-                List<AnnotationSetListField> annotationsSetList = field
-                        .getAnnotationSetList();
-                for (int j = 0; j < annotationsSetList.size(); j++) {
-                    if (annotationsSetList.get(j).getObjectIdent().getName()
-                            .equals(node.getParent()
+                    if (st.getAnnotationId().getName()
+                            .equals(parentNode
                                     .getChild(i).getChild(0).getText())) {
-                        annotationsSetList.remove(annotationsSetList.get(j));
+                        annotationsSet.remove(childNode);
                     }
                 }
-                annotationsSetList
-                        .add(
-                        (AnnotationSetListField) visit(node.getParent()
-                                .getChild(i)));
             }
 
+            //process annotation lists
+            if (parentNode.getChild(i).getType() == BELScript_v1Parser.ANNO_SET_LIST) {
+                childNode = visit(parentNode
+                        .getChild(i));
+                //remove if it already exists
+                annotationsListSet.remove(childNode);
+                //add the annotation to the list
+                annotationsListSet
+                        .add((AnnotationSetListField) childNode);
+                //process UNSET elements
+                for (UnsetStatementIdExpression st : script
+                        .getUnsetStatementIdExpressions()) {
+                    if (st.getAnnotationId()
+                            .getName()
+                            .equals(parentNode.getChild(i).getChild(0)
+                                    .getText())) {
+                        annotationsListSet.remove(childNode);
+                    }
+                }
+            }
         }
         for (int i = 0; i < node.getChildCount(); i++) {
             if (node.getChild(i).getType() == BELScript_v1Parser.TERMDEF) {

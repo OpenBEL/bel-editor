@@ -81,4 +81,21 @@ public class AnnotationSetField extends Expression {
         return parent;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (this.name.getName().equals(
+                ((AnnotationSetField) obj).name.getName())) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return name.getName().hashCode();
+    }
+
 }

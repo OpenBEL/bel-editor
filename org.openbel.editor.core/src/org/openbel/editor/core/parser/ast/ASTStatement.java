@@ -10,9 +10,9 @@
  */
 package org.openbel.editor.core.parser.ast;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
+import java.util.Set;
 
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
@@ -42,8 +42,9 @@ public class ASTStatement extends Statement {
     private final ASTNode parent;
     private LinkedList<TermDefinition> termsList = new LinkedList<TermDefinition>();
     private LinkedList<RelationshipLiteral> relationshipList = new LinkedList<RelationshipLiteral>();
-    private List<AnnotationSetField> annotationsList = new ArrayList<AnnotationSetField>();
-    private List<AnnotationSetListField> annotationSetList = new ArrayList<AnnotationSetListField>();
+    private Set<AnnotationSetField> annotationSetFields = new HashSet<AnnotationSetField>();
+    private Set<AnnotationSetField> annotationsList = new HashSet<AnnotationSetField>();
+    private Set<AnnotationSetListField> annotationSetList = new HashSet<AnnotationSetListField>();
     private StatementComment comment;
 
     public ASTStatement(ASTNode parent) {
@@ -107,23 +108,6 @@ public class ASTStatement extends Statement {
         return parent;
     }
 
-    public List<AnnotationSetField> getAnnotationsList() {
-        return annotationsList;
-    }
-
-    public void setAnnotationsList(List<AnnotationSetField> annotationsList) {
-        this.annotationsList = annotationsList;
-    }
-
-    public List<AnnotationSetListField> getAnnotationSetList() {
-        return annotationSetList;
-    }
-
-    public void setAnnotationSetList(
-            List<AnnotationSetListField> annotationSetList) {
-        this.annotationSetList = annotationSetList;
-    }
-
     public LinkedList<TermDefinition> getTermsList() {
         return termsList;
     }
@@ -168,6 +152,32 @@ public class ASTStatement extends Statement {
             ret.append(comment.getComment());
         }
         return ret.toString();
+    }
+
+    public Set<AnnotationSetField> getAnnotationSetFields() {
+        return annotationSetFields;
+    }
+
+    public void setAnnotationSetFields(
+            Set<AnnotationSetField> annotationSetFields) {
+        this.annotationSetFields = annotationSetFields;
+    }
+
+    public Set<AnnotationSetField> getAnnotationsList() {
+        return annotationsList;
+    }
+
+    public void setAnnotationsList(Set<AnnotationSetField> annotationsList) {
+        this.annotationsList = annotationsList;
+    }
+
+    public Set<AnnotationSetListField> getAnnotationSetList() {
+        return annotationSetList;
+    }
+
+    public void setAnnotationSetList(
+            Set<AnnotationSetListField> annotationSetList) {
+        this.annotationSetList = annotationSetList;
     }
 
 }
