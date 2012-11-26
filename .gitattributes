@@ -1,4 +1,4 @@
 # Always use normalized Java source files; committed files are stored
 # as LF, native OS encodings are used on checkout
-*.java text
+*.java auto
 
