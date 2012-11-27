@@ -43,6 +43,11 @@ public class BELScriptEditor extends ScriptEditor
     public BELScriptEditor() {
     }
 
+    @Override
+    protected void handleCursorPositionChanged() {
+        super.handleCursorPositionChanged();
+    }
+
     /**
      * {@inheritDoc}
      */
