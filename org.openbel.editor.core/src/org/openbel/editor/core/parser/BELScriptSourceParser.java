@@ -74,10 +74,6 @@ public class BELScriptSourceParser extends AbstractSourceParser {
             e.printStackTrace();
         }
 
-        /*
-         * BELScriptProblem p = new BELScriptProblem("42.txt",
-         * "Your answer is."); p.setWarning(true); arg1.reportProblem(p);
-         */
         System.out.println("parsed document");
         script = new BELScriptDocument(str.length());
         //visit all nodes from the tree

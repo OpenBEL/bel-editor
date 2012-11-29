@@ -41,6 +41,7 @@ public class AstTreeViewPart extends ViewPart implements
     private IWorkbenchPartSite site;
     private BELScriptEditor activeEditor;
     private SelectionListenerWithASTManager sellstnr;
+    private ISelectionService selsvc;
 
     public AstTreeViewPart() {
     }
@@ -50,7 +51,8 @@ public class AstTreeViewPart extends ViewPart implements
         sellstnr = SelectionListenerWithASTManager.getDefault();
         site = getSite();
         IWorkbenchWindow wwin = site.getWorkbenchWindow();
-        ISelectionService selsvc = wwin.getSelectionService();
+
+        selsvc = wwin.getSelectionService();
         selsvc.addSelectionListener(this);
 
         IWorkbenchPage page = wwin.getActivePage();
@@ -78,14 +80,12 @@ public class AstTreeViewPart extends ViewPart implements
 
     @Override
     public void setFocus() {
-
     }
 
     @Override
     public void selectionChanged(final IEditorPart part,
             ITextSelection selection,
             ISourceModule module, IModuleDeclaration astRoot) {
-
         if (part != this.activeEditor) return;
         BELScriptEditor editor = (BELScriptEditor) part;
         IDocumentProvider provider = editor.getDocumentProvider();
@@ -188,5 +188,12 @@ public class AstTreeViewPart extends ViewPart implements
         // Listen to the new editor.
         this.activeEditor = editor;
         sellstnr.addListener(this.activeEditor, this);
+    }
+
+    @Override
+    public void dispose() {
+        sellstnr.removeListener(this.activeEditor, this);
+        selsvc.removeSelectionListener(this);
+        super.dispose();
     }
 }
