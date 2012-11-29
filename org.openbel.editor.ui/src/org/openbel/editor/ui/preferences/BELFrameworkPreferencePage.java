@@ -45,8 +45,8 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.openbel.editor.ui.util.ValidationUtilities.FileState;
 
 /**
- * {@link BELFrameworkPreferencePage} represents a editor preference page
- * that allows the user to set the BEL Framework home location.
+ * {@link BELFrameworkPreferencePage} represents a editor preference page that
+ * allows the user to set the BEL Framework home location.
  */
 public class BELFrameworkPreferencePage extends PreferencePage implements
         IWorkbenchPreferencePage {
@@ -130,7 +130,6 @@ public class BELFrameworkPreferencePage extends PreferencePage implements
             txtCytoscapeInstall.setText(prefs.getString(CY_PREF_KEY));
         }
 
-        update();
         return composite;
     }
 
@@ -207,7 +206,6 @@ public class BELFrameworkPreferencePage extends PreferencePage implements
      */
     private void initializeDefaults() {
         bfPrefValue = ENV_BELFRAMEWORK_HOME;
-        update();
     }
 
     private void update() {
@@ -282,6 +280,9 @@ public class BELFrameworkPreferencePage extends PreferencePage implements
                     txtCytoscapeInstall.setText(selected);
                     update();
                 }
+                //when browse buttons are not pressed, consider the form to be valid
+            } else {
+                setValid(true);
             }
         }
     }
