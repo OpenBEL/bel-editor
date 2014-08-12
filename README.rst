@@ -1,3 +1,15 @@
+WARNING
+=======
+
+The BEL Editor is **no longer maintained by OpenBEL committers**.
+Pull requests will however be accepted and the
+`OpenBEL Build Server`_ will continue to operate as normal. Developers
+are available on the `OpenBEL Discussion Group`_ for help
+regarding pull requests and BEL Editor builds.
+
+.. _OpenBEL Build Server: http://build.openbel.org
+.. _OpenBEL Discussion Group: https://groups.google.com/forum/#!forum/openbel-discuss
+
 BEL Editor
 ==========
 
